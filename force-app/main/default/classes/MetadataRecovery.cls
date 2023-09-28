@@ -1,12 +1,19 @@
+/*
+    @Developer Name => Nikhil Garg
+    @description => This  class is use to Create Request for Metadata Recovery
+*/
 public class MetadataRecovery {
     
+    //constants
     private static final String API_VERSION = '58.0';
     private static final String SESSION_ID = userinfo.getSessionId();
     private static final String CLIENT = '3MVG9wt4IL4O5wvIiww2WidIEJ_eHlPjiXXrcZ9hY2nUndUIVTld0uOUAYvDU79PGiiKdXnuvDjEz19hgCEXC';
     Private static final String ENDPOINT_URL = URL.getOrgDomainUrl().toExternalForm();
     
  
-    
+     /*
+@description => This method is use to generate Soap Envelop for Deploy call of Metadta Api
+*/
     Private static String generateEnvelopeForDeployCall(String base64ZipContent){
         return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://soap.sforce.com/2006/04/metadata">'+
             '<soapenv:Header>'+
@@ -31,6 +38,9 @@ public class MetadataRecovery {
             '</soapenv:Envelope>';
     }
    
+     /*
+@description => This method is use to generate Soap Envelop for CheckDeployStatus call of Metadta Api
+*/
     Private static String generateEnvelopeForCheckDeployStatus(String asyncResultId){
         return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://soap.sforce.com/2006/04/metadata">'
             + '<soapenv:Header>'
@@ -50,11 +60,18 @@ public class MetadataRecovery {
             + '</soapenv:Envelope>';
     }
         
+       /*
+@description => This method is called by Lwc component which is then making a deploy method.
+*/
     @AuraEnabled(cacheable=true)
     Public static void deployMetadata(String zipContent){
         deploy(zipContent);
     }
     
+     
+    /*
+@description => This method is use to make a deploy call to Metadata Api.
+*/
     @future(callout=true)
     Public static void deploy(String zipContent){
         String AsyncResultId;
@@ -75,8 +92,13 @@ public class MetadataRecovery {
          System.schedule('Schedule Metadata Recovery'+system.now().addminutes(2), CRON_EXPRESSION, new ScheduleMetadataRecovery(AsyncResultId));
     }
      
+    /*
+@description => This method is use to check status of CheckDeployStatus call on basis of Async Id
+*/
     @future(callout=true)
     public static void CheckDeployStatus(String asyncResultId){
+        
+        system.debug(asyncResultId);
         RecoveryResponse responseOfRecovery;
         Http http = new Http();
         HttpRequest request = createJobRequest();
@@ -194,6 +216,10 @@ public class MetadataRecovery {
         return recoveryData;
     }
     
+        
+    /*
+@description => This method is use to fetch Async Id from the response Body of deploy call from Metdata api
+*/
     Private static String fetchAsyncId(String responseBody){
         system.debug('test  ');
         
@@ -219,6 +245,9 @@ public class MetadataRecovery {
         return AsyncResultId;
     }
     
+      /*
+@description => This method is use to create the Job Request for Metadata Api
+*/
     Private static HttpRequest createJobRequest(){
         HttpRequest request = new HttpRequest();
         request.setEndpoint(ENDPOINT_URL+'/services/Soap/m/' + API_VERSION);

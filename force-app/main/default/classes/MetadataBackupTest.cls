@@ -2,6 +2,15 @@
 public With Sharing class MetadataBackupTest {
  
     @isTest
+    static void testScheduleMetaDataBackup(){
+        
+        test.startTest();
+            Test.setMock(HttpCalloutMock.class, new MetadataBackupResponseGenerator('retrieve'));
+            MetadataBackup.ScheduleMetaDataBackup(new List<String>{'CustomLabel'},'credentials','2023-09-27T10:15:00.000Z');
+        test.stopTest();
+    }
+    
+    @isTest
     static void testRetrieveMetadata(){
         test.startTest();
             Test.setMock(HttpCalloutMock.class, new MetadataBackupResponseGenerator('retrieve'));
@@ -30,7 +39,7 @@ public With Sharing class MetadataBackupTest {
     static void testGetMetaDataTypes(){
         test.startTest();
             Test.setMock(HttpCalloutMock.class, new MetadataBackupResponseGenerator('getMetadataTypes'));
-            List<String> metadataTypes = MetadataBackup.getMetaDataTypes();
+            List<MetadataBackup.MetadataWrapper> metadataTypes = MetadataBackup.getMetaDataTypes();
         test.stopTest();
         system.assertEquals(2, metadataTypes.size());
     }

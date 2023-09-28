@@ -532,11 +532,13 @@ th {
     left: 70%;
     transform: translate(-100%, -50%);
   }
+
   .export-text {
     text-align: center;
     font-size: 18x;
     padding-bottom: 1%;
   }
+
   .main-text {
     text-align: left;
     padding-left: 2%;

@@ -1,8 +1,13 @@
+/*
+    @Developer Name => Nikhil Garg
+    @description => This  class is use to Create Custom Metadata and Remote site settings
+*/
 public With sharing class EmailAndNotification {
     
+    /*
+    	@description => This method is use to send Email with attached data  to the Current user based on Attachment Type
+    */
     Public static String sendEmailToCurrentUser(blob attachmentBody,String AttachmentType){
-        
-        system.debug('inside email container');
         
         String response;
         String currentDateTime = DateTime.now().format('yyyy/MM/dd hh:mm:ss');
@@ -28,7 +33,6 @@ public With sharing class EmailAndNotification {
             
             attachments.add(emailAttachment);
             
-            
             Messaging.SingleEmailMessage emailMessage =new Messaging.SingleEmailMessage();
             
             emailMessage.setToAddresses(new List<String>{userinfo.getUserEmail()});
@@ -48,15 +52,12 @@ public With sharing class EmailAndNotification {
                 system.debug('emailTemplate');
                 emailMessage.setTemplateId(emailTemplate.id);
             }
-            system.debug('inside email user id '+userinfo.getUserId());
-            system.debug(userinfo.getUserEmail());
+            
             emailMessage.setFileAttachments(attachments);
             emailMessage.targetobjectid = userinfo.getUserId();
             emailMessage.setSaveAsActivity(false);
             List<Messaging.sendEmailResult> emailResult = Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{emailMessage});
-            system.debug(emailResult);
-            for(Messaging.sendEmailResult result:emailResult){
-                
+            for(Messaging.sendEmailResult result:emailResult){ 
                 if(result.isSuccess()){
                     system.debug('Email sent Successfully');
                     response = 'Success';
@@ -78,8 +79,11 @@ public With sharing class EmailAndNotification {
         return response;
     }
     
+    
+    /*
+    	@description => This method is use to send Email to the Current for the Metadata Recovery result
+    */
     Public static String sendMetadataRecoveryResultEmail(String resultBody){
-        System.debug(resultBody);
         String response;
         Map<String,object> recoveryResponse = (Map<String,object>)JSON.deserializeUntyped(resultBody);
         
@@ -105,7 +109,6 @@ public With sharing class EmailAndNotification {
         for(Messaging.sendEmailResult result:emailResult){
             
             if(result.isSuccess()){
-                system.debug('Email sent Successfully');
                 response = 'Success';
             }
             else{  
@@ -116,10 +119,12 @@ public With sharing class EmailAndNotification {
                 }
             }
         }
-        system.debug('response'+response);
         return response;
     }
     
+    /*
+    	@description => This method is use to send Custom Notification based on data backup and recovery
+    */
     Public static void sendCustomNotification(String NotificationType,String service){
         CustomNotificationtype customNotification = [SELECT ID FROM CustomNotificationtype WHERE DeveloperName='BackupNotification' LIMIT 1];
         Messaging.CustomNotification cstmNotifn = new Messaging.CustomNotification();
@@ -148,7 +153,6 @@ public With sharing class EmailAndNotification {
         cstmNotifn.setNotificationTypeId(customNotification.id);
         cstmNotifn.setBody('Backup Successfull');
         cstmNotifn.setTargetId('0015i00000oYvsvAAC');
-        //cstmNotifn.setTargetId(targetId);
         try{
             cstmNotifn.send(new Set<String>{userinfo.getUserId()});
         }

@@ -19,8 +19,8 @@ export default class DataRecoveryScreen extends LightningElement {
 
   currentPageTable1 = 1;
   currentPageTable2 = 1;
-  recordsPerPage = 5;
-
+  recordsPerPage = 5; 
+  
   recoveryAwsText = "Your data recovery from AWS is now in the queue and will be processed shortly. We're working diligently to ensure that your requested data is recovered accurately and securely.";
   lowertext = "You will receive an email notification once the recovery is completed, along with a custom notification .";
   recoveryLocaltext = "Your data recovery is now in the queue and will be processed shortly. We're working diligently to ensure that your requested data is recovered accurately and securely.";
@@ -363,51 +363,54 @@ export default class DataRecoveryScreen extends LightningElement {
   }
 
 
+  
 
 
-
-  handleNextPageTable1() {
+handleNextPageTable1() {
     if (this.currentPageTable1 < this.totalPagesTable1) {
-      this.currentPageTable1++;
+        this.currentPageTable1++;
     }
-  }
+}
 
-  handlePreviousPageTable1() {
+handlePreviousPageTable1() {
     if (this.currentPageTable1 > 1) {
-      this.currentPageTable1--;
+        this.currentPageTable1--;
     }
-  }
+}
 
-  handleNextPageTable2() {
+handleNextPageTable2() {
     if (this.currentPageTable2 < this.totalPagesTable2) {
-      this.currentPageTable2++;
+        this.currentPageTable2++;
     }
-  }
+}
 
-  handlePreviousPageTable2() {
+handlePreviousPageTable2() {
     if (this.currentPageTable2 > 1) {
-      this.currentPageTable2--;
+        this.currentPageTable2--;
     }
-  }
+}
 
-  get totalPagesTable1() {
+get totalPagesTable1() {
     return Math.ceil(this.objectsWithoutExternalId.length / this.recordsPerPage);
-  }
+}
 
-  get totalPagesTable2() {
+get totalPagesTable2() {
     return Math.ceil(this.objectsWithExternalId.length / this.recordsPerPage);
-  }
+}
 
-  get displayedDataTable1() {
+get displayedDataTable1() {
     const startIndex = (this.currentPageTable1 - 1) * this.recordsPerPage;
     const endIndex = startIndex + this.recordsPerPage;
     return this.objectsWithoutExternalId.slice(startIndex, endIndex);
-  }
+}
 
-  get displayedDataTable2() {
+get displayedDataTable2() {
     const startIndex = (this.currentPageTable2 - 1) * this.recordsPerPage;
     const endIndex = startIndex + this.recordsPerPage;
     return this.objectsWithExternalId.slice(startIndex, endIndex);
-  }
+}
+
+
+
 
 }

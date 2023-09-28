@@ -1,7 +1,15 @@
+/*
+    @Developer Name => Nikhil Garg
+    @description => This  class is use to Create Custom Metadata and Remote site settings
+*/
+
 public with sharing class MetadataCreation {
     
     Private static final string endpointUrl = URL.getOrgDomainUrl().toExternalForm();
     
+      /*
+@description => This method is use to create Custom Metadata to store Aws S3 creds
+*/
     @future(callout=true)
     Public static void createCustomMetadata(String Name, String AccessKey,String SecretKey,String RegionName){
         try{
@@ -23,7 +31,9 @@ public with sharing class MetadataCreation {
         }
     }
     
-    
+      /*
+@description => This method is use to create remote site setting for White Listing the url
+*/
     public static void createRemoteSiteSetting(String fullName, String url) {
         
         HttpRequest req = createRequest('create'); 
@@ -32,6 +42,9 @@ public with sharing class MetadataCreation {
         HttpResponse res = new Http().send(req);
     }
     
+     /*
+@description => This method is use to delete  remote site setting 
+*/
     public static void deleteRemoteSiteSetting(String fullName) {
         
         HttpRequest req = createRequest('delete');
@@ -40,7 +53,9 @@ public with sharing class MetadataCreation {
         HttpResponse res = new Http().send(req);
     }
     
-    
+     /*
+@description => This method is use to generate Soap Envelop to create Remote Site setting
+*/
     private static String generateEnvelopForCreateRemoteSiteSetting(String fullName, String Url){
         return '<?xml version="1.0" encoding="UTF-8"?>'
             + '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
@@ -61,6 +76,9 @@ public with sharing class MetadataCreation {
             + '</env:Envelope>';
     }
     
+      /*
+@description => This method is use to generate Soap Envelop to delete Remote Site setting
+*/
     private static String generateEnvelopForDeleteRemoteSiteSetting(String fullName){
         system.debug(fullName);
         return '<?xml version="1.0" encoding="UTF-8"?>'
@@ -79,6 +97,9 @@ public with sharing class MetadataCreation {
             + '</env:Envelope>';
     }
     
+      /*
+@description => This method is use to generate Soap Envelop to create Custom Metadata 
+*/
     private static String generateEnvelopForCustomMetadata(String Name, String AccessKey,String SecretKey,String RegionName){
         return '<?xml version="1.0" encoding="UTF-8"?>'
             + '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
@@ -111,6 +132,9 @@ public with sharing class MetadataCreation {
             + '</env:Envelope>';
     }
     
+      /*
+@description => This method is use to create Metadata request
+*/
     private static HttpRequest createRequest(string ActionType){
         
         HttpRequest request = new HttpRequest();

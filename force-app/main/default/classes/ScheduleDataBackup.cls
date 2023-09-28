@@ -1,3 +1,7 @@
+/*
+ 		@Developer Name => Nikhil Garg
+		@description => This class is use to Schedule Calls for Data Backup
+*/
 public class ScheduleDataBackup implements schedulable {
     
     Private Map<String,String> objectWithJobIds;
@@ -10,7 +14,7 @@ public class ScheduleDataBackup implements schedulable {
     Private List<String> objects;
     Private List<String> metadatas;
     
-    // This constructor is use to schedule whole data backup process
+    // This constructor is use to take inputs to pass to every calls based on context Type
     Public ScheduleDataBackup(List<String> ObjectApiNames,String credentials,String fromDate, String toDate,String context){
         objects = ObjectApiNames;
         fromDate = fromDate;
@@ -20,6 +24,7 @@ public class ScheduleDataBackup implements schedulable {
     }
     
     
+     // This constructor is use to take inputs to pass to every calls based on context Type
     public ScheduleDataBackup(Map<String,String> objectsWithId,String batchName,String context){
         system.debug('inside schedule');
         system.debug(batchName);
@@ -29,12 +34,17 @@ public class ScheduleDataBackup implements schedulable {
         contexts = Context;
     }
     
+     // This constructor is use to take inputs to pass to every calls based on context Type
     public ScheduleDataBackup(List<String> batches,String Context,String Credentials){
        batchNames = batches;
        contexts = Context;
        Creds = Credentials;
     }
 
+       
+    /*
+@description => This method will excute the schedule class for different contexts
+*/
     Public void execute(SchedulableContext sc){
         
         if(contexts == 'ScheduleDataBackup'){

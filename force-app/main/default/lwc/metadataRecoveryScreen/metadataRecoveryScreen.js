@@ -140,7 +140,14 @@ export default class MetadataRecoveryScreen extends LightningElement {
     if (this.awsAccessKey == null && this.awsSecretKey == null && this.awsRegion == null && this.awsBucket == null && this.fileData == null) {
       this.showToast('Required', 'Please select atleast 1 file to recover', 'error');
       return;
-    }    
+    }
+    const expectedName = 'Salesforce Metadata';
+    for (const file of this.fileData) {
+      if (!file.name.includes(expectedName)) {
+        this.showToast('Error', 'Please select AWS files which include the name "' + expectedName + '"', 'error');
+        return;
+      }
+    }
 
     deployMetadata({ zipContent: this.fileData })
       .then(data => {

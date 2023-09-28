@@ -1,3 +1,8 @@
+/*
+ 		@Developer Name => Nikhil Garg
+		@description => This class is use to create Data Recovery request.
+*/
+
 public With Sharing class DataRecovery {
     
     Public class objectsDataWrapper{
@@ -31,6 +36,10 @@ public With Sharing class DataRecovery {
         Public String jobId{get;set;} 
     }
     
+    
+     /*
+@description => This method is use to upload file and returnig objects to perform Insert or upsert
+*/
     @auraEnabled
     Public static List<objectsDataWrapper> uploadZipFile(String FileData)
     {
@@ -79,6 +88,10 @@ public With Sharing class DataRecovery {
         return objectDataWrapperList;
     }
     
+    
+       /*
+@description => This method is use to create Insert request using Bulk API
+*/
     @auraEnabled
     Public static Void performInsert(String objectsToInsert){
         try{
@@ -108,6 +121,9 @@ public With Sharing class DataRecovery {
     }
     
     
+     /*
+@description => This method is use to create Upsert request using Bulk API
+*/
     @auraEnabled
     Public static Void performUpsert(String objectsToUpsert)
     {

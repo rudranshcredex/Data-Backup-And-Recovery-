@@ -1,13 +1,13 @@
 /*
- 		@Developer => Nikhil Garg
-		@Description => This class is use to perform Data Backup using Bulk api
+ 		@Developer Name => Nikhil Garg
+		@description => This class is use to perform Data Backup using Bulk API
 */
 public with sharing class DataBackup {
 
 	//Constants
-    Private static final String baseURL = URL.getSalesforceBaseUrl().toExternalForm();
-    Private static final String endpointURL = baseURL+'/services/data/v58.0/jobs/query';
-     private static List<String> objectsNames=new List<String>();
+    private static final String baseURL = URL.getSalesforceBaseUrl().toExternalForm();
+    private static final String endpointURL = baseURL+'/services/data/v58.0/jobs/query';
+    private static List<String> objectsNames=new List<String>();
     
     /*
 		@description => This method is used to schedule backup Process at given date
@@ -24,7 +24,6 @@ public with sharing class DataBackup {
         integer scheduleMinute = dateTimeValue.minute();
               
         String CRON_EXPRESSION = '0 '+scheduleMinute+' '+scheduleHour+' '+scheduleDay+' '+scheduleMonth+' ? '+scheduleYear;   
-        system.debug('cron exp'+CRON_EXPRESSION);
         System.schedule('Schedule Data Backup'+system.now().addminutes(2), CRON_EXPRESSION, new ScheduleDataBackup(ObjectApiNames, credentials, fromDate,  toDate,'ScheduleDataBackup'));
     }
     
@@ -35,7 +34,7 @@ public with sharing class DataBackup {
     
     @auraEnabled(cacheable=true)
     Public static void createDataBackup(List<String> ObjectApiNames,String credentials,String fromDate, String toDate){
-   
+   		
         try{     
             List<String> batches = new List<String>();
             if(ObjectApiNames.size()>100)
@@ -65,7 +64,7 @@ public with sharing class DataBackup {
              }
             Datetime sysTime;
             if(ObjectApiNames.size()<=20){
-               sysTime = System.now().addminutes(1);
+               sysTime = System.now().addminutes(2);
             }
             else{
                 sysTime = System.now().addminutes( 7 );

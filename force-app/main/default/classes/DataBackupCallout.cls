@@ -1,5 +1,10 @@
+/*
+ 		@Developer Name => Nikhil Garg
+		@description => This class is use to making a call to Bulk API for dataBackup
+*/
 public With Sharing class DataBackupCallout {
     
+    	//Constants
     Private static Final String endpointURL = URL.getSalesforceBaseUrl().toExternalForm()+'/services/data/v58.0/jobs/query';
     
     /*
@@ -7,7 +12,7 @@ public With Sharing class DataBackupCallout {
 */
     @future(callout=true)
     public static void getQueryJobIds(List<String> ObjectApiNames,String batchName,String fromDate, String ToDate){
-        
+      
         String query;
         Map<String,String> jobIdsWithApiNames = new Map<String,String>();
         Map<String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
@@ -25,43 +30,21 @@ public With Sharing class DataBackupCallout {
                         queryableFieldNames.add(fieldName);
                     }             
                 }
-                if(fromDate!=null && toDate!=null){
-                    
-                    String startDateString = fromDate+'T00:00:00';
-                    String EndDateString;
-                    if(Date.valueOf(toDate)==System.today()){
-                        DateTime currentDateTime= Datetime.now(); 
-                        EndDateString = toDate+currentDateTime.time();
-                    }
-                    else{
-                        EndDateString = toDate+'T23:59:59';
-                    }
-                    DateTime startDate = DateTime.valueOf(startDateString);
-                    DateTime endDate = DateTime.valueOf(endDateString);
-                    //String EndDateString = toDate+'T23:59:59';
-                    Date dateFrom = Date.valueOf(fromDate);
-                    Date dateTo = Date.valueOf(toDate);
-                    
-                    DateTime fromDateValue = Datetime.newInstance(dateFrom, Time.newInstance(0, 0, 0, 0));
-                    DateTime toDateValue = Datetime.newInstance(dateTo, Time.newInstance(0, 0, 0, 0));
-                    
-                    
-                    system.debug('fromDateValue');
-                    system.debug(fromDateValue);
-                    system.debug(toDateValue);
-                    query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname+' WHERE createdDate>=\''+startDate+'\''+' AND CreatedDate <=\''+endDate+'\'' ;
-                    //query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname+' WHERE createdDate>=\''+fromDateValue+'\''+' AND CreatedDate <=\''+toDateValue+'\'' ;
-                    //query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname+' WHERE createdDate>=:fromDateValue AND CreatedDate <=:toDateValue' ;
+                if(fromDate!=null && toDate!=null){ 
+                    query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname+' WHERE (DAY_ONLY(CreatedDate)>=\''+fromDate+'\''+' OR DAY_ONLY(CreatedDate) <=\''+ToDate+'\')' ; 
                 }
                 else{
                     query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname;
                 }
-                
+                system.debug('query');
+                system.debug(query);
                 HttpRequest request =  CreateHttpRequest('POST');
                 request.setEndpoint(endpointURL);
                 request.setBody(JSON.serialize(getJobRequest(query)));
                 
-                HttpResponse response = new Http().send(request);   
+                HttpResponse response = new Http().send(request); 
+                system.debug('response');
+                system.debug(response);
                 system.debug(response.getBody());
                 
                 if(response.getstatusCode()==200 || response.getstatusCode()==201)
@@ -78,6 +61,7 @@ public With Sharing class DataBackupCallout {
             
             if(jobIdsWithApiNames.size()>0)
             {
+                system.debug('size is greater than 0');
                 Datetime sysTime = System.now().addseconds( 10 );
                 String chronExpression = '' + sysTime.second() + ' ' + sysTime.minute() + ' ' + sysTime.hour() + ' ' + sysTime.day() + ' ' + sysTime.month() + ' ? ' + sysTime.year();
                 system.schedule('Salesforce Data Backup'+System.now().addMinutes(1), chronExpression, new ScheduleDataBackup(jobIdsWithApiNames,batchName,'getJobResults'));
@@ -95,8 +79,6 @@ public With Sharing class DataBackupCallout {
     Public static void getJobResults(Map<String,String> objectWithJobIds,String batchName){
         try
         {
-            system.debug('objectWithJobIds');
-            system.debug(objectWithJobIds);
             Zippex sampleZip = new Zippex();
             
             for(string objects:objectWithJobIds.keySet())
@@ -110,17 +92,15 @@ public With Sharing class DataBackupCallout {
 
                 system.debug(response.getBody());
                 if(response.getStatusCode() == 200 || response.getStatusCode() == 201){
-                    system.debug('response in 200');
+                   
                     Blob fileData = Blob.valueOf(response.getBody());
                     sampleZip.addFile(objects+'.csv', fileData, null);
                 }
                 else{
                     system.debug('error at 128 with code');
                     system.debug(response);
-                }
-                
-            }
-            
+                }   
+            }  
             Blob zipData = sampleZip.getZipArchive();
             system.debug(zipData);
             ContentVersion contentVersion = new ContentVersion(
@@ -129,7 +109,6 @@ public With Sharing class DataBackupCallout {
                 PathOnClient = '/' + batchName+'.zip'
             );
             insert contentVersion;
-            system.debug(contentVersion);
         }
         catch(Exception ex){
             system.debug(ex.getMessage()+' at '+ex.getLineNumber());
@@ -153,11 +132,11 @@ public With Sharing class DataBackupCallout {
             Zippex zip= new Zippex();
             
             set<Id> LinkedIds = new set<Id>();
-            for(ContentDocumentLink link: [SELECT ContentDocumentId,LinkedEntityId FROM ContentDocumentLink where LinkedEntityId=:userinfo.getUserId()]){
+            for(ContentDocumentLink link: [SELECT ContentDocumentId,LinkedEntityId FROM ContentDocumentLink where LinkedEntityId=:userinfo.getUserId() LIMIT 10000]){
                 LinkedIds.add(link.ContentDocumentId);
             }
          
-            List<ContentVersion> versions=[SELECT VersionData,Title,ContentDocumentId,FileExtension FROM ContentVersion WHERE ContentDocumentId = :LinkedIds and Title In:fileNames];
+            List<ContentVersion> versions=[SELECT VersionData,Title,ContentDocumentId,FileExtension FROM ContentVersion WHERE ContentDocumentId = :LinkedIds and Title In:fileNames  LIMIT 10000];
             List<String> ContentDocumentIdsToDelete = new List<String>();
             for(ContentVersion version: versions)
             {
@@ -176,11 +155,10 @@ public With Sharing class DataBackupCallout {
             Blob zipData = zip.getZipArchive();
             
           
-            List<contentDocument> ContentDocumentIds= [select id from contentDocument where id In:ContentDocumentIdsToDelete];
+            List<contentDocument> ContentDocumentIds= [select id from contentDocument where id In:ContentDocumentIdsToDelete LIMIT 10000];
             if(backupTos3){
-                system.debug('backup s3');	
-                system.debug(awsRegion);
-                String response = AwsS3Integration.filePUT('SalesforceMetaData_'+fetchCurrentFormattedDate(), accessKey, secretKey, awsRegion, Bucket, zipData);
+                
+                String response = AwsS3Integration.filePUT('SalesforceData_'+fetchCurrentFormattedDate(), accessKey, secretKey, awsRegion, Bucket, zipData);
                 if(response =='success'){
                     EmailAndNotification.sendCustomNotification('Data','Aws');
                     if(ContentDocumentIds.size()>0){
@@ -216,6 +194,9 @@ public With Sharing class DataBackupCallout {
                     return jobRequest;
     }
     
+      /*
+@description => This method is use to create Http request for Bulk api
+*/
     private static HttpRequest CreateHttpRequest(String method){
         HttpRequest request = new HttpRequest();
         request.setMethod(method);
@@ -226,6 +207,10 @@ public With Sharing class DataBackupCallout {
         return request;
     }
     
+    
+      /*
+@description => This method is use fetch current Date format to Upload files at Aws S3
+*/
     Private static String fetchCurrentFormattedDate(){
         DateTime now = DateTime.now();
         Date currentDate = now.date();
