@@ -1,0 +1,36 @@
+<template>
+  <div class="parent">
+    <div class="slds-context-bar">
+      <nav class="slds-context-bar__secondary" role="navigation">
+        <ul class="slds-grid">
+          <li class="slds-context-bar__item">
+            <a onclick={handleHomepage} class="slds-context-bar__label-action" title="logo">
+              <span class="logo">
+                <img src={logo} alt="NA">
+              </span>
+            </a>
+          </li>
+          <li class="slds-context-bar__item1">
+            <a class="slds-context-bar__label-action" title="Backup" onclick={handleBackup}>
+              <span class="slds-truncate" title="Backup"> Backup </span>
+            </a>
+          </li>
+          <li class="slds-context-bar__item2">
+            <a class="slds-context-bar__label-action" title="Recovery" onclick={handleRecovery}>
+              <span class="slds-truncate" title="Recovery">Recovery</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div if:true={HomePage}>
+    <c-home-Page></c-home-Page>
+  </div>
+  <div if:true={backupScreen}>
+    <c-backup-screen></c-backup-screen>
+  </div>
+  <div if:true={recoveryScreen}>
+    <c-recovery-screen></c-recovery-screen>
+  </div>
+</template>

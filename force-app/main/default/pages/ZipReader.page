@@ -1,0 +1,134 @@
+<apex:page controller="AWSFileGetter">
+    <apex:form >
+        <!--apex:inputFile id="myFile" value="{!file}" /-->
+                <!--apex:commandButton value="Upload and Unzip" onclick="unzipFile(document.getElementById('{!$Component.myFile}'))"  reRender="false"/-->
+        <apex:commandButton value="Upload and Unzip" onclick="getZipFileDataFromApex(this); return false;"  reRender="false"/>
+          <apex:pageblock title="Zip From Dummy CSV">
+            <input type="button" onclick="getZipFileDataFromApex();" value="Download" />
+        </apex:pageblock>
+    </apex:form>
+
+    <apex:remoteObjects />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script type="text/javascript" src="lib.js"></script>
+    <script>
+        //var data;
+         var fileInput;
+    	const lexOrigin ="https://credextechnology13-dev-ed.develop.lightning.force.com/"; 
+    
+            window.addEventListener("message",function(event){
+                    /*if(event.origin !== lexOrigin){
+                        console.log('same origin');	
+                        //Not the expected origin
+                        return;
+                    }*/
+                console.log('event',event);
+                
+                this.fileInput=event.data;    
+                console.log(this.fileInput);
+                    unzipFile();
+                    // document.getElementById("messageFromLWC").innerHTML = 'Text from LWC : '+event.data;
+                },false);
+    //fileInput
+    																						
+        //getZipFileDataFromApex();
+         function unzipFile() {
+            let CSVData=[];
+       
+       		console.log('fileInput>>>>>>>>>',this.fileInput);
+             //var filename = fileInput.files[0].name;
+             var filename = this.fileInput.name;
+            var reader = new FileReader();
+               reader.onload = function (ev) {
+                console.log('inside reader');
+                JSZip.loadAsync(ev.target.result).then(function (zip) {
+                    console.log('inside jszip');
+                    var csvString='';
+                    var filePromises = [];
+                    for (let [filename, fileData] of Object.entries(zip.files)) {
+                        /* console.log('filename>>>>>>>>>>>>',filename);
+                        console.log('file>>>>>>>>>>',fileData);
+                        console.log('type>>>>>>>',typeof fileData);
+                        console.log('fileData dir>>>>',fileData.dir);
+                        console.log(' type fileData dir>>>>',typeof fileData.dir);*/
+                        if(fileData.dir==false){
+                            console.log('inside if fileData dir>>>>',fileData.dir);
+                        }
+                        if(fileData.dir==false){
+                            
+                            //console.log('name>>>>>',fileData.name);
+                            var filename2 = JSON.stringify(fileData.name);
+							var parts = filename2.split('/');
+                            /* console.log('parts>>>>>>>>>>>');
+                            console.log(parts);
+                            console.log(parts[1]);*/
+                            var csvName=parts[1].split('.');
+                             let objectName= '';
+                            objectName = csvName[0];
+                            //objectName.map(
+                            //let obj = {
+                            //}
+                            
+                            console.log(objectName);
+                            /* var filename_with_extension = parts[-1];
+                            console.log('filename_with_extension',filename_with_extension);
+                            var desired_word = filename_with_extension.replace('.csv', '');
+                            console.log('desired_word',desired_word);*/
+                            filePromises.push(
+                                
+                                fileData.async('string').then(function (content) {
+                                    console.log(objectName);
+                                    csvString += content; 
+                                    // console.log('csvString>>>>>>>>>',csvString);
+                                    // console.log('fileData>>>>>>>',fileData);
+                                   
+                                    if(csvString!=''){ 
+										let obj={};                                        
+                                        //console.log(objectName);
+                                        var dynamicKey = objectName; 
+                                         
+                                        obj[dynamicKey]=csvString;
+                                        console.log('object >>>>>>>>>>>>>>',obj);
+                                         CSVData.push(obj);
+                                    }
+                                   
+                                    console.log('csv data in file promise',CSVData);
+                                })
+                                
+                            );  
+                          }
+                    }
+                    Promise.all(filePromises).then(function () {
+                        /*console.log('CSV String:');
+                        console.log(csvString);
+                        console.log('csvData', CSVData);*/  
+                        console.log('csv data>>>>>>>>>>>>>');
+                        console.log(CSVData);
+                         var message = {
+                            name:"SampleVFToLWCMessage",
+                            payload:CSVData
+                            };
+                        /*console.log('message>>>>>>>',message);
+                            console.log('parent>>>>>>>>>>',parent);*/
+                            console.log('lexorigin',"https://credextechnology13-dev-ed.develop.lightning.force.com/");
+                            parent.postMessage(message,"https://credextechnology13-dev-ed.develop.lightning.force.com/");
+                            console.log('parent after>>>>>>>>',parent);
+                    });
+                    
+                    
+                }).catch(function (err) {
+                    console.error("Failed to open", filename, " as ZIP file:", err);
+                });
+            };
+             reader.onerror = function (err) {
+                console.error("Failed to read file", err);
+            };
+             // reader.readAsArrayBuffer(fileInput.files[0]);
+            reader.readAsArrayBuffer(this.fileInput);
+            
+           
+        }
+    
+     
+    </script>
+</apex:page>

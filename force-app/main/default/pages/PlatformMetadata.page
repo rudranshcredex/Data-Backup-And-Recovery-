@@ -1,0 +1,90 @@
+<apex:page controller="MetadataRetriever">
+
+        <button id="bcd" onclick="callApex()">Zip From Dummy CSV</button>
+<apex:remoteObjects />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js" />
+    <apex:includeScript value="{!URLFOR($Resource.cometd, 'cometd.js')}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js" />
+   <script>
+ 
+        /*  function callApex() {
+        console.log('hh');
+      AWSFileGetter.getFileData("createtestbuk","testDataYes3.zip",function(result, event){
+                if(event.status){
+      			var zipData=result;
+          		console.log(zipData);
+                    console.log(typeof zipData);
+                    processZipFile(zipData);
+      		}
+          else{
+          	console.log('error');
+          }
+                                
+      });
+      }*/
+      
+    /*  function processZipFile(zipData) {
+        JSZip.loadAsync(zipData) // Load the zip data
+        .then(function (zip) {
+            // Iterate through each file in the zip
+            zip.forEach(function (relativePath, file) {
+                // Read the content of each file in the zip
+                file.async("string").then(function (content) {
+                    // Do something with the content of the file
+                    console.log("File: " + relativePath);
+                    console.log("Content: " + content);
+                });
+            });
+        })
+        .catch(function (error) {
+            console.log("Error reading zip file:", error);
+        });
+          }*/
+        
+         function callApex(){
+    MetadataRetriever.retrieveAllMetadata(function(result, event){
+        console.log(event);
+        console.log(result);
+        test();
+        });
+    }
+        function test(){
+            console.log('inside test');
+              var channel = '/event/Metadata_Retrieval__e';
+        var cometd = new window.org.cometd.CometD();
+        cometd.configure({
+            url: window.location.protocol + '//' + window.location.hostname + '/cometd/49.0/',
+            requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}' }
+        });
+        cometd.websocketEnabled = false;
+            
+        cometd.handshake(function(handshakeReply) {
+            console.log('handshake');
+            if (handshakeReply.successful) {
+                console.log('inside method');
+                cometd.subscribe(channel, handleMetadataEvent);
+            } else {
+                console.error('CometD handshake failed:', handshakeReply);
+            }
+        });
+    
+    function handleMetadataEvent(event) {
+        console.log('event>>>>>>>>',event);
+            var jsonData = event.data.payload.MetadataData__c;
+            var metadataMap = JSON.parse(jsonData);
+            
+            // Do something with the metadataMap on the VF page
+            // For example, update the page elements with the data
+            
+            // E.g., update a div with id "outputDiv" with the JSON data
+            document.getElementById('outputDiv').innerText = jsonData;
+        }
+        }
+      
+        
+    </script>
+    
+    <apex:outputPanel id="outputPanel">
+        <h1></h1>
+    </apex:outputPanel>
+</apex:page>

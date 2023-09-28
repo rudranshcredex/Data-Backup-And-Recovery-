@@ -1,0 +1,127 @@
+<apex:page controller="MetadataRetriever">
+    
+    <apex:remoteObjects />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js" />
+	<script type="text/javascript">   </script>
+    
+    
+    <script src="/cometd/40.0/cometd.js"></script>
+    <script src="/cometd/40.0/jquery.cometd.js"></script>
+    
+    <script>
+    
+    /* $(document).ready(function() {
+            // Establish the CometD connection
+            $.cometd.init({
+                url: window.location.protocol + '//' + window.location.hostname + '/cometd/40.0/',
+                requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}' }
+            });
+            
+            // Subscribe to the Platform Event channel
+            $.cometd.subscribe('/event/Metadata_Retrieval__e', function(event) {
+                // Handle the incoming event data
+                var eventData = event.data.payload;
+                console.log('platform event>>>>>>>>>>>>>>',eventData);
+                // Process the eventData in your JavaScript
+            });
+        });*/
+    
+    	function loadXmlJsLibrary(callback) {
+            var script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jxon/1.6.1/index.js';
+            script.onload = callback;
+            document.head.appendChild(script);
+        }
+     
+        function test() {
+            console.log('test function');
+            const jsonData = {
+                fullName: 'John Doe',
+                age: 30,
+                email: 'johndoe@example.com'
+            };
+
+            // Load the xml-js library dynamically and call the test function when it's ready
+            loadXmlJsLibrary(function () {
+                const options = { compact: true, ignoreComment: true, spaces: 4 };
+                const xmlString = xmljs.json2xml(jsonData, options);
+                console.log(xmlString);
+            });
+        }
+    
+    
+    function downloadCSVAsZip() {
+        console.log('sjbs');
+        var zip = new JSZip();
+        MetadataRetriever.retrieveAllMetadata(function(result, event) {
+            // console.log('event>>>.',event);
+        if (event.status) {
+            var metadataList = result;
+            //console.log('metadataMap>>>>>>>>>',metadataMap);
+            console.log('event>>>>>>',event);
+            // console.log('result>>>>>>>>>>>.',result);
+            console.log('metadataList>>>>>>>>>>>>>>>',metadataList);
+            
+            //var zipFile = new JSZip();
+            for (const [key, value] of Object.entries(metadataList)) {
+                  console.log('keys',`${key}`);
+                }
+            
+            for (const [key, value] of Object.entries(metadataList)) {
+                console.log('key>>>>>',key);
+            //  for (var i = 0; i < metadataList.length; i++)
+                for (var i = 0; i < value.length; i++)
+                        {
+                            var metadata = value[i];
+                            var componentName = metadata.componentName;
+                            console.log('componentName',componentName);
+                            var xmlBlobData = metadata.xmlBlob;
+                            
+                            // Convert base64 data back to Blob
+                            var xmlBlob = this.base64ToBlob(xmlBlobData);
+            
+                            // Add the Blob to the ZIP file
+                            zip.file(key+'/' + componentName + '.xml', xmlBlob); // Save as JSON files in the zip
+                        }
+                }
+            
+                zip.generateAsync({ type: 'blob' }).then(function (content) {
+                    //saveAs(content, 'SF Data.zip');
+                        
+                        var file = new Blob([content], {type: "application/zip"});
+                        var fileName = 'SalesforceMetadata.zip';
+                        var downloadLink = document.createElement("a");
+                        downloadLink.href = URL.createObjectURL(file);
+                        downloadLink.download = fileName;
+                        // Simulate a click on the link to trigger the download
+                        downloadLink.click();
+                    });
+        }
+            }
+            
+        );
+  }
+    
+    function base64ToBlob(base64Data)
+    {
+        var binaryString = window.atob(base64Data);
+        var byteArray = new Uint8Array(binaryString.length);
+        for (var i = 0; i < binaryString.length; i++) {
+            byteArray[i] = binaryString.charCodeAt(i);
+        }
+        return new Blob([byteArray]);
+	}
+
+	
+    </script>
+    
+    <apex:form >
+        <apex:pageblock title="Zip From Dummy CSV">
+            <input type="button" onclick="test(this);" value="click" />
+            <input type="button" onclick="downloadCSVAsZip(this);" value="Download" />
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,60 @@
+/* Default styles */
+.slds-context-bar {
+  background-color: white;
+  height: 10vh;
+  width: 100%;
+}
+
+.logo {
+  width: 80px;
+  height: 35px;
+}
+
+.slds-truncate {
+  font-size: 20px;
+}
+
+.slds-context-bar__item1,
+.slds-context-bar__item2 {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  z-index: 1;
+}
+
+.slds-context-bar__item1 {
+  margin-left: 324%;
+}
+
+.slds-context-bar__item2 {
+  margin-left: 5%;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 480px) {
+  .slds-context-bar {
+    height: 8vh; 
+  }
+
+  .logo {
+    width: 60px; 
+    height: 25px;
+  }
+
+  .slds-truncate {
+    font-size: 16px;
+  }
+
+  .slds-context-bar__item1,
+  .slds-context-bar__item2 {
+    margin: 0; /* Remove margin for smaller screens */
+  }
+
+  .slds-context-bar__item1 {
+    margin-left: 10px; /* Adjust margin for first item */
+  }
+
+  .slds-context-bar__item2 {
+    margin-left: 10px; /* Adjust margin for second item */
+  }
+}

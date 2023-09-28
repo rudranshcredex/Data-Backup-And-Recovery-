@@ -1,0 +1,79 @@
+<apex:page controller="MetadataRetriever">
+    <!--p id="messageFromLWC" style="font-weight:bold; font-size:x-large"> </p-->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" />
+    <apex:remoteObjects />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.2/FileSaver.min.js" />
+        <script type="text/javascript"></script>
+    <script>
+    
+        var data;
+    	var lexOrigin ="https://credextechnology13-dev-ed.develop.lightning.force.com/"; 
+        window.addEventListener("message",function(event){
+            console.log('inside zipData vf page');
+            /*if(event.origin !== lexOrigin){
+                console.log('same origin');	
+                //Not the expected origin
+                return;
+            }*/
+            data=event.data;           
+            downloadCSVAsZip();
+            // document.getElementById("messageFromLWC").innerHTML = 'Text from LWC : '+event.data;
+        },false);
+        
+    //btn
+    function downloadCSVAsZip() {
+
+        var data=this.data
+        	
+            //jQuery(btn).attr('disabled', true);
+            
+            try {
+                console.log('data>>>>>>>>>>>>>>',data);
+                    var zip = new JSZip();
+                    var dummy = zip.folder('Salesforce Data');
+                    
+                    for(let i=0;i<data.length;i++){
+                        for (const [key, value] of Object.entries(data[i])) {
+                            dummy.file(key+'.csv', value);
+                            }
+                    }
+   
+                /* var dummyCSVString = 'col1,col2,col3\nvalue1,value2,value3\nvalue4,value5,value6'; // Replace with your dummy CSV string
+				var dummyCSVString2 = 'col1,col2,col3\nvalue1,value2,value3\nvalue4,value5,value6'; // Replace with your dummy CSV string
+                var zip = new JSZip();
+                var dummy = zip.folder('folder');
+                dummy.file('abc.csv', dummyCSVString);
+                dummy.file('bde.csv', dummyCSVString2);*/
+                //zip.file('dummy.csv', dummyCSVString);
+                zip.generateAsync({ type: 'blob' }).then(function (content) {
+                    const date = new Date().toJSON();
+                    //saveAs(content, 'SF Data('+date+')'+'.zip');
+                    
+                     const message = {
+                    name: 'ZipFileData',
+                    ZipFileName : 'SF Data('+date+')',
+                    payload: content
+                };
+                parent.postMessage(message, '*'); 
+                    
+                    //jQuery(btn).attr('disabled', false);
+                });
+                
+                console.log('zip data>>>>>>>>>>>>>',zip); 
+            } catch (e) {
+                alert(e);
+                //jQuery(btn).attr('disabled', false);
+            }
+    }
+    
+   
+     
+    </script>
+    <apex:form >
+        <!--button id="bcd" onclick="bcd()">Zip From Dummy CSV</button>
+        <apex:pageblock title="Zip From Dummy CSV">
+        </apex:pageblock-->
+    </apex:form>
+</apex:page>

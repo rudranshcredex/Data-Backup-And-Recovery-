@@ -1,0 +1,25 @@
+<apex:page >
+    
+
+    <!--apex:includeScript value="{!$Resource.cometd}"/>
+    <apex:includeScript value="{!$Resource.jquery}"/>
+    <apex:includeScript value="{!$Resource.json2}"/>
+    <apex:includeScript value="{!$Resource.jquery_cometd}"/-->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+     <script src="/cometd/40.0/cometd.js"></script>
+    <script src="/cometd/40.0/jquery.cometd.js"></script>
+
+<script>    
+
+	$.cometd.init({
+    url:  window.location.protocol+'//'+window.location.hostname+'/cometd/41.0/',
+    requestHeaders: { Authorization: 'OAuth {!$Api.Session_ID}'}
+	});        
+
+        $.cometd.subscribe('/event/Metadata_Retrieval__e', function(message) {  
+    //your logic for whenever event is fired.
+	});
+
+</script>
+</apex:page>

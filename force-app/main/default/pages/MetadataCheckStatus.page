@@ -1,0 +1,44 @@
+<apex:page controller="MetadataRetriever" >
+    
+    <apex:remoteObjects />
+<script>
+    //window.alert('test');
+    var myInterval;
+    window.onload = function() {
+    console.log('inside onload func');
+        window.alert('test');
+        //var asyncId=ApexPages.currentPage().getParameters().asyncResultId;
+        var asyncId = "{!$CurrentPage.parameters.asyncResultId}";
+        console.log('in vf page');	
+        console.log(asyncId);	
+        //myInterval = setInterval(() => this.checkRetrieveStatusfunc(asyncId), 10000);
+        myInterval = setInterval(checkRetrieveStatusfunc.bind(null, asyncId), 5000);
+        //if(asyncId){
+        //checkRetrieveStatusfunc(asyncId);
+    }
+    /*var asyncId=ApexPages.currentPage().getParameters().asyncResultId;
+    console.log('in vf page');
+    console.log(asyncId);	
+    var myInterval = setInterval(() => this.checkRetrieveStatusfunc(data), 10000);*/
+
+    function checkRetrieveStatusfunc(asyncId) {
+   		 console.log('call ibn check status');
+        MetadataRetriever.checkRetrieveStatus(asyncId,function(result, event) {
+          	if (result == 'success' || result=='error') {
+                 clearInterval(myInterval);
+                  console.log('success');
+                }
+          });
+        
+        /*Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.MetadataRetriever.checkRetrieveStatus}',asyncId,
+             function(result, event){
+                 if (result == 'success' || result=='error') {
+                // clearInterval(myInterval);
+                  console.log('success');
+                }
+                 });*/
+        
+  }
+</script>
+</apex:page>

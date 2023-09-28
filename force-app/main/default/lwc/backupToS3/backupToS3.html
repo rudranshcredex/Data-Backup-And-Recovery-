@@ -1,0 +1,181 @@
+<template>
+
+  <lightning-card>
+    <lightning-card>
+        <!--lightning-progress-indicator current-step={currentStep} type="path" variant="base">
+            <lightning-progress-step label="Object" value="1"></lightning-progress-step>
+            <lightning-progress-step label="Service" value="2"></lightning-progress-step>
+        </lightning-progress-indicator-->
+
+        <!--lightning-button label="test button" variant="brand" onclick={handleClick}></lightning-button-->
+    <template if:true={screen1}>
+        <lightning-layout-item size="12" padding="around-small">    
+            <p>VF page below in an iFrame</p>
+            <iframe height="100px" width="100%" src="/apex/ZipData"></iframe>
+            <!--c-Zip-Data></c-Zip-Data-->
+        </lightning-layout-item>
+
+       
+    
+        <div  title="Please Select Dates to Schedule">
+            <lightning-input label="Export Date" type="dateTime" name='scheduleDate' value={scheduleDate} min={minDate}></lightning-input>
+        </div>
+
+    <!--div if:true={previous}-->
+        <!--Search the elements-->
+        <lightning-layout multiple-rows="true" vertical-align="end">
+            <lightning-layout-item size="4" padding="around-small">
+                 <!--Input text to Search Account-->
+                <lightning-input type="search" placeholder="Search...." label="Enter minimum three characters to load results                "
+                    value={searchKey} 
+                    onchange={handleSearchKey}> 
+                </lightning-input>
+            </lightning-layout-item >
+        </lightning-layout>
+
+        <!-- objects-->
+        <lightning-card style="width: 100%">
+            <div style="height: 500px;width: 100%">
+                <lightning-datatable columns={columns} data={objectNames} key-field="id" style="width: 100%;">    
+                </lightning-datatable>
+            </div>
+            <!--lightning-button label="click" variant="brand" onclick={exportData}></lightning-button-->
+            
+        </lightning-card>
+    </template>
+
+        <!--template if:true={screen2}>
+            <div style="display: flex;">
+                <Box-1>
+                <div class="box-1">              
+    
+                    <div style="height: 60%">
+                        <img src={logo} class="logo">
+                    </div>
+    
+    
+                    <div style="height: 40%">
+                        <div style="padding: 10px; height: 50%;">
+                            <div style="margin: 5px; border: 1px solid black; background-color: green;">
+                                <div>
+                                    <div style="text-align: center; padding: 5px; color: white;">
+                                        Export Now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding: 10px;  height: 50%;">
+                            <div style="margin: 5px; border: 1px solid green;">
+                                <div>
+                                    <div style="text-align: center;  padding: 5px; color: green; ">
+                                        Schedule Export
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-2">
+                    
+                    <div style="height: 60%;">
+                        <img src={logo} class="logo">
+                    </div>
+    ​
+                    <div style="height: 40%">
+                        <div style="padding: 10px; height: 50%;">
+                            <div style="margin: 5px; border: 1px solid black; background-color: green;">
+                                <div>
+                                    <div style="text-align: center; padding: 5px; color: white;">
+                                        Backup Now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding: 10px;  height: 50%;">
+                            <div style="margin: 5px; border: 1px solid green;">
+                                <div>
+                                    <div style="text-align: center;  padding: 5px; color: green; ">
+                                        Schedule Backup
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template-->
+    </lightning-card>
+
+        <!--div title="Select Dates">
+            <lightning-input type="date" label="From" name="fromDate" ></lightning-input>
+            <lightning-input type="date" label="To" name="toDate" ></lightning-input>
+        </div-->
+    <!--/div-->
+
+        <!--service-->
+     <!--div if:true={objectSelected}-->
+        <div if:true={service}>
+            <lightning-card title="Select service to Backup the Data">
+
+                <lightning-radio-group name="radioGroup"
+                          options={options}
+                          value={value}
+                          type="radio" onchange={handleRadio}>
+                </lightning-radio-group>
+
+                <div if:true={aws}>
+                    
+                    <c-lightning-Modal ismodalopen={isModal}></c-lightning-Modal>
+                    <lightning-button variant="brand" label="Backup To S3" onclick={exportData}></lightning-button>
+                    <lightning-button variant="brand" label="Test Button" onclick={uploadS3}></lightning-button>
+                </div>
+
+                <div if:true={local}>  
+                  <lightning-card>
+                    <lightning-button variant="brand" label="Export now" onclick={exportData} style="margin-right: 40px;"></lightning-button>
+                    <lightning-button variant="brand" label="Schedule Export" onclick={scheduleFunction}></lightning-button>
+                    <div>
+                        <lightning-button variant="brand" label="Schedule Export" onclick={downloadZipFile}></lightning-button>
+                    </div>
+                   
+                  </lightning-card> 
+                </div>
+
+            </lightning-card>
+        </div>
+       
+
+    <!--lightning-button label="Next" onclick={handleNext} class="slds-float_right" variant="brand" ></lightning-button>
+    <lightning-button label="Previous" onclick={handlePrevious} variant="brand"></lightning-button-->
+       
+        <!--Footer-->
+        <div slot="footer">
+            <div slot="footer" style="display: flex; justify-content: center;">
+                <div style="width: 50%">
+                    <div class="slds-progress">
+                        <ol class="slds-progress__list">
+                            <li class="slds-progress__item slds-is-active">
+                                <button class="slds-button slds-progress__marker">
+                                    <span class="slds-assistive-text">Step 1 </span>
+                                </button>
+                            </li>
+                            <li class="slds-progress__item">
+                                <button class="slds-button slds-progress__marker">
+                                    <span class="slds-assistive-text">Step 2 </span>
+                                </button>
+                            </li>
+                        </ol>
+                        <div class="slds-progress-bar slds-progress-bar_x-small" aria-valuemin="0"
+                            aria-valuemax="100" aria-valuenow="0" role="progressbar">
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 50%">
+                    <lightning-button variant="brand" label="Previous" onclick={handlePrevious}></lightning-button>
+                    <lightning-button variant="brand" label="Next" style="margin-left: 50px;"
+                        onclick={handleNext}></lightning-button>
+                </div>
+            </div>
+        </div>
+  </lightning-card> 
+</template>

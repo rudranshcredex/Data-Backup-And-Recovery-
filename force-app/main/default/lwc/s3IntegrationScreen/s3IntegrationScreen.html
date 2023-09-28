@@ -1,0 +1,46 @@
+<template>
+  <!-- <template if:true={xyz}> -->
+    <lightning-modal-header
+      label="Configure Named Credentials for S3"
+    ></lightning-modal-header>
+    <lightning-modal-body>
+      <lightning-card>
+        <div>
+          <p style="font-size: medium">
+            <strong style="margin-left: 15px">Step-1: </strong> Go to Setup and
+            search Named Credentials.
+          </p>
+          <br />
+          <p style="font-size: medium">
+            <strong style="margin-left: 15px">Step-2: </strong> Edit the Named
+            Credential called 'AWS Signature'
+          </p>
+          <br />
+          <p style="font-size: medium">
+            <strong style="margin-left: 15px">Step-3: </strong> Enter the URL
+            (URL should be like: https://+BucketName+.s3.amazonaws.com)
+          </p>
+          <br />
+          <p style="font-size: medium">
+            <strong style="margin-left: 15px">Step-4: </strong> Enter your AWS
+            Access key Id and  Secret Access Key
+          </p>
+          <br />
+          <p style="font-size: medium">
+            <strong style="margin-left: 15px">Step-5: </strong> Enter your AWS
+            Region and Service
+          </p>
+          <br />
+          <p style="font-size: medium">
+            <strong style="margin-left: 15px">Step-6: </strong> Save the Named
+            Credential
+          </p>
+        </div>
+      </lightning-card>
+    </lightning-modal-body>
+
+    <lightning-modal-footer class="slds-grid slds-grid_align-center">
+      Ignore these steps if already configured
+    </lightning-modal-footer>
+  <!-- </template> -->
+</template>

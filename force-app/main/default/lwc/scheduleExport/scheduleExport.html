@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Schedule Export Service" icon-name="utility:schedule">
+        <!--lightning-modal-header label="My Modal Heading"></lightning-modal-header>
+        <lightning-modal-body>
+        </lightning-modal-body>
+        <lightning-modal-footer>
+            <lightning-button label="OK" onclick={handleOkay}></lightning-button>
+        </lightning-modal-footer-->
+      <div class="slds-p-horizontal_medium slds-p-vertical_small">
+
+        <lightning-input label="Export Date" type="dateTime" value={exportDate} onchange={handleTimeChange}></lightning-input>
+
+        <!--lightning-input
+          label="Export Frequency"
+          type="number"
+          min="1"
+          step="1"
+          value={exportFrequency}
+          onchange={handleFrequencyChange}
+        ></lightning-input-->
+        <!--lightning-input
+          label="Export Time"
+          type="time"
+          value={exportTime}
+          onchange={handleTimeChange}
+        ></lightning-input-->
+        <lightning-button label="Schedule Export" variant="brand" onclick={scheduleExport}></lightning-button>
+      </div>
+    </lightning-card>
+  </template>

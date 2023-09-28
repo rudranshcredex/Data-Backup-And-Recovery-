@@ -1,0 +1,198 @@
+<template>
+    <div>
+        <lightning-card>
+            <!--Screen-1 -->
+            <template if:true={showScreen1}>
+                <!-- <lightning-button variant="brand" label="Selected Objects"></lightning-button> -->
+
+                <lightning-card style="width: 100%;">
+                    <div style="height: 100%;">
+                        <lightning-input type="search" placeholder="Search Objects...." style="width: 60%"
+                            class="searchbar" label="Enter minimum three characters to load results"
+                            onchange={handleSearchChange}></lightning-input>
+
+                        <lightning-card style="width: 100%">
+                            <div style="height: 500px;width: 100%">
+                                <lightning-datatable columns={columns1} data={objectNames} key-field="id"
+                                    style="width: 100%;" onrowselection={handleRowSelection}>
+                                </lightning-datatable>
+
+                            </div>
+                        </lightning-card>
+                    </div>
+                </lightning-card>
+
+
+                <lightning-card>
+                    <lightning-accordion allow-multiple-sections-open class="slds-m-around_medium" style="margin: 0;">
+                        <lightning-accordion-section name="dates" label="Backup records based on created date">
+                            <div title="Select Dates">
+                                <lightning-input type="date" label="From" name="fromDate"></lightning-input>
+                                <lightning-input type="date" label="To" name="toDate"></lightning-input>
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </lightning-card>
+
+            </template>
+
+
+            <!--Screen-2-->
+            <template if:true={showScreen2}>
+
+                <div style="display: flex;">
+                    <div style="margin-left: 360px; font-size: 30px;">
+                        <span>Local</span>
+                    </div>
+                    <div style="margin-left: 545px; font-size: 30px;">
+                        <span>Cloud</span>
+                    </div>
+                </div>
+                <div style="display: flex;">
+
+                    <!--Box-1-->
+                    <div class="box-1">
+                        <div style="height: 60%">
+                            <img src={localImage} class="local">
+                        </div>
+
+                        <div style="height: 40%">
+                            <div style="padding: 10px; height: 40%;">
+                                <div style="margin: 5px; border: 1px solid black; background-color: green;"
+                                    onclick={test}>
+                                    <div style="text-align: center; padding: 10px; color: white;">
+                                        Export Now
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 10px;  height: 40%;">
+                                <div style="margin: 5px; border: 1px solid green;">
+                                    <div>
+                                        <div style="text-align: center;  padding: 10px; color: green;">
+                                            Schedule Export
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div style="padding: 10px; height: 20%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <lightning-input type="date" label="Enter Date"></lightning-input>
+                                    <lightning-button variant="brand" label="Schedule"></lightning-button>
+                                </div>
+                            </div> -->
+                        </div>
+
+
+                    </div>
+
+                    <div class="box-2">
+
+                        <div style="height: 60%;">
+                            <img src={cloudImage} class="local">
+                        </div>
+
+                        <div style="height: 40%">
+                            <div style="padding: 10px; height: 50%;">
+                                <div style="margin: 5px; border: 1px solid black; background-color: green;">
+                                    <div>
+                                        <div style="text-align: center; padding: 10px; color: white;">
+                                            Backup Now
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 10px;  height: 50%;">
+                                <div style="margin: 5px; border: 1px solid green;">
+                                    <div>
+                                        <div style="text-align: center;  padding: 10px; color: green; ">
+                                            Schedule Backup
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+
+            <!--Local Screen-->
+
+            <!-- <template if:true={showLocalScreen}>
+                <div class="exportScreen">
+
+                    <div class="exportNow">
+                        <span>Export Now</span>
+                    </div>
+                    <div class="scheduleExport">
+                        <span>Schedule Export</span>
+                    </div>
+                </div>
+
+
+                <template if:true={showExportNow}>
+                    <div>
+                        <lightning-datatable hide-checkbox-column="true" key-field="id" data={data}
+                            columns={columns}></lightning-datatable>
+                    </div>
+                </template>
+                <template if:true={showScheduleExport}>
+                    <div onclick={scheduleExportButton}>
+                        <lightning-input class="inputDate" type="date" label="Select Date to Export"></lightning-input>
+                        <lightning-button class="lwcButton" variant="brand" label="Schedule Export"></lightning-button>
+
+                    </div>
+                </template>
+            </template> -->
+
+            <!--Cloud Screen-->
+            <template if:true={showCloudScreen}>
+                <div>
+                    <div class="credentialInput">
+                        <lightning-input type="text" label="Enter Access Key"></lightning-input>
+                    </div>
+                    <div class="credentialInput">
+                        <lightning-input type="text" label="Enter Secret Key"></lightning-input>
+                    </div>
+                    <div class="credentialInput">
+                        <lightning-input type="text" label="Enter Region Name"></lightning-input>
+                    </div>
+                    <lightning-button variant="brand" label="Get buckets"></lightning-button>
+                    <select title="Buckets">
+                        <option value="Select">Select</option>
+                        <option value="TEST BUCKET">TEST BUCKET</option>
+                    </select>
+                    <div>
+                        <lightning-button variant="brand" label="Backup Now"></lightning-button>
+                        <lightning-button variant="brand" label="Schedule Backup"></lightning-button>
+                    </div>
+
+                </div>
+            </template>
+
+            <!--Footer-->
+            <div slot="footer" style="margin-top: 0;">
+                <div slot="footer" style="display: flex; justify-content: center;">
+                    <div style="width: 50%">
+                        <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
+                            <lightning-progress-step label="Select Objects" value="1" onclick={nextStep}>
+                            </lightning-progress-step>
+                            <lightning-progress-step label="Select Service" value="2" onclick={nextStep}>
+                            </lightning-progress-step>
+                            <lightning-progress-step label="Success" value="3" onclick={nextStep}>
+                            </lightning-progress-step>
+                        </lightning-progress-indicator>
+                    </div>
+                    <div style="width: 50%">
+                        <template if:true={showScreen2}>
+                            <lightning-button variant="brand" label="Previous"
+                                onclick={previousButton}></lightning-button>
+                        </template>
+                        <lightning-button variant="brand" label="Next" style="margin-left: 50px;"
+                            onclick={nextButton}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </div>
+</template>

@@ -1,0 +1,133 @@
+.exportScreen {
+  display: flex;
+  height: 400px;
+}
+
+.exportNow {
+  border: 3px solid black;
+  width: 300px;
+  height: 100px;
+  padding: 10px;
+  margin-left: 340px;
+  margin-top: 60px;
+  font-size: 30px;
+  cursor: pointer;
+  background-color: cyan;
+  color: #000000;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.scheduleExport {
+  border: 3px solid black;
+  width: 300px;
+  height: 100px;
+  padding: 10px;
+  margin-left: 142px;
+  margin-top: 60px;
+  font-size: 30px;
+  cursor: pointer;
+  background-color: cyan;
+  color: black;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.inputDate {
+  width: 350px;
+}
+
+.lwcButton {
+  padding-top: 10px;
+}
+
+.credentialInput {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+}
+
+.box-1 {
+  height: 400px;
+  width: 297px;
+  border: 1px solid green;
+  margin-left: 240px;
+}
+
+.schedule-btn {
+  margin-left: 63px;
+}
+
+.box-2 {
+  height: 400px;
+  width: 297px;
+  border: 1px solid green;
+  margin-left: 320px;
+}
+
+.local {
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid green;
+}
+
+.cloud {
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid green;
+}
+
+.searchbar {
+  margin-left: 70px;
+  margin-bottom: 40px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.export-btn {
+  text-align: center;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.export-btn:active {
+  background-color: red;
+}
+
+.schedule-btn {
+  text-align: center;
+  padding: 10px;
+  color: green;
+  cursor: pointer;
+}
+
+.setCredentials {
+  text-align: center;
+  padding: 10px;
+  color: white;
+  background-color: green;
+}
+
+.set-credentials {
+  display: flex;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+}
+
+.set-credentials:active {
+  background-color: red;
+}
+
+.backup-now {
+  text-align: center;
+  padding: 10px;
+  color: white;
+  cursor: pointor;
+
+}
+.backup-now:active{
+  background-color: red;
+  
+}

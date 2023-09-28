@@ -1,0 +1,120 @@
+<template>
+
+  <div class="background">
+    <template if:true={screen1}>
+
+      <div style="padding-bottom: 5px;">
+        <lightning-card title="Data Recovery"></lightning-card>
+      </div>
+      <!--div style="display: flex; background-color: rgb(255, 255, 255);"-->
+      <!--Search the elements-->
+      <!--div style="width: 60%;padding-right: 5px;">
+        <lightning-card style="border-radius: 20px;">
+          <lightning-layout multiple-rows="true" vertical-align="end">
+            <lightning-layout-item size="4" padding="around-small">
+             
+              <div>
+                <lightning-input type="search" placeholder="Enter minimum 3 Characters to load suggestions"
+                  label="Search objects" value={searchKey} onchange={handleSearchKey}
+                  style="width: 200%; border-radius: 10px;">
+                </lightning-input>
+              </div>
+            </lightning-layout-item>
+          </lightning-layout>
+​
+​
+         
+          <lightning-card style="width: 100%; border-radius: 10px; ">
+            <div style="height: 500px;width: 100%">
+              <lightning-datatable columns={columns} data={objectNames} key-field="id"
+                style="width: 100%;">
+              </lightning-datatable>
+            </div>
+          </lightning-card>
+​
+        </lightning-card>
+      </div-->
+
+
+      <lightning-card title="Upload files for Recovery" class="--slds-c-card-color-background:beige">
+        <lightning-input type="file" onchange={handleFileChange}
+          style="padding-left: 20px; padding-right: 20px; padding-bottom: 10px;"></lightning-input>
+        <p style="position:relative; left:20px;">{fileName}</p>
+        <lightning-button variant="brand" label="Start Recovery" title="Start Recovery" onclick={handleUpload}
+          style="position:relative;top:10px;left:20px;"></lightning-button>
+
+        <lightning-button label="send" variant="brand" onclick={handleUpload2}></lightning-button>
+        <lightning-button label="Insert" variant="brand" onclick={handleInsert}></lightning-button>
+      </lightning-card>
+
+
+
+      <div if:true={shouldSpin}>
+        <lightning-spinner variant="base" size="medium"></lightning-spinner>
+      </div>
+
+      <div if:true={result} style="height: 50%;">
+
+        <lightning-card title="Details of Records Processed" style="--slds-c-card-color-background:darkkhaki;">
+          <table style="margin: 14px;">
+            <thead>
+              <th></th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Total Records</b></td>
+                <td><b>{totalRecords}</b></td>
+              </tr>
+
+              <tr>
+                <td><b>Records Inserted</b></td>
+                <td><b>{insertedRecords}</b></td>
+              </tr>
+
+              <tr>
+                <td><b>Records Updated</b></td>
+                <td><b>{updatedRecords}</b></td>
+              </tr>
+
+              <tr>
+                <td><b>Records Not Processed</b></td>
+                <td><b>{recordsNotProcessed}</b></td>
+              </tr>
+            </tbody>
+          </table>
+          <!--p style = "position:relative; left:10px;"> Total Records    : {totalRecords}</p>
+            <p style = "position:relative; left:10px;"> Records Inserted : {insertedRecords}</p>
+            <p style = "position:relative; left:10px;"> Records Updated  : {updatedRecords}</p>
+            <p style = "position:relative; left:10px;"> Records Not Processed :{recordsNotProcessed}</p-->
+        </lightning-card>
+      </div>
+    </template>
+    <template if:true={screen2}>
+      <div>
+        <div>
+          <lightning-datatable key-field="id" data={objectsWithExternalId} columns={columns}>
+          </lightning-datatable>
+        </div>
+
+        <div>
+          <lightning-datatable key-field="id" data={objectsWithoutExternalId} columns={columns1}></lightning-datatable>
+        </div>
+      </div>
+    </template>
+
+
+
+
+    <!-- <lightning-layout-item size="12" padding="around-small">
+        <p>VF page below in an iFrame</p>
+        <iframe height="100px" width="100%" src="/apex/ZipReader"></iframe>
+   
+      </lightning-layout-item> -->
+    <!--/div-->
+
+
+  </div>
+
+
+</template>

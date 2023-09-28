@@ -1,0 +1,169 @@
+<apex:page controller="dataBackup2">
+    <apex:remoteObjects />
+     <script type="text/javascript"></script>
+    <script>
+        var csvData = decodeURIComponent('{!$CurrentPage.parameters.csvData}');
+    	
+			dataBackup.getObj(function(result,event){
+            	console.log('testing');
+            }); 
+    
+        if(csvData){
+            
+			dataBackup.getObj(function(result,event){
+            	console.log('testing');
+            });            
+        }
+        /* var selectedObjectNames = [];
+    	let ObjectNames = [];
+    //var items = [];
+    	var lexOrigin ="https://credextechnology13-dev-ed.develop.lightning.force.com/";
+    
+     window.addEventListener("message",function(event){
+         console.log(event);
+            console.log('inside zipData vf page');
+            console.log(event.data);
+            selectedObjectNames=event.data;  
+            console.log(selectedObjectNames);
+             downloadCSVAsZip();
+            
+           
+            
+         /* dataBackup.getObj(function(result,event){
+            	console.log('testing');
+            });
+            getObjects();
+    },false);*/
+    	
+        /*function getObjects(){
+             Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.dataBackup.getObj}',
+            function(result, event){
+                console.log('test');
+                console.log(event);
+            },
+            {escape: true}
+                );
+            
+            console.log('inside getObjects');
+            console.log(selectedObjectNames);
+            console.log(selectedObjectNames.length);
+    		 for (var i = 0; i < selectedObjectNames.length; i += 1) {
+                 //ObjectNames = [];
+                  for (var j = i; j < i + 1; j++) {
+                    if (j < selectedObjectNames.length) {
+                      ObjectNames.push(selectedObjectNames[j].objectName);
+                        console.log('name',selectedObjectNames[j].objectName);
+                        console.log(ObjectNames);
+                    }
+                  }	
+                 console.log('ObjectNames');
+                  console.log(ObjectNames);
+                 
+                 /* dataBackup.getRecordsByObject(ObjectNames,'start','End',function(result, event) {
+                     console.log('event>>>>>>>>',event.status);
+                     console.log(result);
+                     for (var i = 0; i < ObjectNames.length; i++) {
+                        let objectName = ObjectNames[i];
+                        
+                        console.log('inside dta ');
+                        var csvData = generateCSV(result[objectName], objectName);
+                        console.log('cont>>>>>>');
+                        console.log(csvData);
+                        console.log(typeof csvData);
+            
+                        let obj = {};
+                        var key = objectName;
+                        obj[key] = csvData;
+                        //this.items.push({'Account':csvData});
+                        items.push(obj);
+                        console.log('itema>>>>>>>>>>>>>>>>>>>>>>>>');
+                        console.log(JSON.parse(JSON.stringify(this.items)));
+                        // }
+                      }
+                      console.log('map of content')
+                      console.log(items);
+                      // console.log(JSON.stringify(this.CsvMap));
+                      console.log(typeof items);
+                      console.log(typeof JSON.stringify(items));
+                     
+                     
+                     
+                     
+                     
+                 });
+                  
+                }
+                             
+            }*/
+            
+        /*   function generateCSV(recordData, ApiName) {
+                console.log('recordsData>>>>>>>>>', recordData);
+                console.log('ApiName>>>>>>>>>.', ApiName);
+                let rowEnd = '\n';
+                let csvString = '';
+                // this set elminates the duplicates if have any duplicate keys
+                let rowData = new Set();
+            
+                // getting keys from data
+                recordData.forEach(function (record) {
+                  Object.keys(record).forEach(function (key) {
+                    rowData.add(key);
+                  });
+                });
+            
+                // Array.from() method returns an Array object from any object with a length property or an iterable object.
+                rowData = Array.from(rowData);
+            
+                // splitting using ','
+                csvString += rowData.join(',');
+                csvString += rowEnd;
+                //this.recordsData
+                // main for loop to get the data based on key value
+                for (let i = 0; i < recordData.length; i++) {
+                  let colValue = 0;
+            
+                  // validating keys in data
+                  for (let key in rowData) {
+                    if (rowData.hasOwnProperty(key)) {
+                      // Key value 
+                      // Ex: Id, Name
+                      let rowKey = rowData[key];
+                      // add , after every value except the first.
+                      if (colValue > 0) {
+                        csvString += ',';
+                      }
+                      // If the column is undefined, it as blank in the CSV file.
+                      let value = recordData[i][rowKey] === undefined ? '' : recordData[i][rowKey];
+                      csvString += '"' + value + '"';
+                      colValue++;
+                    }
+                  }
+                  csvString += rowEnd;
+                }
+                console.log('csvString', csvString);
+                this.csvString = csvString;
+                return csvString;
+            
+              }
+    
+    function downloadCSVAsZip(){
+    	 Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.dataBackup.getObj}',
+            function(result, event){
+                console.log('test');
+                console.log(event);
+            },
+            {escape: true}
+                );
+    }*/
+    
+    </script>
+    
+    <apex:form >
+        <apex:pageblock title="Zip From Dummy CSV">
+            <input type="button" onclick="test(this);" value="click" />
+            <input type="button" onclick="downloadCSVAsZip(this);" value="Download" />
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

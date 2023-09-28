@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Select service to Backup the Data">
+        <select onchange={handleSelect}>
+            <option value="Select">Select</option>
+            <option value="Local">Local Storage</option>
+            <option value="s3">AWS s3</option>
+        </select>
+        <template if:true={aws}>
+            <lightning-card title="Please Enter your credentials">
+                <lightning-input label="AccessKey"></lightning-input>
+                <lightning-input label="SecretKey"></lightning-input>
+                <lightning-input label="AWS Region"></lightning-input>
+            </lightning-card>
+        </template>
+    </lightning-card>
+</template>

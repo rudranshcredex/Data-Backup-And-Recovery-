@@ -1,0 +1,9 @@
+<template>
+    <lightning-card title="Select Object to Backup">
+        <div style="height: 300px;">
+            <lightning-datatable columns={columns} data={objectNames} key-field="id">    
+            </lightning-datatable>
+        </div>
+        <lightning-button label="click" onclick={getObjectNames}></lightning-button>
+    </lightning-card>
+</template>

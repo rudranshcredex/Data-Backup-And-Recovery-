@@ -1,0 +1,222 @@
+<template>
+    <div>
+        <lightning-card>
+            <!--Screen-1 -->
+            <template if:true={Screen1}>
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Objects are Loading" size="large"></lightning-spinner>
+                </template>
+                <!--Search Bar-->
+                <template if:false={isLoading}>
+                    <lightning-layout multiple-rows="true" vertical-align="end">
+                        <lightning-layout-item size="4" padding="around-small">
+                            <!--Input text to Search Account-->
+                            <lightning-input type="search" placeholder="Search...."
+                                label="Enter minimum three characters to load results" value={searchKey}
+                                onchange={handleSearchKey}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <lightning-card style="width: 100%">
+                        <div style="height: 500px;width: 100%">
+
+
+                            <lightning-datatable columns={columns} data={metadataTypes} key-field="id"
+                                style="width: 100%;">
+                            </lightning-datatable>
+
+                        </div>
+                    </lightning-card>
+
+                </template>
+
+            </template>
+
+
+            <!--Screen-2-->
+            <template if:true={Screen2}>
+
+                <div style="display: flex;">
+                    <div style="margin-left: 360px; font-size: 30px;">
+                        <span>Local</span>
+                    </div>
+                    <div style="margin-left: 545px; font-size: 30px;">
+                        <span>Cloud</span>
+                    </div>
+                </div>
+                <div style="display: flex;">
+
+                    <!--Box-1-->
+                    <div class="box-1">
+                        <div style="height: 60%">
+                            <img src={localImage} class="local">
+                        </div>
+
+                        <div style="height: 40%">
+
+
+                            <div style="padding: 10px; height: 40%;">
+
+                                <div style="margin: 5px; border: 1px solid green; background-color: green;">
+                                    <div class="export-btn" onclick={exportData} id="Local">
+                                        Export Now
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div style="padding: 10px;  height: 40%;">
+                                <div style="margin: 5px; border: 1px solid green; ">
+                                    <div class="schedule-btn" onclick={openModal}>
+                                        Schedule Export
+                                    </div>
+                                </div>
+                            </div>
+                            <template if:true={isModalOpen}>
+                                <div class="modal" id="modal">
+                                    <lightning-modal-header>Select Dates-</lightning-modal-header>
+                                    <lightning-modal-body>
+                                        <lightning-input type="datetime" label="Select Date"></lightning-input>
+                                    </lightning-modal-body>
+                                    <lightning-modal-footer>
+                                        <div>
+                                            <lightning-button variant="brand" label="Close"
+                                                onclick={closeModal}></lightning-button>
+                                            <lightning-button variant="brand" label="Select"></lightning-button>
+                                        </div>
+                                    </lightning-modal-footer>
+                                </div>
+                            </template>
+                            <!-- <div style="padding: 10px; height: 20%;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <lightning-input type="date" label="Enter Date"></lightning-input>
+                                    <lightning-button variant="brand" label="Schedule"></lightning-button>
+                                </div>
+                            </div> -->
+                        </div>
+
+
+                    </div>
+                    <div class="box-2">
+
+                        <div style="height: 60%;">
+                            <img src={cloudImage} class="local">
+                        </div>
+
+                        <div style="height: 40%">
+                            <div style="padding: 10px; height: 20%; margin-bottom: 5px;">
+                                <div style="margin: 5px; border: 1px solid green; background-color: green;">
+                                    <!-- <div style="text-align: center; padding: 10px; color: white; cursor: pointer"
+                                        > -->
+                                    <div>
+                                        <!-- <lightning-button class="setCredentials" title="Set Credentials"
+                                            onclick={setAwsCredentials} label="Set Credentials">
+                                        </lightning-button> -->
+                                        <div class="set-credentials" onclick={setAwsCredentials}>
+                                            Set Credentials
+                                        </div>
+
+                                        <template if:true={isModal}>
+                                            <c-lightning-Modal ismodalopen={isModal}
+                                                onawscredentials={handleAWSCredentials}></c-lightning-Modal>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding: 10px; height: 40%;">
+                                <div style="margin: 5px; border: 1px solid green; background-color: green;">
+                                    <div>
+                                        <!--lightning-button title="Backup Now" onclick={setAwsCredentials}  style="text-align: center; padding: 10px; color: white;">
+                                        </lightning-button-->
+                                        <div class="backup-now" onclick={exportData}>
+                                            <!-- <lightning-button title="Backup Now" variant="brand" name="backupToS3"
+                                                onclick={exportData}>
+                                            </lightning-button> -->
+                                            Backup Now
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding: 10px;  height: 40%;">
+                                <div style="margin: 5px; border: 1px solid green;">
+
+                                    <div style="text-align: center; padding: 5px; color: green; cursor: pointor; "
+                                        onclick={openModal1}>
+                                        Schedule Backup
+                                    </div>
+                                </div>
+                            </div>
+                            <template if:true={isModalOpen1}>
+                                <lightning-card>
+                                    <div class="modal1">
+                                        <lightning-modal-header>Select Dates-</lightning-modal-header>
+                                        <lightning-modal-body>
+                                            <lightning-input type="datetime" label="Select Date"></lightning-input>
+                                        </lightning-modal-body>
+                                        <lightning-modal-footer>
+                                            <div>
+                                                <lightning-button variant="brand" label="Close"
+                                                    onclick={closeModal1}></lightning-button>
+                                                <lightning-button variant="brand" label="Select"></lightning-button>
+                                            </div>
+                                        </lightning-modal-footer>
+                                    </div>
+                                </lightning-card>
+
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+
+            <template if:true={Screen3}>
+                <div>
+                    <lightning-card class="screen3">
+                        <div class="S3-a">
+                            <span>{textVariable}</span>
+                        </div>
+                        <div class="S3-b">
+                            <span> <b>Scheduled By : </b>{currentUserName}</span>
+                            <br>
+                            <span> <b>Schedule Date : </b> {date}</span>
+                        </div>
+                    </lightning-card>
+                </div>
+            </template>
+
+
+            <!--Footer-->
+            <div slot="footer" style="margin-top: 0;">
+                <div slot="footer" style="display: flex; justify-content: center;">
+                    <div style="width: 50%">
+                        <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
+                            <lightning-progress-step label="Select Objects" value="1">
+                            </lightning-progress-step>
+                            <lightning-progress-step label="Select Service" value="2">
+                            </lightning-progress-step>
+                            <lightning-progress-step label="Success" value="3">
+                            </lightning-progress-step>
+                        </lightning-progress-indicator>
+                    </div>
+
+
+
+
+                    <div style="width: 50%">
+                        <template if:true={Screen2}>
+                            <lightning-button variant="brand" label="Previous"
+                                onclick={handlePrevious}></lightning-button>
+                        </template>
+                        <template if:true={Screen1}>
+                            <lightning-button variant="brand" label="Next" style="margin-left: 50px;"
+                                onclick={handleNext}></lightning-button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </div>
+</template>

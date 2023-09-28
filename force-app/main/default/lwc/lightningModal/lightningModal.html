@@ -1,0 +1,218 @@
+<template>
+
+  <!--lightning-button label="Open Modal" onclick={openModal}></lightning-button-->
+
+  <template if:true={ismodalopen}>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-1" aria-modal="true"
+      class="slds-modal slds-fade-in-open slds-modal_medium">
+      <div class="slds-modal__container">
+
+        <!--header-->
+        <header class="slds-modal__header">
+          <h2 id="modal-heading-1" class="slds-text-heading_medium">Configure Credentials for Amazon S3</h2>
+        </header>
+
+        <!--Body-->
+        <div class="slds-modal__content slds-p-around_medium">
+          <div class="aws-logo">
+            <img src={awsS3Logo} alt="NA">
+          </div>
+          <div style="text-align: center; font-size: 20px;">
+            <h1>Select Your Aws Credentials</h1>
+          </div>
+          <lightning-card>
+            <template if:false={isLoading}>
+              <lightning-spinner alternative-text="Loading" size="xx-large"></lightning-spinner>
+            </template>
+            <div if:false={isOpenCredsModal}>
+              <template if:true={haveCreds}>
+
+                <!-- <lightning-card title="Select credentials of Your S3 Account">
+                  <select title="Credentials" style="color: black;" onchange={handleCreds}>
+                    <option value="Select" style="color: black;"> Select </option>
+                    <template for:each={awsCredentials} for:item="creds">
+                      <option key={creds.Name__c} value={creds.Name__c} style="display:flex; flex-direction: column;">
+                        {creds.Name__c}
+                      </option>
+                    </template>
+                  </select>
+                </lightning-card> -->
+                <div class="dropdown-container">
+                  <h1>Select credentials of Your S3 Account</h1>
+                  <select class="custom-select" title="Credentials" onchange={handleCreds}>
+                    <option value="Select">Select</option>
+                    <template for:each={awsCredentials} for:item="creds">
+                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName}>
+                        {creds.DeveloperName}
+                      </option>
+                    </template>
+                  </select>
+                </div>
+              </template>
+            </div>
+
+            <template if:true={showCredsSpinner}>
+              <lightning-spinner class="credsspins"></lightning-spinner>
+            </template>
+
+            <div if:false={haveCreds}>
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Credential Alias"
+                  name="credName"></lightning-input>
+              </div>
+
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Access Key"
+                  name="AccessKey"></lightning-input>
+              </div>
+
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Secret Key"
+                  name="SecretKey"></lightning-input>
+              </div>
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Region" name="Region"></lightning-input>
+              </div>
+              <lightning-button variant="brand" label="Save Credentials" onclick={saveCreds}></lightning-button>
+            </div>
+
+
+            <!--if user doesnt have creds for the first time-->
+            <!-- <div if:false={haveCreds}>
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Access Key"
+                  name="AccessKey"></lightning-input>
+              </div>
+
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Secret Key"
+                  name="SecretKey"></lightning-input>
+              </div>
+
+              <div class="credentialInput">
+                <lightning-input type="text" style="color: black;" label="Enter Region" name="Region"></lightning-input>
+              </div>
+            </div> -->
+
+            <div if:true={isOpenCredsModal}>
+              <lightning-modal-header> <b>Enter Credentials</b> </lightning-modal-header>
+              <lightning-modal-body>
+                <div>
+                  <div class="credentialInput">
+                    <lightning-input type="text" style="color: black;" label="Enter Credential Alias"
+                      name="credName2"></lightning-input>
+                  </div>
+
+                  <div class="credentialInput">
+                    <lightning-input type="text" style="color: black;" label="Enter Access Key"
+                      name="AccessKey2"></lightning-input>
+                  </div>
+
+                  <div class="credentialInput">
+                    <lightning-input type="text" style="color: black;" label="Enter Secret Key"
+                      name="SecretKey2"></lightning-input>
+                  </div>
+
+                  <div class="credentialInput">
+                    <lightning-input type="text" style="color: black;" label="Enter Region"
+                      name="Region2"></lightning-input>
+                  </div>
+                </div>
+              </lightning-modal-body>
+
+              <lightning-modal-footer>
+                <lightning-button variant="brand" label="Save" onclick={saveCreds}></lightning-button>
+                <lightning-button variant="brand" label="Close" onclick={closeCredsModal}
+                  style="padding-left: 5%"></lightning-button>
+              </lightning-modal-footer>
+            </div>
+            <!-- <div style="margin-bottom: 10px;">
+            <lightning-button variant="brand" label="Get buckets" onclick={getBuckets}></lightning-button>
+        </div> -->
+            <div if:false={isOpenCredsModal}>
+              <template lwc:if={Buckets}>
+                <!-- <lightning-card title="Select Buckets of Your S3 Account">
+                  <div style="margin-bottom: 10px;" title="Select Buckets of Your S3 Account">
+                    <select title="Buckets" required onchange={handlBucketSelect} style="color: black;">
+                      <option value="Select" style="color: black;"> Select </option>
+                      <template for:each={Buckets} for:item="bucket">
+                        <option key={bucket} value={bucket}> {bucket} </option>
+                      </template>
+                    </select>
+                  </div>
+                </lightning-card> -->
+                <br>
+                <div class="container">
+                  <h1>Select Buckets of Your S3 Account</h1>
+                  <select class="custom-select" title="Buckets" required onchange={handlBucketSelect}>
+                    <option value="Select">Select</option>
+                    <template for:each={Buckets} for:item="bucket">
+                      <option class="custom-option" key={bucket} value={bucket}>{bucket}</option>
+                    </template>
+                  </select>
+                </div>
+              </template>
+            </div>
+
+            <template if:true={files}>
+              <lightning-card>
+                <h1>Select Files to Backup</h1>
+                <div class="custom-container" title="Select Files of Your S3 Account">
+                  <select class="custom-select" title="Files" onchange={getFile}>
+                    <option value="Select">Select</option>
+                    <template for:each={files} for:item="file">
+                      <option class="custom-option" key={file} value={file}>{file}</option>
+                    </template>
+                  </select>
+                </div>
+              </lightning-card>
+            </template>
+
+          </lightning-card>
+        </div>
+
+        <template if:true={isBucketsLoading}>
+          <div class="slds-is-relative">
+            <lightning-spinner class="buketsspins"></lightning-spinner>
+          </div>
+        </template>
+
+        <template if:true={isFilesLoading}>
+          <div class="slds-is-relative">
+            <lightning-spinner class="filesspins"></lightning-spinner>
+          </div>
+        </template>
+        <!--Footer-->
+        <!-- <footer class="slds-modal__footer" if:false={isOpenCredsModal}>
+          <div class="footer-buttons">
+            <div if:true={haveCreds}>
+              <lightning-button variant="brand" label="Get buckets" onclick={getBuckets}></lightning-button>
+            </div>
+            <div>
+              <lightning-button variant="brand" label="Add Credentials" onclick={AddCreds}></lightning-button>
+            </div>
+            <div>
+              <lightning-button label="Close" onclick={closeModal}></lightning-button>
+            </div>
+          </div>
+        </footer> -->
+        <footer class="slds-modal__footer" if:false={isOpenCredsModal}>
+          <div class="footer-button" style="display: flex; justify-content: space-between;">
+            <template if:true={forBucketsButton}>
+              <div if:true={haveCreds}>
+                <lightning-button variant="brand" label="Get Buckets" onclick={getBuckets}></lightning-button>
+              </div>
+            </template>
+            <div style="padding-right: 60%">
+              <lightning-button variant="brand" label="Add Credentials" onclick={AddCreds}></lightning-button>
+            </div>
+            <div>
+              <lightning-button variant="brand" label="Close" onclick={closeModal}></lightning-button>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>
