@@ -230,8 +230,7 @@ public With sharing class DataRecoveryCallout {
              {  
                  Map<String,object> responseResult = (Map<String,object>)JSON.deserializeUntyped(response.getBody());
                  
-                 csvContent+= objects.objectName +','+responseResult.get('numberRecordsProcessed')+','+responseResult.get('numberRecordsFailed')+','+objects.DmlType;
-                 
+                 csvContent+= objects.objectName +','+responseResult.get('numberRecordsProcessed')+','+responseResult.get('numberRecordsFailed')+','+objects.DmlType+'\n'; 
              }
              else{
                  system.debug('error');
@@ -239,6 +238,7 @@ public With sharing class DataRecoveryCallout {
                  system.debug(response.getBody());
              }
          }
+         system.debug(csvContent);
          ContentVersion newContentVersion = new ContentVersion();
          newContentVersion.Title = 'Data recovery'; // Set the file title
          newContentVersion.PathOnClient = 'Datarecovery.csv'; // Set the file name

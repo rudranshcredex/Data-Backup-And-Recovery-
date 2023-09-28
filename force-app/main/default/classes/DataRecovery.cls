@@ -110,7 +110,16 @@ public With Sharing class DataRecovery {
                 DataRecoveryCallout.createInsertJob(objectsWithData);
             }    
             
-            Datetime sysTime = System.now().addSeconds( 60 );
+            Datetime sysTime;
+            if(objectsList.size()<=10){
+                sysTime = System.now().addminutes(2);
+            }
+            else if(objectsList.size()<100){
+                sysTime = System.now().addminutes(10);
+            }
+            else if(objectsList.size()>100){
+                sysTime = System.now().addminutes(20);
+            }
             String chronExpression = '' + sysTime.second() + ' ' + sysTime.minute() + ' ' + sysTime.hour() + ' ' + sysTime.day() + ' ' + sysTime.month() + ' ? ' + sysTime.year();
             system.schedule('Salesforce Data Recovery(Insert)'+System.now(), chronExpression, new scheduleDataRecovery()); 
             

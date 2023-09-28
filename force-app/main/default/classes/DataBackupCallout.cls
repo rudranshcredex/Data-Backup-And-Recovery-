@@ -147,18 +147,17 @@ public With Sharing class DataBackupCallout {
                 for(String fileName: myzip.getFileNames())
                 {
                     String fileData= myzip.getFile(fileName).toString();
-                    system.debug('file data'+myzip.getFile(fileName));
                     zip.addFile(fileName, myzip.getFile(fileName), null);
                 }
             }
             
-            Blob zipData = zip.getZipArchive();
+         //   Blob zipData = zip.getZipArchive();
             
           
             List<contentDocument> ContentDocumentIds= [select id from contentDocument where id In:ContentDocumentIdsToDelete LIMIT 10000];
             if(backupTos3){
                 
-                String response = AwsS3Integration.filePUT('SalesforceData_'+fetchCurrentFormattedDate(), accessKey, secretKey, awsRegion, Bucket, zipData);
+                String response = AwsS3Integration.filePUT('SalesforceData_'+fetchCurrentFormattedDate(), accessKey, secretKey, awsRegion, Bucket, zip.getZipArchive());
                 if(response =='success'){
                     EmailAndNotification.sendCustomNotification('Data','Aws');
                     if(ContentDocumentIds.size()>0){
@@ -171,7 +170,7 @@ public With Sharing class DataBackupCallout {
                 {
                     delete contentDocumentIds;
                 }
-                String EmailStatus = EmailAndNotification.sendEmailToCurrentUser(zipData, 'Data');
+                String EmailStatus = EmailAndNotification.sendEmailToCurrentUser(zip.getZipArchive(), 'Data');
                 if(EmailStatus == 'Success'){
                     system.debug('email sent');
                     EmailAndNotification.sendCustomNotification('Data','Local');   

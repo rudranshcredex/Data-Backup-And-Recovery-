@@ -1,7 +1,7 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
-public class Zippex 
+public with sharing class Zippex 
 {    
     private Map<String, FileObject> zipFileMap = new Map<String, FileObject>{};
     protected String zipFileString = '';  // stores the Hex version of the file blob
@@ -56,7 +56,7 @@ public class Zippex
             return;
         }
 
-        Attachment src = [SELECT ParentId, Body FROM Attachment WHERE Id=:srcAttId];
+        Attachment src = [SELECT ParentId, Body FROM Attachment WHERE Id=:srcAttId Limit 1];
         Attachment[] Atts = new List<Attachment>();
 
         Zippex myZippex = new Zippex(src.Body);

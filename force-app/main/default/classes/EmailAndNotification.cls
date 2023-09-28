@@ -18,11 +18,11 @@ public With sharing class EmailAndNotification {
                 Filename = 'DataRecovery Result.csv';
             }
             if(AttachmentType=='Data'){
-                Filename = 'Salesforce Data('+currentDateTime+')'+'.zip';
+                Filename = 'salesforcedata('+currentDateTime+')'+'.zip';
             }
             if(AttachmentType=='MetaData')
             {
-                FileName = 'Salesforce Metadata('+currentDateTime+')'+'.zip';
+                FileName = 'salesforcemetadata('+currentDateTime+')'+'.zip';
             }
             
             List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();

@@ -5,11 +5,6 @@
     <confirmationTokenRequired>false</confirmationTokenRequired>
     <label>getSessionId</label>
     <packageVersions>
-        <majorNumber>48</majorNumber>
-        <minorNumber>0</minorNumber>
-        <namespace>AWS</namespace>
-    </packageVersions>
-    <packageVersions>
         <majorNumber>1</majorNumber>
         <minorNumber>7</minorNumber>
         <namespace>sf_com_apps</namespace>

@@ -65,6 +65,8 @@ public class MetadataRecovery {
 */
     @AuraEnabled(cacheable=true)
     Public static void deployMetadata(String zipContent){
+        system.debug('zipContent');
+        system.debug(zipContent);
         deploy(zipContent);
     }
     
@@ -165,7 +167,7 @@ public class MetadataRecovery {
                 }
             }
         }
-        for (Dom.XmlNode componentSuccess : componentSuccesses) 
+      /*  for (Dom.XmlNode componentSuccess : componentSuccesses) 
         {
                 String Success;
                 String CompType;
@@ -202,8 +204,8 @@ public class MetadataRecovery {
             // Process the data as needed
             System.debug('Is Success: ' + isSuccess);
             System.debug('Component Type: ' + type);
-            System.debug('Full Name: ' + name);*/
-			}
+            System.debug('Full Name: ' + name);
+			}*/
        
        
         
