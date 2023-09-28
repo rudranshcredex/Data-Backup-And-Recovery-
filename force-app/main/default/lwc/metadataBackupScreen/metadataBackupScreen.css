@@ -273,6 +273,11 @@
     font-size: 15px; 
     margin-left: 70%;
   }
+  .export-text {
+    text-align: center;
+    font-size: 20px;
+    padding-bottom: 1%;
+  }
 
   @media (max-width: 460px){
     .searchbar{

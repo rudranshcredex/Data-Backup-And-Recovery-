@@ -67,7 +67,7 @@ export default class MetadataRecoveryScreen extends LightningElement {
 
     let selectedFile = event.target.files[0];
     this.fileName = selectedFile.name;
-    const expectedName = 'Salesforce Metadata';
+    const expectedName = 'salesforcemetadata';
     if (!this.fileName.includes(expectedName)) {
       console.log('not uploaded')
       this.showToast('Error', 'Please Upload Files which includes name ' + expectedName, 'error');
@@ -136,23 +136,32 @@ export default class MetadataRecoveryScreen extends LightningElement {
   }
 
   recoverAwsFiles() {
+    console.log('inside recover file');
+    console.log('test');
+    console.log(this.awsAccessKey);
+    //console.log('outside if', this.awsAccessKey, this.awsRegion, this.this.awsBucket);
     this.retrievalLoading = true;
+
+
+    
     if (this.awsAccessKey == null && this.awsSecretKey == null && this.awsRegion == null && this.awsBucket == null && this.fileData == null) {
+      console.log('yes null');
       this.showToast('Required', 'Please select atleast 1 file to recover', 'error');
       return;
     }
-    const expectedName = 'Salesforce Metadata';
-    for (const file of this.fileData) {
+    console.log('after if');
+    const expectedName = 'salesforcemetadata';
+   /* for (const file of this.fileData) {
       if (!file.name.includes(expectedName)) {
         this.showToast('Error', 'Please select AWS files which include the name "' + expectedName + '"', 'error');
         return;
       }
-    }
-
+    }*/
     deployMetadata({ zipContent: this.fileData })
       .then(data => {
+        console.log('data inside');
         this.retrievalLoading = false;
-        this.RecoveryLocalScreen = true;
+        
         console.log('data');
         console.log(data);
       })
@@ -164,7 +173,9 @@ export default class MetadataRecoveryScreen extends LightningElement {
 
       this.showScreen1=false;
       this.RecoveryAwsScreen=true;
+      this.RecoveryLocalScreen=false;
   }
+  
   handleStepUp() {
     this.showScreen1 = this.step == 1;
     this.currentStep = "" + this.step;

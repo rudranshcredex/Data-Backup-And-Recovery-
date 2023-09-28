@@ -28,6 +28,8 @@ export default class DataRecoveryScreen extends LightningElement {
   selecetdStringData = [];
   selectedObjectDataString = [];
   selectedId;
+  LocalRecovery = false;
+  AwsRecovery = false;
 
   currentStep = "1";
   step = 1;
@@ -62,6 +64,11 @@ export default class DataRecoveryScreen extends LightningElement {
   tableWithId = true;
   tableWithoutId = true;
 
+  awsAccessKey = null;
+  awsSecretKey = null;
+  awsRegion = null;
+  awsBucket = null;
+  fileData = null;
 
   selectedId;
   selectedDataMap = {};
@@ -166,7 +173,7 @@ export default class DataRecoveryScreen extends LightningElement {
     let selectedFile = event.target.files[0];
     // this.file = event.detail.files[0];
     this.fileName = selectedFile.name;
-    const expectedName = 'Salesforce Data';
+    const expectedName = 'salesforcedata';
     if (!this.fileName.includes(expectedName)) {
       console.log('not uploaded')
       this.showToast('Error', 'Please Upload Files which includes name ' + expectedName, 'error');
@@ -179,21 +186,18 @@ export default class DataRecoveryScreen extends LightningElement {
     }
   }
 
-  handleRecovery() {
+  handleRecovery(event) {
+    let divId =event.currentTarget.getAttribute('data-id');
+    console.log(divId);
     console.log('handle recovery');
     if (this.file == null) {
+      console.log('null file');
       this.showToast('Error', 'Please attach required file to Recover Data', 'error');
       return;
     }
     this.retrievalLoading = true;
 
-    /*testMethods({FileData:'this.file'})
-    .then(data=>{
-        console.log(data);
-    })
-    .catch(error=>{
-        console.log(error);
-    })*/
+  if(divId=='Local'){
     const fileReader = new FileReader();
     fileReader.onload = () => {
       const file = fileReader.result.split(',')[1];
@@ -287,6 +291,92 @@ export default class DataRecoveryScreen extends LightningElement {
     fileReader.readAsDataURL(this.file);
   }
 
+    if(divId=='Aws'){
+      uploadZipFile({ FileData: this.file })
+        .then(data => {
+          this.retrievalLoading = false;
+          this.objectScreen = true;
+          this.showScreen1 = false;
+          this.step = 2;
+          this.handleStepUp();
+          console.log('data');
+          console.log(data);
+          console.log(JSON.stringify(data));
+          for (var key in data) {
+
+            let objwithoutExternalId = {};
+            let objwithExternalId = {};
+
+            console.log(this.objectsWithoutExternalId.length);
+            console.log(data[key].objectName);
+            if (data[key].ExternalIdField.length > 0) {
+              console.log('yes');
+              var externalId = data[key].ExternalIdField;
+
+              if (externalId[0] == '') {
+                objwithoutExternalId.objectName = data[key].objectName;
+                objwithoutExternalId.CsvData = data[key].csvData;
+                this.objectsWithoutExternalId.push(objwithoutExternalId);
+                console.log('blank');
+              }
+              else {
+                console.log('not blank');
+                objwithExternalId.objectName = data[key].objectName;
+                objwithExternalId.CsvData = data[key].csvData;
+                objwithExternalId.ExternalIds = data[key].ExternalIdField;
+                this.objectsWithExternalId.push(objwithExternalId);
+              }
+            }
+            if (this.objectsWithoutExternalId.length === 0) {
+              this.tableWithoutId = false;
+              console.log('this.objectsWithoutExternalId', this.objectsWithoutExternalId, this.objectsWithoutExternalId.length);
+
+            }
+            if (this.objectsWithExternalId.length === 0) {
+              console.log('this.objectsWithExternalId', this.objectsWithExternalId, this.objectsWithExternalId.length);
+              this.tableWithId = false;
+            }
+            if (this.objectsWithExternalId.length > 0) {
+              console.log('greater than zero');
+              this.tableWithId = true;
+              console.log(this.tableWithId);
+            }
+            console.log('after call');
+
+
+            /* console.log('objwithoutExternalId      ');
+             console.log(objwithoutExternalId);
+             console.log(objwithoutExternalId.length);
+ 
+             this.objectsWithoutExternalId.push(objwithoutExternalId);
+             console.log('without ');
+             console.log(this.objectsWithoutExternalId);
+             console.log(this.objectsWithoutExternalId.length);
+             console.log(objectsWithoutExternalId);*/
+
+            //console.log(JSON.stringify(this.objectsWithExternalId));
+            // if (this.objectsWithExternalId.length == 0 ) {
+            //   console.log('objectsWithExternalId', this.objectsWithExternalId.length, JSON.stringify(this.objectsWithExternalId) );
+            //     this.tableWithId = false;
+            // }
+            // console.log('without ids');
+            // console.log('length', this.objectsWithoutExternalId.length);
+            // console.log(JSON.stringify(this.objectsWithoutExternalId));
+            // if (this.objectsWithoutExternalId.length == 0 ) {
+            //   console.log('objectsWithoutExternalId', this.objectsWithoutExternalId.length, JSON.stringify(this.objectsWithoutExternalId));
+            //     this.tableWithoutId = false;
+            // }
+            console.log(data[key].ExternalIdField);
+            console.log(key);
+          }
+        })
+        .catch(error => {
+          console.log('inside error');
+          console.log('error', error);
+        })
+    }
+  }
+
   handleInsert() {
     this.showScreen2 = true;
     this.objectScreen = false;
@@ -323,6 +413,13 @@ export default class DataRecoveryScreen extends LightningElement {
     console.log(event);
     console.log(event.detail.value);
     console.log(JSON.stringify(event.detail));
+    const parsedData = JSON.parse(JSON.stringify(event.detail));
+    this.awsAccessKey = parsedData.accessKey;
+    this.awsSecretKey = parsedData.secretKey;
+    this.awsRegion = parsedData.regionName;
+    this.awsBucket = parsedData.bucketName;
+    this.file = parsedData.fileData;
+    console.log(this.file);
   }
 
   handleUpsert() {
