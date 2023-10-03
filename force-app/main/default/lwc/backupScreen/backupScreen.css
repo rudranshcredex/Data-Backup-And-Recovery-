@@ -73,6 +73,7 @@
     justify-content: center;
     font-size: x-large;
     border-radius: 5px;
+    cursor: pointer;
   }
 
   @media screen and (max-width: 480px){

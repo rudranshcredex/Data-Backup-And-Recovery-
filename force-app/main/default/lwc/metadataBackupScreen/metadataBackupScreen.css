@@ -157,6 +157,7 @@
     align-items: center;
     margin-bottom: 10px;
     padding: 10px;
+    cursor: pointer;
   }
   .export-btn p {
     color: #fff;
@@ -177,6 +178,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
   }
   .schedule-btn p {
     color: #fff;
@@ -259,8 +261,9 @@
     align-items: center;
     margin-bottom: 10px;
     color: white;
+    cursor: pointer;
   }
-  .bt p {
+  .btn p {
     color: #fff;
     text-align: center;
     font-family: "inter";

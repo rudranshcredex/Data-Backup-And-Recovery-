@@ -130,7 +130,7 @@ export default class MetadataBackupScreen extends LightningElement {
       if (selectedMetadataTypes.length>0) {
         this.showToast(
           "Kindly Review!",
-          "You have selected "+ selectedMetadataTypes.length +" to backup",
+          "You have selected "+ selectedMetadataTypes.length +" Components to backup",
           "success"
         );
       }
