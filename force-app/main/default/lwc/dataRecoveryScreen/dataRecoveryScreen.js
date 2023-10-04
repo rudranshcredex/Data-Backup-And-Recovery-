@@ -226,19 +226,29 @@ export default class DataRecoveryScreen extends LightningElement {
               var externalId = data[key].ExternalIdField;
 
               if (externalId[0] == '') {
+                console.log('blank');
+                console.log(data[key].objectName);
                 objwithoutExternalId.objectName = data[key].objectName;
                 objwithoutExternalId.CsvData = data[key].csvData;
                 this.objectsWithoutExternalId.push(objwithoutExternalId);
-                console.log('blank');
+                
               }
               else {
                 console.log('not blank');
+                console.log(data[key].objectName);
                 objwithExternalId.objectName = data[key].objectName;
                 objwithExternalId.CsvData = data[key].csvData;
                 objwithExternalId.ExternalIds = data[key].ExternalIdField;
                 this.objectsWithExternalId.push(objwithExternalId);
               }
             }
+          }
+            console.log('without');
+            console.log(this.objectsWithoutExternalId);
+            console.log(this.objectsWithoutExternalId.length);
+            console.log('with');
+            console.log(this.objectsWithExternalId);
+            console.log(this.objectsWithExternalId.length);
             if (this.objectsWithoutExternalId.length === 0) {
               this.tableWithoutId = false;
               console.log('this.objectsWithoutExternalId', this.objectsWithoutExternalId, this.objectsWithoutExternalId.length);
@@ -254,7 +264,9 @@ export default class DataRecoveryScreen extends LightningElement {
               console.log(this.tableWithId);
             }
             console.log('after call');
-
+            
+            console.log(this.objectsWithoutExternalId.length);
+            console.log(this.objwithExternalId.length);
 
             /* console.log('objwithoutExternalId      ');
              console.log(objwithoutExternalId);
@@ -280,7 +292,7 @@ export default class DataRecoveryScreen extends LightningElement {
             // }
             console.log(data[key].ExternalIdField);
             console.log(key);
-          }
+          
         })
         .catch(error => {
           console.log('inside error');
@@ -341,6 +353,7 @@ export default class DataRecoveryScreen extends LightningElement {
               this.tableWithId = true;
               console.log(this.tableWithId);
             }
+            
             console.log('after call');
 
 

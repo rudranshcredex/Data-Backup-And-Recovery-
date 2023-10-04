@@ -140,7 +140,6 @@ public With Sharing class DataBackupCallout {
             List<String> ContentDocumentIdsToDelete = new List<String>();
             for(ContentVersion version: versions)
             {
-                
                 ContentDocumentIdsToDelete.add(version.ContentDocumentId);
                 Zippex myzip= new Zippex(version.VersionData);
                 
@@ -151,7 +150,7 @@ public With Sharing class DataBackupCallout {
                 }
             }
             
-         //   Blob zipData = zip.getZipArchive();
+         // Blob zipData = zip.getZipArchive();
             
           
             List<contentDocument> ContentDocumentIds= [select id from contentDocument where id In:ContentDocumentIdsToDelete LIMIT 10000];
