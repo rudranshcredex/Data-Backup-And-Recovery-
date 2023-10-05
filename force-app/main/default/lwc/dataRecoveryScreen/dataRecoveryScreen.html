@@ -58,88 +58,141 @@
         </div>
     </template>
 
-    <template if:true={RecoveryLocalScreen}>
-        <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
-            <div style="width: 80%; padding-top: 4%">
-                <lightning-card>
-                    <div class="custom-card">
-                        <div>
-                            <div class="header">
-                                <header>
-                                    <h1>Summary</h1>
-                                </header>
-                            </div>
-                            <div class="card-content">
-                                <div class="content">
-                                    <div>
-                                        <div class="export-text">
-                                            <span><b>Recovery Queued: Pending
-                                                    Completion</b></span><br>
+    <template if:false={bothInsertUpsert}>
+        <template if:true={RecoveryLocalScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div class="export-text">
+                                                <span><b>Recovery Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div class="main-text">
+                                                <span>
+                                                    {recoveryLocaltext}
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <div class="main-text">
-                                            <span>
-                                                {recoveryLocaltext}
-                                            </span>
+                                        <div class="sch-date-time">
+                                            <span><b>Recovery Details-</b></span><br>
+                                            <span> <b>Recovery By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+
+                                            <span>{lowertext}</span>
                                         </div>
-                                    </div>
-
-                                    <div class="sch-date-time">
-                                        <span><b>Recovery Details-</b></span><br>
-                                        <span> <b>Recovery By-</b> {username}</span><br>
-                                        <span> <b>Current user Email-</b> {userEmail}</span><br>
-                                        <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
-
-                                        <span>{lowertext}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </lightning-card>
+                    </lightning-card>
+                </div>
             </div>
-        </div>
+        </template>
     </template>
-    <template if:true={RecoveryAwsScreen}>
-        <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
-            <div style="width: 80%; padding-top: 4%">
-                <lightning-card>
-                    <div class="custom-card">
-                        <div>
-                            <div class="header">
-                                <header>
-                                    <h1>Summary</h1>
-                                </header>
-                            </div>
-                            <div class="card-content">
-                                <div class="content">
-                                    <div>
-                                        <div class="export-text">
-                                            <span><b>Recovery Queued: Pending
-                                                    Completion</b></span><br>
-                                        </div>
 
-                                        <div class="main-text">
-                                            <span>
-                                                {recoveryAwstext}
-                                            </span>
+    <template if:true={bothInsertUpsert}>
+        <template if:false={isInserted}>
+            <template if:false={isUpserted}>
+                <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                    <div style="width: 80%; padding-top: 4%">
+                        <lightning-card>
+                            <div class="custom-card">
+                                <div>
+                                    <div class="header">
+                                        <header>
+                                            <h1>Summary</h1>
+                                        </header>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            <div>
+                                                <div class="export-text">
+                                                    <span><b>Recovery Queued: Pending
+                                                            Completion</b></span><br>
+                                                </div>
+
+                                                <div class="main-text">
+                                                    <span>
+                                                        {recoveryLocaltext}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="sch-date-time">
+                                                <span><b>Recovery Details-</b></span><br>
+                                                <span> <b>Recovery By-</b> {username}</span><br>
+                                                <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                                <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+
+                                                <span>{lowertext}</span>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </div>
+            </template>
+        </template>
+    </template>
 
-                                    <div class="sch-date-time">
-                                        <span><b>Recovery Details-</b></span><br>
-                                        <span> <b>Recovery By-</b> {username}</span><br>
-                                        <span> <b>Current user Email-</b> {userEmail}</span><br>
-                                        <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
-                                        <span>{lowertext}</span>
+
+    <template if:false={bothInsertUpsert}>
+        <template if:true={RecoveryAwsScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div class="export-text">
+                                                <span><b>Recovery Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div class="main-text">
+                                                <span>
+                                                    {recoveryAwstext}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time">
+                                            <span><b>Recovery Details-</b></span><br>
+                                            <span> <b>Recovery By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+                                            <span>{lowertext}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </lightning-card>
+                    </lightning-card>
+                </div>
             </div>
-        </div>
+        </template>
     </template>
     <template lwc:if={objectScreen}>
         <lightning-card title="May cause redundant data">
@@ -172,7 +225,7 @@
                                 <div class="pagination-button">
                                     <lightning-button label="Previous"
                                         onclick={handlePreviousPageTable1}></lightning-button>
-                                    {currentPageTable1} of {totalPagesTable1}
+                                     {currentPageTable1} of {totalPagesTable1} 
                                     <lightning-button label="Next" onclick={handleNextPageTable1}></lightning-button>
                                 </div>
                                 <div class="perform-insert-btn">
@@ -219,7 +272,7 @@
                                     {currentPageTable2} of {totalPagesTable2}
                                     <lightning-button label="Next" onclick={handleNextPageTable2}></lightning-button>
                                 </div>
-    
+
                                 <div class="perform-insert-btn">
                                     <lightning-button label="Perform Upsert" onclick={handleUpsert}
                                         variant="brand"></lightning-button>
