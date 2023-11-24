@@ -1,0 +1,308 @@
+<template>
+    <template if:true={showScreen1}>
+        <div class="main-screen-2">
+            <div class="text">
+                <h1>Choose where to recovery your data from</h1>
+                <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
+                    <div style="width: 1000px;">
+                        <p>Recover Your Way: Effortless Data Restoration from Local Storage or Cloud, Tailored to You
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boxes">
+                <!--box-1 local-->
+                <div class="box1">
+                    <div>
+                        <h1>Local</h1>
+                        <img src={local} alt="NA">
+                    </div>
+                    <div style="display: flex; justify-content: center;">
+                        <div>
+                            <div>
+                                <!-- <lightning-file-upload label="Upload File" name="fileUploader" accept=".zip"
+                                    onuploadfinished={handleUpload}></lightning-file-upload> -->
+
+                                <lightning-input label="Upload File" name="fileUploader" accept=".zip" type="file"
+                                    onchange={handleUpload} multiple></lightning-input>
+
+                            </div>
+                            <div class="schedule-btn" onclick={handleRecovery} id="btn-1" data-id="Local">
+                                <p>Recover</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--box-2 cloud-->
+                <div class="box2">
+                    <div>
+                        <h1>Cloud</h1>
+                    </div>
+                    <div><img src={cloud} alt="NA"></div>
+                    <div class=" display : flex; flex-direction : column">
+                        <div class="btn" onclick={awsScreen}>
+                            <p>Select Files</p>
+                        </div>
+                        <template if:true={awsModal}>
+                            <c-lightning-Modal ismodalopen={isModal} isrecovery={isRecovery}
+                                onawscredentials={handleAWSCredentials}></c-lightning-Modal>
+                        </template>
+
+                        <div class="btn" onclick={handleRecovery} data-id="Aws">
+                            <p>Recover</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template if:false={bothInsertUpsert}>
+        <template if:true={RecoveryLocalScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div class="export-text">
+                                                <span><b>Recovery Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div class="main-text">
+                                                <span>
+                                                    {recoveryLocaltext}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time">
+                                            <span><b>Recovery Details-</b></span><br>
+                                            <span> <b>Recovery By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+
+                                            <span>{lowertext}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+        </template>
+    </template>
+
+    <template if:true={bothInsertUpsert}>
+        <template if:false={isInserted}>
+            <template if:false={isUpserted}>
+                <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                    <div style="width: 80%; padding-top: 4%">
+                        <lightning-card>
+                            <div class="custom-card">
+                                <div>
+                                    <div class="header">
+                                        <header>
+                                            <h1>Summary</h1>
+                                        </header>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="content">
+                                            <div>
+                                                <div class="export-text">
+                                                    <span><b>Recovery Queued: Pending
+                                                            Completion</b></span><br>
+                                                </div>
+
+                                                <div class="main-text">
+                                                    <span>
+                                                        {recoveryLocaltext}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="sch-date-time">
+                                                <span><b>Recovery Details-</b></span><br>
+                                                <span> <b>Recovery By-</b> {username}</span><br>
+                                                <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                                <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+
+                                                <span>{lowertext}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </div>
+            </template>
+        </template>
+    </template>
+
+
+    <template if:false={bothInsertUpsert}>
+        <template if:true={RecoveryAwsScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div class="export-text">
+                                                <span><b>Recovery Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div class="main-text">
+                                                <span>
+                                                    {recoveryAwstext}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time">
+                                            <span><b>Recovery Details-</b></span><br>
+                                            <span> <b>Recovery By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+                                            <span>{lowertext}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+        </template>
+    </template>
+    <template lwc:if={objectScreen}>
+        <lightning-card title="May cause redundant data">
+            <div>
+                <div class="main-table-div">
+                    <div class="external-id-tables">
+                        <div if:true={tableWithoutId} class="tableWithoutId ? without-id : without-id2">
+                            <div>
+                                <p> <b> These objects don't have External Ids so duplicate data might get
+                                        Inserted(You
+                                        can use
+                                        duplicate rules to avoid this).</b></p>
+                            </div>
+                            <table class="tableWithoutId ? table-style : table-style2">
+                                <thead>
+                                    <tr>
+                                        <th>Object Names</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={displayedDataTable1} for:item="item">
+                                        <tr key={item.objectName}>
+                                            <td>{item.objectName}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+
+                            <div style="display:flex; justify-content: space-between">
+                                <div class="pagination-button">
+                                    <lightning-button label="Previous"
+                                        onclick={handlePreviousPageTable1}></lightning-button>
+                                     {currentPageTable1} of {totalPagesTable1} 
+                                    <lightning-button label="Next" onclick={handleNextPageTable1}></lightning-button>
+                                </div>
+                                <div class="perform-insert-btn">
+                                    <lightning-button label="Perform Insert" onclick={handleInsert}
+                                        variant="brand"></lightning-button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div if:true={tableWithId} class="tableWithId? with-id : with-id2">
+                            <div>
+                                <p> <b> Select an External Id to proceed</b> </p>
+                            </div>
+                            <table class="tableWithId ? table-style : table-style2">
+                                <thead>
+                                    <tr>
+                                        <th>Object Names</th>
+                                        <th>External Id</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={displayedDataTable2} for:item="item" for:index="index">
+                                        <!-- <template for:each={dummyData} for:item="item" for:index="index"> -->
+                                        <tr key={item.objectName}>
+                                            <td>{item.objectName}</td>
+                                            <td>
+                                                <select class="external-id-picklist" data-index={index}
+                                                    onchange={handlePicklistChange}>
+                                                    <option value="">Select an External Id</option>
+                                                    <template for:each={item.ExternalIds} for:item="extId">
+                                                        <!-- <template for:each={item.externalId} for:item="extId"> -->
+                                                        <option key={extId} value={extId}>{extId}</option>
+                                                    </template>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                            <div style="display: flex; justify-content: space-between">
+                                <div class="pagination-button">
+                                    <lightning-button label="Previous"
+                                        onclick={handlePreviousPageTable2}></lightning-button>
+                                    {currentPageTable2} of {totalPagesTable2}
+                                    <lightning-button label="Next" onclick={handleNextPageTable2}></lightning-button>
+                                </div>
+
+                                <div class="perform-insert-btn">
+                                    <lightning-button label="Perform Upsert" onclick={handleUpsert}
+                                        variant="brand"></lightning-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </lightning-card>
+    </template>
+
+    <lightning-card>
+        <div class="footer">
+            <div style="width: 50%">
+                <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
+                    <lightning-progress-step label="Select Service" value="1">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="External Id" value="2">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="Final Screen" value="3">
+                    </lightning-progress-step>
+                </lightning-progress-indicator>
+            </div>
+
+        </div>
+    </lightning-card>
+
+
+    <template if:true={retrievalLoading}>
+        <lightning-spinner class="backupSpins"></lightning-spinner>
+    </template>
+</template>

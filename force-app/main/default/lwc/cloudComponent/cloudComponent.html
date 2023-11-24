@@ -1,0 +1,64 @@
+<template>
+    <div class="main-screen-2">
+        <div class="text">
+            <h1>Choose where to Backup your data </h1>
+            <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
+                <div>
+                    <p>Your Data, Your Control: Effortlessly Backup to Local Storage or Cloud, Wherever You
+                        Prefer
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="boxes">
+            <div class="box1">
+                <div>
+                    <h1>Local</h1>
+                    <img src={local} alt="NA">
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <div>
+                        <div class="export-btn" onclick={ExportData} data-id="LocalNow">
+                            <p>Export Now</p>
+                        </div>
+                        <div class="schedule-btn" onclick={handleOpenModal}>
+                            <p>Schedule Export</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box2">
+                <div>
+                    <h1>Cloud</h1>
+                </div>
+                <div><img src={cloud} alt="NA"></div>
+                <!-- <div class=" display : flex; flex-direction : column">
+                    <div class="btn" onclick={awsScreen}>
+                        <p>Credentials</p>
+                    </div>
+                    <template if:true={awsModal}>
+                        <c-lightning-Modal ismodalopen={isModal} isbackup={backupAws}
+                            onawscredentials={handleAWSCredentials}></c-lightning-Modal>
+                    </template>
+                    <div class="btn" data-id="AwsNow" onclick={ExportData}>
+                        <p>Export Now</p>
+                    </div>
+                    <div class="btn" onclick={handleOpenModal1}>
+                        <p>Schedule Export</p>
+                    </div>
+                </div> -->
+
+                <!-- <div style="display:flex; align-items: center;"> -->
+                    <div class="custom-dropdown">
+                        <select>
+                            <option value="" disabled selected hidden>Select an option</option>
+                            <option>Google Cloud Platform</option>
+                            <option>Amazon S3</option>
+                            <option>Azure Cloud Storage</option>
+                        </select>
+                    </div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</template>

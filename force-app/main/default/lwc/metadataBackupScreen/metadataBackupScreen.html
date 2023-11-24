@@ -1,0 +1,350 @@
+<template>
+    <div style="background:  linear-gradient(180deg, #0088cf 0%, rgba(0, 136, 207, 0) 100%); height: 80vh;">
+        <!--Screen-1 -->
+        <template if:true={showScreen1}>
+            <div style="height: 100%;">
+                <div class="currentUser">
+                    <span>Current User - {username}</span>
+
+                </div>
+                <div style="display: flex; justify-content: center; height:20%;">
+                    <div class="searchbar">
+                        <lightning-input type="search" placeholder="Search" style="width: 80%; padding-bottom: 20px;"
+                            onchange={handleSearchChange}></lightning-input>
+                    </div>
+                </div>
+                <template if:true={isLoading}>
+                    <lightning-spinner class="spins"></lightning-spinner>
+                </template>
+                <div style="display: flex; justify-content: center;">
+                    <!-- Objects Table-->
+                    <div class="styled-table" if:false={isLoading}>
+                        <table border="1" width="80%" cellpadding="1" cellspacing="1">
+                            <thead>
+                                <tr>
+                                    <th style="background-color:darkgrey; width:10%;">
+                                        <lightning-input type="checkbox"
+                                            onchange={handleAllCheckboxChange}></lightning-input>
+                                    </th>
+                                    <th style="background-color:darkgrey; width: 90%;">
+                                        Metadata Type
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={metadataList} for:item="Metadata">
+                                    <tr key={Metadata.objectId}>
+                                        <td style="width: 10%;">
+                                            <lightning-input type="checkbox" checked={Metadata.isSelected}
+                                                data-id={Metadata.objectId}
+                                                onchange={handlecheckboxChange}></lightning-input>
+                                        </td>
+                                        <td style="width: 90%;">
+                                            {Metadata.metadataType}
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--Screen-2-->
+        <template if:true={showScreen2}>
+            <div class="main-screen-2">
+                <div class="text">
+                    <h1>Choose where to Backup your metadata </h1>
+                    <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
+                        <div>
+                            <p>Your Metadata, Your Control: Effortlessly Backup to Local Storage or Cloud, Wherever You
+                                Prefer
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxes">
+                    <!--box-1 local-->
+                    <div class="box1">
+                        <div>
+                            <h1>Local</h1>
+                            <img src={local} alt="NA">
+                        </div>
+                        <div style="display: flex; justify-content: center;">
+                            <div>
+                                <div class=" export-btn" onclick={ExportData} data-id="LocalNow">
+                                    <p>Export Now</p>
+                                </div>
+                                <div class="schedule-btn" onclick={handleOpenModal}>
+                                    <p>Schedule Export</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--box-2 cloud-->
+
+                    <div class="box2">
+                        <div>
+                            <h1>Cloud</h1>
+                        </div>
+                        <div><img src={cloud} alt="NA"></div>
+                        <div class=" display : flex; flex-direction : column">
+                            <div class="btn" onclick={awsScreen}>
+                                <p>Credentials</p>
+                            </div>
+                            <template if:true={awsModal}>
+                                <c-lightning-Modal ismodalopen={isModal} ismetadatabackup={isMetadataBackup}
+                                    onawscredentials={handleAWSCredentials}></c-lightning-Modal>
+                            </template>
+                            <div class="btn" data-id="AwsNow" onclick={ExportData}>
+                                <p>Export Now</p>
+                            </div>
+                            <div class="btn" onclick={handleOpenModal1}>
+                                <p>Schedule Export</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!--Screen-3-->
+        <template if:true={exportNowScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div style="text-align: center; font-size: 18px; padding-bottom: 1%;">
+                                                <span><b>Export Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div
+                                                style="text-align: left; padding-left: 2%; padding-bottom: 3%; font-size: 18px;">
+                                                <span>{dataExportText1}</span>
+                                            </div>
+                                        </div>
+                                        <div class="sch-date-time"
+                                            style="align-items: left; padding-left: 15%; font-size: 15px;">
+                                            <span><b>Export Details-</b></span><br>
+                                            <span> <b>Exported By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <span>{lowerText}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+        </template>
+        <template if:true={exportScheduleScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div style="text-align: center; font-size: 18px; padding-bottom: 1%;">
+                                                <span><b>Export Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div
+                                                style="text-align: left; padding-left: 2%; padding-bottom: 3%; font-size: 18px;">
+                                                <span>{dataScheduleText}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time"
+                                            style="align-items: left; padding-left: 15%; font-size: 15px;">
+                                            <span><b>Export Details-</b></span><br>
+                                            <span> <b>Scheduled By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <span> <b>Scheduled Date-</b> {schDate}</span><br>
+
+                                            <span>{lowerText}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+        </template>
+        <template if:true={AwsNowScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div style="text-align: center; font-size: 18px; padding-bottom: 1%;">
+                                                <span><b>Export Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div
+                                                style="text-align: left; padding-left: 2%; padding-bottom: 3%; font-size: 18px;">
+                                                <span>{dataAwsScheduleText}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time"
+                                            style="align-items: left; padding-left: 15%; font-size: 15px;">
+                                            <span><b>Export Details-</b></span><br>
+                                            <span> <b>Exported By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
+
+                                            <span>{lowerText}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+        </template>
+        <template if:true={AwsScheduleScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div style="text-align: center; font-size: 18px; padding-bottom: 1%;">
+                                                <span><b>Export Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div
+                                                style="text-align: left; padding-left: 2%; padding-bottom: 3%; font-size: 18px;">
+                                                <span>{dataAwsText}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time"
+                                            style="align-items: left; padding-left: 15%; font-size: 15px;">
+                                            <span><b>Export Details-</b></span><br>
+                                            <span> <b>Scheduled By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <span> <b>Scheduled Date-</b> {schDate}</span><br>
+
+                                            <span>{lowerText}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </div>
+        </template>
+
+
+
+        <template if:true={openModal}>
+            <div class="modal">
+                <lightning-modal-header>Select Dates To Schedule Backup Process</lightning-modal-header>
+                <lightning-modal-body>
+                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal" value={schdate}
+                        onchange={handleScheduleDate} step=60></lightning-input>
+                </lightning-modal-body>
+                <lightning-modal-footer>
+                    <div>
+                        <lightning-button variant="brand" label="Close" onclick={handleCloseModal}></lightning-button>
+                        <lightning-button variant="brand" label="Schedule" name="ScheduleLocal" onclick={ScheduleBackup}
+                            style="padding-left: 1%"></lightning-button>
+                    </div>
+                </lightning-modal-footer>
+            </div>
+        </template>
+
+
+        <template if:true={openModal1}>
+            <div class="modal1">
+                <lightning-modal-header>Select Dates-</lightning-modal-header>
+                <lightning-modal-body>
+                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal" value={schdate}
+                        onchange={handleScheduleDate} step=60></lightning-input>
+                </lightning-modal-body>
+                <lightning-modal-footer>
+                    <div>
+                        <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
+                        <lightning-button variant="brand" label="Schedule" name="ScheduleAws" onclick={ScheduleBackup}
+                            style="padding-left: 1%"></lightning-button>
+                    </div>
+                </lightning-modal-footer>
+            </div>
+        </template>
+        <template if:true={retrievalLoading}>
+            <lightning-spinner class="backupSpins"></lightning-spinner>
+        </template>
+    </div>
+    <div if:true={awsModal}>
+        <c-lightning-Modal></c-lightning-Modal>
+    </div>
+    <template if:true={isscheduleSpinner}>
+        <lightning-spinner class="backupSpins"></lightning-spinner>
+    </template>
+    <!--Footer-->
+    <lightning-card>
+        <div class="footer">
+            <div style="width: 50%;">
+                <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
+                    <lightning-progress-step label="Select Objects" value="1">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="Select Service" value="2">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="Success" value="3">
+                    </lightning-progress-step>
+                </lightning-progress-indicator>
+            </div>
+            <div class="buttons">
+                <template if:true={showScreen2}>
+                    <lightning-button variant="brand" label="Previous" onclick={previousButton}></lightning-button>
+                </template>
+                <template if:true={showScreen1}>
+                    <div>
+                        <lightning-button variant="brand" label="Next" onclick={nextButton}></lightning-button>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

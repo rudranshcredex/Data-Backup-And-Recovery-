@@ -1,0 +1,73 @@
+<template>
+  <!-- this should be incapsulated in its own component, see https://developer.salesforce.com/docs/component-library/bundle/lightning-modal/documentation -->
+  <!-- <template lwc:if={abc}> -->
+  <lightning-modal-header label={headerLabel} >
+    <span style="font-size: 1.3rem; text-align:center;">
+      <h1>Configure Credentails for Google Cloud Storage</h1>
+    </span>
+  </lightning-modal-header>
+  <lightning-modal-body>
+    <div>
+      <div class="googleCloudIcon">
+        <img src={GoogleCloudIcon} alt="NA">
+      </div>
+      <div class="input-credentials" lwc:if={xyz}>
+        <lightning-input type="text" label="Client Key"></lightning-input>
+        <lightning-input type="text" label="Client Secret"></lightning-input>
+        <lightning-input type="text" label="Region"></lightning-input>
+      </div>
+      <div lwc:if={abc} class="picklist-values">
+        <span><h1>Please make your selections below:</h1></span>
+        <div class="slds-form-element custom-container">
+          <label>Select Credentials</label>
+          <div class="slds-form-element__control">
+            <div class="slds-select_container">
+              <select class="slds-select custom-select">
+                <option value=""> </option>
+                <option>xxxxxxxxx</option>
+                <option>yyyyyyyyy</option>
+                <option>zzzzzzzzz</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="slds-form-element custom-container">
+          <label>Select Buckets</label>
+          <div class="slds-form-element__control">
+            <div class="slds-select_container">
+              <select class="slds-select custom-select">
+                <option value=""> </option>
+                <option>xxxxxxxxx</option>
+                <option>yyyyyyyyy</option>
+                <option>zzzzzzzzz</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="slds-form-element custom-container">
+          <label>Select Files</label>
+          <div class="slds-form-element__control">
+            <div class="slds-select_container">
+              <select class="slds-select custom-select">
+                <option value=""> </option>
+                <option>xxxxxxxxx</option>
+                <option>yyyyyyyyy</option>
+                <option>zzzzzzzzz</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer>
+    <div class="save-button" lwc:if={xyz}>
+      <lightning-button variant="brand" label="Save" onclick={handleClick}></lightning-button>
+    </div>
+    <div class="add-close-buttons" lwc:if={abc}>
+      <lightning-button variant="brand" label="Add Credentials" onclick={handleClick}></lightning-button>
+      <lightning-button variant="brand" label="Close" onclick={handleClick}></lightning-button>
+    </div>
+  </lightning-modal-footer>
+  <!-- </template> -->
+</template>

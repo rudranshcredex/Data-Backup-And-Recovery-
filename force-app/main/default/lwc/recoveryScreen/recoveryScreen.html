@@ -1,0 +1,45 @@
+<template>
+    <div>
+        <!-- <lightning-card> -->
+        <div class="main" if:true={isrecovery}>
+            <div class="text">
+                <h1>Choose a Recovery according to your needs</h1>
+                <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
+                    <div style="width: 1000px;">
+                        <p>Tailored Recovery, Your Decision: Choose to Restore Data or Metadata with Precision.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="boxes">
+                <!--box-1 Data-->
+                <div class="box-1">
+                    <h1>Data</h1>
+                    <img src={dataImage} alt="NA">
+                    <span>
+                        <div class="select-btn" onclick={handleDataRecoveryScreen}>
+                            <p>Select</p>
+                        </div>
+                    </span>
+                </div>
+                <!--box-2 Metadata-->
+                <div class="box-2">
+                    <h1>Metadata</h1>
+                    <img src={recoveryImage} alt="NA">
+                    <span>
+                        <div class="select-btn" onclick={handleMetadataRecoveryScreen}>
+                            <p>Select</p>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- </lightning-card> -->
+    </div>
+    <div if:true={dataRecoveryScreen}>
+        <c-data-Recovery-Screen></c-data-Recovery-Screen>
+    </div>
+    <div if:true={metadataRecoveryScreen}>
+        <c-metadata-Recovery-Screen></c-metadata-Recovery-Screen>
+    </div>
+</template>

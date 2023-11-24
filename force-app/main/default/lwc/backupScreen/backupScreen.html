@@ -1,0 +1,52 @@
+<template>
+    <div>
+        <!-- <lightning-card> -->
+
+        <div class="main" if:true={isBackup}>
+
+
+            <div class="text">
+                <h1>Choose a backup according to your needs</h1>
+                <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
+                    <div style="width: 1000px;">
+                        <p>Elevate Your Data Security: Introducing Our Salesforce Data Backup Services for Keeping Your
+                            Business
+                            Information Safe,
+                            Accessible, and Always Ready for What's Next.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="boxes">
+                <!--box-1 Data-->
+                <div class="box-1">
+                    <h1>Data</h1>
+                    <img src={dataImage} alt="NA">
+                    <span>
+                        <div class="select-btn" onclick={handleDataBackupScreen}>
+                            <p>Select</p>
+                        </div>
+                    </span>
+                </div>
+                <!--box-2 Metadata-->
+                <div class="box-2">
+                    <h1>Metadata</h1>
+                    <img src={recoveryImage} alt="NA">
+                    <span>
+                        <div class="select-btn" onclick={handleMetaDataBackupScreen}>
+                            <p>Select</p>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- </lightning-card> -->
+    </div>
+    <div if:true={dataBackupScreen}>
+        <c-data-Backup-Screen></c-data-Backup-Screen>
+    </div>
+    <div if:true={metadataBackupScreen}>
+        <c-metadata-Backup-Screen></c-metadata-Backup-Screen>
+    </div>
+</template>

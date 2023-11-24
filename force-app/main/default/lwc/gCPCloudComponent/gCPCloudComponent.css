@@ -1,0 +1,27 @@
+.googleCloudIcon{
+    margin: 0%;
+    width: 9%;
+    height: 6%;
+}
+.input-credentials {
+    display: flex;
+    flex-direction: column;
+    max-width: 60%; 
+    margin: 0 auto;
+}
+.save-button{
+    display: flex;
+    justify-content: right;
+    margin-right: 2%;
+}
+.add-close-buttons{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.picklist-values{
+    display: flex;
+    flex-direction: column;
+    max-width: 80%; 
+    margin: 0 auto;
+}
