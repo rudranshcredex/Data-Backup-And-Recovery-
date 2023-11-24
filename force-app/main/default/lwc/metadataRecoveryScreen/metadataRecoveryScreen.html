@@ -1,156 +1,166 @@
+<!--
+  @description       : 
+  @author            : Rudransh Shukla And Nikhil Garg
+  @group             : 
+  @last modified on  : 11-24-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
 <template>
-    <template if:true={showScreen1}>
-        <div class="main-screen-2">
-            <div class="text">
-                <h1>Choose where to recovery your metadata from</h1>
-                <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
-                    <div style="width: 1000px;">
-                        <p>Recover Your Way: Effortless Metadata Restoration from Local Storage or Cloud, Tailored to
-                            You
-                        </p>
+    <div class="main-screen-2">
+        <template if:true={showScreen1}>
+            <div>
+                <div class="text">
+                    <h1>Choose where to recovery your metadata from</h1>
+                    <div style="display: flex; justify-content: center; padding-top: 2%; padding-bottom: 2%">
+                        <div style="width: 1000px;">
+                            <p>Recover Your Way: Effortless Metadata Restoration from Local Storage or Cloud, Tailored
+                                to
+                                You
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="boxes">
-                <!--box-1 local-->
-                <div class="box1">
-                    <div>
-                        <h1>Local</h1>
-                        <img src={local} alt="NA">
-                    </div>
-                    <div style="display: flex; justify-content: center;">
+                <div class="boxes">
+                    <!--box-1 local-->
+                    <div class="box1">
                         <div>
+                            <h1>Local</h1>
+                            <img src={local} alt="NA">
+                        </div>
+                        <div style="display: flex; justify-content: center;">
                             <div>
-                                <lightning-input label="Upload File" name="fileUploader" accept=".zip" type="file"
-                                    onchange={handleUpload}></lightning-input>
+                                <div>
+                                    <lightning-input label="Upload File" name="fileUploader" accept=".zip" type="file"
+                                        onchange={handleUpload}></lightning-input>
+                                </div>
+                                <div class="schedule-btn" onclick={handleRecovery} id="btn-1">
+                                    <p>Recover</p>
+                                </div>
                             </div>
-                            <div class="schedule-btn" onclick={handleRecovery} id="btn-1">
+                        </div>
+                    </div>
+                    <!--box-2 cloud-->
+                    <div class="box2">
+                        <div>
+                            <h1>Cloud</h1>
+                        </div>
+                        <div><img src={cloud} alt="NA"></div>
+                        <div class=" display : flex; flex-direction : column">
+                            <div class="btn" onclick={awsScreen}>
+                                <p>Select Files</p>
+                            </div>
+                            <template if:true={awsModal}>
+                                <c-lightning-Modal ismodalopen={isModal} isrecovery={isRecovery}
+                                    onawscredentials={handleAWSCredentials}></c-lightning-Modal>
+                            </template>
+
+                            <div class="btn" onclick={recoverAwsFiles} id="btn-2">
                                 <p>Recover</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!--box-2 cloud-->
-                <div class="box2">
-                    <div>
-                        <h1>Cloud</h1>
-                    </div>
-                    <div><img src={cloud} alt="NA"></div>
-                    <div class=" display : flex; flex-direction : column">
-                        <div class="btn" onclick={awsScreen}>
-                            <p>Select Files</p>
-                        </div>
-                        <template if:true={awsModal}>
-                            <c-lightning-Modal ismodalopen={isModal} isrecovery={isRecovery}
-                                onawscredentials={handleAWSCredentials}></c-lightning-Modal>
-                        </template>
+            </div>
+        </template>
 
-                        <div class="btn" onclick={recoverAwsFiles} id="btn-2">
-                            <p>Recover</p>
+        <template if:true={RecoveryLocalScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div class="export-text">
+                                                <span><b>Recovery Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
+
+                                            <div class="main-text">
+                                                <span>
+                                                    {recoveryLocaltext}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="sch-date-time">
+                                            <span><b>Recovery Details-</b></span><br>
+                                            <span> <b>Recovery By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <span>{lowertext}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </lightning-card>
                 </div>
             </div>
-        </div>
-    </template>
+        </template>
+        <template if:true={RecoveryAwsScreen}>
+            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+                <div style="width: 80%; padding-top: 4%">
+                    <lightning-card>
+                        <div class="custom-card">
+                            <div>
+                                <div class="header">
+                                    <header>
+                                        <h1>Summary</h1>
+                                    </header>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div>
+                                            <div class="export-text">
+                                                <span><b>Recovery Queued: Pending
+                                                        Completion</b></span><br>
+                                            </div>
 
-    <template if:true={RecoveryLocalScreen}>
-        <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
-            <div style="width: 80%; padding-top: 4%">
-                <lightning-card>
-                    <div class="custom-card">
-                        <div>
-                            <div class="header">
-                                <header>
-                                    <h1>Summary</h1>
-                                </header>
-                            </div>
-                            <div class="card-content">
-                                <div class="content">
-                                    <div>
-                                        <div class="export-text">
-                                            <span><b>Recovery Queued: Pending
-                                                    Completion</b></span><br>
+                                            <div class="main-text">
+                                                <span>
+                                                    {recoveryAwstext}
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <div class="main-text">
-                                            <span>
-                                                {recoveryLocaltext}
-                                            </span>
+                                        <div class="sch-date-time">
+                                            <span><b>Recovery Details-</b></span><br>
+                                            <span> <b>Recovery By-</b> {username}</span><br>
+                                            <span> <b>Current user Email-</b> {userEmail}</span><br>
+                                            <span>{lowertext}</span>
                                         </div>
-                                    </div>
-
-                                    <div class="sch-date-time">
-                                        <span><b>Recovery Details-</b></span><br>
-                                        <span> <b>Recovery By-</b> {username}</span><br>
-                                        <span> <b>Current user Email-</b> {userEmail}</span><br>
-                                        <span>{lowertext}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </lightning-card>
+                    </lightning-card>
+                </div>
             </div>
-        </div>
-    </template>
-    <template if:true={RecoveryAwsScreen}>
-        <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
-            <div style="width: 80%; padding-top: 4%">
-                <lightning-card>
-                    <div class="custom-card">
-                        <div>
-                            <div class="header">
-                                <header>
-                                    <h1>Summary</h1>
-                                </header>
-                            </div>
-                            <div class="card-content">
-                                <div class="content">
-                                    <div>
-                                        <div class="export-text">
-                                            <span><b>Recovery Queued: Pending
-                                                    Completion</b></span><br>
-                                        </div>
+        </template>
 
-                                        <div class="main-text">
-                                            <span>
-                                                {recoveryAwstext}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <div class="sch-date-time">
-                                        <span><b>Recovery Details-</b></span><br>
-                                        <span> <b>Recovery By-</b> {username}</span><br>
-                                        <span> <b>Current user Email-</b> {userEmail}</span><br>
-                                        <span>{lowertext}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </lightning-card>
+        <lightning-card>
+            <div class="footer">
+                <div style="width: 50%">
+                    <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
+                        <lightning-progress-step label="Select Service" value="1">
+                        </lightning-progress-step>
+                        <lightning-progress-step label="Success" value="2">
+                        </lightning-progress-step>
+                    </lightning-progress-indicator>
+                </div>
             </div>
-        </div>
-    </template>
-
-    <lightning-card>
-        <div class="footer">
-            <div style="width: 50%">
-                <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
-                    <lightning-progress-step label="Select Service" value="1">
-                    </lightning-progress-step>
-                    <lightning-progress-step label="Success" value="2">
-                    </lightning-progress-step>
-                </lightning-progress-indicator>
-            </div>
-        </div>
-    </lightning-card>
+        </lightning-card>
 
 
-    <template if:true={retrievalLoading}>
-        <lightning-spinner class="backupSpins"></lightning-spinner>
-    </template>
+        <template if:true={retrievalLoading}>
+            <lightning-spinner class="backupSpins"></lightning-spinner>
+        </template>
+    </div>
 </template>

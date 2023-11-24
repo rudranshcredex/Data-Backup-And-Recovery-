@@ -5,7 +5,7 @@ import local from "@salesforce/resourceUrl/LocalBackup";
 import cloud from "@salesforce/resourceUrl/cloud";
 import { getRecord } from "lightning/uiRecordApi";
 import USER_ID from "@salesforce/user/Id";
-import NAME_FIELD from "@salesforce/schema/User.Name";
+import NAME_FIELD from "@salesforce/schema/User.Name";   
 import EMAIL_FIELD from "@salesforce/schema/User.Email";
 import uploadZipFile from '@salesforce/apex/DataRecovery.uploadZipFile';
 import performInsert from '@salesforce/apex/DataRecovery.performInsert';
@@ -51,7 +51,6 @@ export default class DataRecoveryScreen extends LightningElement {
   objectsWithoutExternalId = [];
   RecoveryLocalScreen = false;
   RecoveryAwsScreen = false;
-
   local = local;
   cloud = cloud;
   date = Date();
@@ -63,16 +62,13 @@ export default class DataRecoveryScreen extends LightningElement {
   awsModal = false;
   isRecovery = true;
   retrievalLoading = false;
-
   tableWithId = true;
   tableWithoutId = true;
-
   awsAccessKey = null;
   awsSecretKey = null;
   awsRegion = null;
   awsBucket = null;
   fileData = null;
-
   selectedId;
   selectedDataMap = {};
 
@@ -137,16 +133,13 @@ export default class DataRecoveryScreen extends LightningElement {
   // }
 
   handlePicklistChange(event) {
-    //const selectedId = event.target.value;
     this.selectedId = event.target.value;
     const objectIndex = event.target.getAttribute('data-index');
-    //const selectedObject = this.dummyData[objectIndex];
     const selectedObject = this.objectsWithExternalId[objectIndex];
 
     if (!this.selectedDataMap[selectedObject.objectName]) {
       this.selectedDataMap[selectedObject.objectName] = [];
     }
-
     const isDuplicateIndex = this.selectedDataMap[selectedObject.objectName].findIndex(item => {
       return item.objectName === selectedObject.objectName;
     });
@@ -174,7 +167,6 @@ export default class DataRecoveryScreen extends LightningElement {
     console.log(this.file);
 
     let selectedFile = event.target.files[0];
-    // this.file = event.detail.files[0];
     this.fileName = selectedFile.name;
     const expectedName = 'salesforcedata';
     if (!this.fileName.includes(expectedName)) {
@@ -392,18 +384,12 @@ export default class DataRecoveryScreen extends LightningElement {
   handleInsert() {
     this.isInserted = false;
     this.showScreen2 = true;
-    // this.objectScreen = false;
+    this.objectScreen = false;
+    
     this.step = 3;
     this.handleStepUp();
 
     this.showToast('Success', 'Insertion in progress', 'success');
-
-    /*if (buttonId === 'btn-1') {
-        this.RecoveryLocalScreen = true;
-      }
-    else if (buttonId === 'btn-2') {
-      this.RecoveryAwsScreen = true;
-      }*/
 
     console.log('inside insert');
     performInsert({ objectsToInsert: JSON.stringify(this.objectsWithoutExternalId) })
@@ -448,7 +434,7 @@ export default class DataRecoveryScreen extends LightningElement {
     else {
       this.isUpserted = false;
       this.RecoveryLocalScreen = true;
-      // this.objectScreen = false;
+      
       performUpsert({ objectsToUpsert: JSON.stringify(this.selectedObjectDataString) })
         .then(data => {
           console.log('data');
@@ -460,6 +446,7 @@ export default class DataRecoveryScreen extends LightningElement {
           console.log(error);
         })
       this.showToast('Success', 'Upsertion in progress', 'success');
+      this.objectScreen = false;
     }
 
   }
@@ -510,20 +497,14 @@ export default class DataRecoveryScreen extends LightningElement {
   get totalPagesTable2() {
     return Math.ceil(this.objectsWithExternalId.length / this.recordsPerPage);
   }
-
   get displayedDataTable1() {
     const startIndex = (this.currentPageTable1 - 1) * this.recordsPerPage;
     const endIndex = startIndex + this.recordsPerPage;
     return this.objectsWithoutExternalId.slice(startIndex, endIndex);
   }
-
   get displayedDataTable2() {
     const startIndex = (this.currentPageTable2 - 1) * this.recordsPerPage;
     const endIndex = startIndex + this.recordsPerPage;
     return this.objectsWithExternalId.slice(startIndex, endIndex);
   }
-
-
-
-
 }
