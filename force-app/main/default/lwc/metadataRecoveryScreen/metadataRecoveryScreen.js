@@ -8,6 +8,8 @@ import EMAIL_FIELD from "@salesforce/schema/User.Email";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import deployMetadata from '@salesforce/apex/MetadataRecovery.deployMetadata';
 export default class MetadataRecoveryScreen extends LightningElement {
+  
+  
   recoveryAwsText = "Your metadata recovery from AWS is now in the queue and will be processed shortly. We're working diligently to ensure that your requested data is recovered accurately and securely.";
   lowertext = "You will receive an email notification once the recovery is completed, along with a custom notification .";
   recoveryLocaltext = "Your metadata recovery is now in the queue and will be processed shortly. We're working diligently to ensure that your requested data is recovered accurately and securely.";
@@ -46,7 +48,6 @@ export default class MetadataRecoveryScreen extends LightningElement {
       this.username = data.fields.Name.value;
       this.userEmail = data.fields.Email.value;
     } else if (error) {
-      // Handle error
       console.error(error);
     }
   }
@@ -60,10 +61,6 @@ export default class MetadataRecoveryScreen extends LightningElement {
   handleUpload(event) {
     console.log(event);
     console.log(event.detail.files[0]);
-    // this.file = event.detail.files[0];
-    // console.log('file');
-    // console.log(this.file);
-    // this.showToast('Uploaded SuccessFully', this.file.name, 'success');
 
     let selectedFile = event.target.files[0];
     this.fileName = selectedFile.name;
@@ -94,6 +91,7 @@ export default class MetadataRecoveryScreen extends LightningElement {
         .then(data => {
           this.showScreen1=false;
           this.RecoveryLocalScreen=true;
+      this.handleStepUp();
           this.retrievalLoading = false;
           console.log('data');
           console.log(data);
@@ -106,10 +104,8 @@ export default class MetadataRecoveryScreen extends LightningElement {
         })
     };
     fileReader.readAsDataURL(this.file);
-    
     this.step=2;
     this.handleStepUp();
-
   }
 
   showToast(title, message, variant) {
@@ -139,7 +135,6 @@ export default class MetadataRecoveryScreen extends LightningElement {
     console.log('inside recover file');
     console.log('test');
     console.log(this.awsAccessKey);
-    //console.log('outside if', this.awsAccessKey, this.awsRegion, this.this.awsBucket);
     this.retrievalLoading = true;
 
 
@@ -151,17 +146,11 @@ export default class MetadataRecoveryScreen extends LightningElement {
     }
     console.log('after if');
     const expectedName = 'salesforcemetadata';
-   /* for (const file of this.fileData) {
-      if (!file.name.includes(expectedName)) {
-        this.showToast('Error', 'Please select AWS files which include the name "' + expectedName + '"', 'error');
-        return;
-      }
-    }*/
     deployMetadata({ zipContent: this.fileData })
       .then(data => {
         console.log('data inside');
         this.retrievalLoading = false;
-        
+        //this.RecoveryLocalScreen=true;
         console.log('data');
         console.log(data);
       })
@@ -174,8 +163,10 @@ export default class MetadataRecoveryScreen extends LightningElement {
       this.showScreen1=false;
       this.RecoveryAwsScreen=true;
       this.RecoveryLocalScreen=false;
+      this.step=2;
+      this.handleStepUp();
   }
-  
+
   handleStepUp() {
     this.showScreen1 = this.step == 1;
     this.currentStep = "" + this.step;

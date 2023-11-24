@@ -1,5 +1,13 @@
+<!--
+  @description       : 
+  @author            : Rudransh Shukla And  Nikhil Garg
+  @group             : 
+  @last modified on  : 11-24-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
 <template>
     <div class="main">
+
         <!--Screen-1 -->
         <template if:true={showScreen1}>
             <template if:true={filterByDate}>
@@ -20,14 +28,12 @@
             <div style="height: 100%;">
                 <div class="currentUser">
                     <span>Current User - {username}</span>
-
                 </div>
                 <div style="display: flex; justify-content: center; height:20%;">
                     <div class="searchbar">
                         <lightning-input type="search" placeholder="Search" style="width: 80%; padding-bottom: 20px;"
                             onchange={handleSearchChange}></lightning-input>
                         <div onclick={handleFilter}>
-                            <!-- <p style="color:white; text-align: center; font-weight: 600">Filter Records</p> -->
                             <lightning-icon icon-name="utility:filter" alternative-text="Connected" size="10px"
                                 title="large size" variant="inverse">
                             </lightning-icon>
@@ -38,6 +44,7 @@
                     <lightning-spinner class="spins"></lightning-spinner>
                 </template>
                 <div style="display: flex; justify-content: center;">
+                    
                     <!-- Objects Table-->
                     <div class="styled-table" if:false={isLoading}>
                         <table border="1" width="80%" cellpadding="1" cellspacing="1">
@@ -122,28 +129,14 @@
                                 <p>Schedule Export</p>
                             </div>
                         </div>
-                        <!-- <div>
-                            <div class="slds-form-element custom-container">
-                                <label for="">Select Clouds</label>
-                                <div class="slds-form-element__control">
-                                    <div class="slds-select_container">
-                                        <select class="slds-select custom-select">
-                                            <option value="">     </option>
-                                            <option>Google Cloud Storage</option>
-                                            <option>Azure Cloud Storage</option>
-                                            <option>Amazon S3</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
         </template>
+
         <!--Screen-3-->
         <template if:true={exportNowScreen}>
-            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+            <div class="final-screen">
                 <div style="width: 80%; padding-top: 4%">
                     <lightning-card>
                         <div class="custom-card">
@@ -170,8 +163,6 @@
                                             <span><b>Export Details-</b></span><br>
                                             <span> <b>Exported By-</b> {username}</span><br>
                                             <span> <b>Current user Email-</b> {userEmail}</span><br>
-                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
-
                                             <span>{lowerText}</span>
                                         </div>
                                     </div>
@@ -183,7 +174,7 @@
             </div>
         </template>
         <template if:true={exportScheduleScreen}>
-            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+            <div class="final-screen">
                 <div style="width: 80%; padding-top: 4%">
                     <lightning-card>
                         <div class="custom-card">
@@ -222,7 +213,7 @@
             </div>
         </template>
         <template if:true={AwsNowScreen}>
-            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+            <div class="final-screen">
                 <div style="width: 80%; padding-top: 4%">
                     <lightning-card>
                         <div class="custom-card">
@@ -262,7 +253,7 @@
             </div>
         </template>
         <template if:true={AwsScheduleScreen}>
-            <div style="display: flex; align-content: center; justify-content: center; height: 70vh;">
+            <div class="final-screen">
                 <div style="width: 80%; padding-top: 4%">
                     <lightning-card>
                         <div class="custom-card">
