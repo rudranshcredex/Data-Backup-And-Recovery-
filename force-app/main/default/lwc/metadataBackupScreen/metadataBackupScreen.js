@@ -243,6 +243,7 @@ export default class MetadataBackupScreen extends LightningElement {
       this.numberOfMetadataSelected = 0;
     }
   }
+
   processObjectList(event) {
     for (let i = 0; i < this.metadataList.length; i++) {
       this.metadataList[i].isSelected = event.detail.checked;

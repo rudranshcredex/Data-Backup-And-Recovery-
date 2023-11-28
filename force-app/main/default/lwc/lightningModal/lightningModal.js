@@ -39,6 +39,11 @@ export default class LightningModal extends LightningElement {
 
 
 
+    @api
+    handleIsOpenModal() {
+        this.ismodalopen = true;
+    }
+
     async connectedCallback() {
         console.log('recovery');
         console.log(this.isrecovery);
@@ -59,11 +64,6 @@ export default class LightningModal extends LightningElement {
                 console.log(this.awsCredentials);
                 console.log(data.length);
                 console.log('cred length', this.awsCredentials.length);
-                //if(data.length>0){
-                //this.haveCreds = true;
-                //console.log('yes');
-                //this.haveCreds = true;
-                //}
             })
             .catch(error => {
                 console.log('error');
@@ -77,12 +77,13 @@ export default class LightningModal extends LightningElement {
         console.log(this.credentialAlias);
 
     }
-    @api
-    handleIsOpenModal() {
-        this.ismodalopen = true;
-    }
+
 
     async closeModal() {
+        if (this.accessKey === null && this.secretKey === null && this.region === null) {
+            this.ismodalopen = false;
+            return;
+        }
 
         if (this.isbackup || this.ismetadatabackup) {
             if (this.BucketSelected === null && this.accessKey === null && this.secretKey === null && this.region === null) {
@@ -190,12 +191,12 @@ export default class LightningModal extends LightningElement {
         }
 
         await getCredentailsOnName({ name: this.credsName })
+        
             .then(data => {
-                console.log(data);
-                // this.selectedCredentials = data;
-                this.accessKey = data.AccessKey__c;
-                this.secretKey = data.SecretKey__c;
-                this.region = data.Region_Name__c;
+                console.log('data---->',data);
+                this.accessKey = data.CTBR__AccessKey__c;
+                this.secretKey = data.CTBR__SecretKey__c;
+                this.region = data.CTBR__Region_Name__c;
             })
             .catch(error => {
                 console.log('error');
@@ -213,7 +214,6 @@ export default class LightningModal extends LightningElement {
         console.log(this.accessKey);
         console.log(this.secretKey);
         console.log(this.region);
-        //console.log(this.accessKey, this.secretKey, this.region);
 
         getBuckets({ accessKey: this.accessKey, secretKey: this.secretKey, awsRegion: this.region })
             .then(data => {
@@ -223,7 +223,6 @@ export default class LightningModal extends LightningElement {
                 this.forBucketsButton = false;
             })
             .catch(error => {
-                //if()
                 console.log('error');
                 console.log(error);
                 const errorBody = error.body;
@@ -368,8 +367,6 @@ export default class LightningModal extends LightningElement {
                 console.log('error');
                 console.log(error);
             })
-
-   // setTimeout(() => {
                 
          
         getCredentails()
@@ -379,7 +376,6 @@ export default class LightningModal extends LightningElement {
                 this.awsCredentials = data;
                 console.log(this.awsCredentials);
                 console.log(data.length);
-               // this.showCredsSpinner = false;
             })
             .catch(error => {
                 console.log('error');
@@ -391,8 +387,8 @@ export default class LightningModal extends LightningElement {
             //this.isLoading = false;
             console.log('after');
             console.log(this.isLoading);
-        this.isOpenCredsModal = false;
-   // }, 4000);
+        
+            this.isOpenCredsModal = false;
     }
     AddCreds() {
         this.isOpenCredsModal = true;

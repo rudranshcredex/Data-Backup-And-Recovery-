@@ -1,7 +1,4 @@
-/* eslint-disable @lwc/lwc/no-async-operation */
-/* eslint-disable eqeqeq */
 import { LightningElement, wire, track } from "lwc";
-//import getObjects from "@salesforce/apex/ObjectHelper.getObjects";
 import getObjectApiNames from '@salesforce/apex/DataBackup.getObjectApiNames';
 import local from "@salesforce/resourceUrl/LocalBackup";
 import cloud from "@salesforce/resourceUrl/cloud";
@@ -17,8 +14,6 @@ export default class DataBackupScreen1 extends LightningElement {
   @track objectList;
   @track objectNames = [];
   @track numberOfObjectSelected = 0;
-
-
 
   selectedObjectNames = [];
   showScreen1 = true;
@@ -52,9 +47,9 @@ export default class DataBackupScreen1 extends LightningElement {
   toDate = null;
   ScheduleDateLocal = null;
   ScheduleDateAws = null;
-  isscheduleSpinner =false;
+  isscheduleSpinner = false;
   todayDate = new Date().toISOString().split('T')[0];
-  backupAws =true;
+  backupAws = true;
 
   dataExportText1 = "Your data export is now in the queue and will be processed shortly. We're working diligently to ensure that your requested data is exported accurately and securely.";
   lowerText = "You will receive an email notification once the export is completed, along with a custom notification.";
@@ -69,14 +64,13 @@ export default class DataBackupScreen1 extends LightningElement {
 
   @wire(getRecord, {
     recordId: USER_ID,
-    fields: [NAME_FIELD,Email_FIELD]
+    fields: [NAME_FIELD, Email_FIELD]
   })
   wireUser({ error, data }) {
     if (data) {
       this.username = data.fields.Name.value;
       this.userEmail = data.fields.Email.value;
     } else if (error) {
-      // Handle error
       console.error(error);
     }
   }
@@ -120,28 +114,41 @@ export default class DataBackupScreen1 extends LightningElement {
     this.isSpinnerLoading(false);
   }
 
+  handleAllCheckboxChange(event) {
+    const isChecked = event.detail.checked;
+
+    this.processObjectList(event);
+    this.numberOfObjectSelected = isChecked ? this.objectNames.length : 0;
+    this.template.querySelector('[data-id="selectAll"]').checked = isChecked && this.numberOfObjectSelected === this.objectNames.length;
+  }
+
+  handlecheckboxChange(event) {
+    this.changeObjectSelectionNumber(event);
+    for (let i = 0; i < this.objectList.length; i++) {
+      if (this.objectList[i].objectId == event.target.dataset.id) {
+        this.objectList[i].isSelected = event.detail.checked;
+        break;
+      }
+    }
+    this.template.querySelector('[data-id="selectAll"]').checked = this.numberOfObjectSelected === this.objectNames.length;
+  }
+
+
   nextButton() {
     let dates = this.template.querySelectorAll('lightning-input');
     console.log(dates);
-      dates.forEach(function(date){
-        if(date.name=='fromDate'){
-            this.fromDate=date.value
-        }
-        else if(date.name=='toDate'){
-            this.toDate=date.value;
-        }
+    dates.forEach(function (date) {
+      if (date.name == 'fromDate') {
+        this.fromDate = date.value
+      }
+      else if (date.name == 'toDate') {
+        this.toDate = date.value;
+      }
     });
 
     const selectedFromDate = new Date(this.fromDate);
     const selectedToDate = new Date(this.toDate);
     const currentDate = new Date();
-    /*if (selectedFromDate > currentDate || selectedToDate>currentDate) {
-      this.showToast(
-          "Error",
-        "Entered Date cannot be more than today's date.",
-          "error"
-        );
-    }*/
 
     console.log('dates');
     console.log(this.fromDate);
@@ -149,8 +156,8 @@ export default class DataBackupScreen1 extends LightningElement {
     if (this.step === 1) {
       const selectedObjects = this.objectList.filter((obj) => obj.isSelected);
 
-      
-      if (selectedObjects.length === 0 && (this.fromDate ==null && this.toDate == null)) {
+
+      if (selectedObjects.length === 0 && (this.fromDate == null && this.toDate == null)) {
         this.showToast(
           "Required",
           "Please select at least one object.",
@@ -159,10 +166,10 @@ export default class DataBackupScreen1 extends LightningElement {
         return;
       }
 
-      if (selectedObjects.length > 0 && (this.fromDate ==null && this.toDate == null)) {
-         this.showToast(
+      if (selectedObjects.length > 0 && (this.fromDate == null && this.toDate == null)) {
+        this.showToast(
           "Kindly Review!",
-          "You have selected "+ selectedObjects.length +" object to backup",
+          "You have selected " + selectedObjects.length + " object to backup",
           "success"
         );
       }
@@ -175,8 +182,8 @@ export default class DataBackupScreen1 extends LightningElement {
         );
         return;
       }
-      
-      if (selectedObjects.length>0 && (selectedFromDate > currentDate || selectedToDate>currentDate)) {
+
+      if (selectedObjects.length > 0 && (selectedFromDate > currentDate || selectedToDate > currentDate)) {
         this.showToast(
           "Required",
           " You can't select date to filter records greater than today",
@@ -193,31 +200,29 @@ export default class DataBackupScreen1 extends LightningElement {
         );
         return;
       }
-      
-   
-      if (selectedObjects.length>0 && (selectedFromDate <= currentDate && selectedToDate <= currentDate)) {
+
+
+      if (selectedObjects.length > 0 && (selectedFromDate <= currentDate && selectedToDate <= currentDate)) {
         this.showToast(
           "Kindly Review!",
-          "You have selected "+ selectedObjects.length +" object to backup",
+          "You have selected " + selectedObjects.length + " object to backup",
           "success"
         );
       }
 
       console.log('selected Objects');
-     // console.log(selectedObjects);
       console.log(JSON.stringify(selectedObjects));
-      //console.log(JSON.stringify(JSON.parse(selectedObjects)));
       console.log(selectedObjects.length);
-      
+
       let ObjectsArray = selectedObjects;
       console.log('obj Array');
       console.log(JSON.stringify(ObjectsArray));
-      for(var i=0;i<ObjectsArray.length;i++){
-          console.log(ObjectsArray[i]);
-          console.log('stringify');
-          console.log(JSON.stringify(ObjectsArray[i]));
-          console.log(ObjectsArray[i].objectName);
-          this.selectedObjectNames.push(ObjectsArray[i].objectName);
+      for (var i = 0; i < ObjectsArray.length; i++) {
+        console.log(ObjectsArray[i]);
+        console.log('stringify');
+        console.log(JSON.stringify(ObjectsArray[i]));
+        console.log(ObjectsArray[i].objectName);
+        this.selectedObjectNames.push(ObjectsArray[i].objectName);
       }
       console.log(JSON.stringify(this.selectedObjectNames));
     }
@@ -229,7 +234,7 @@ export default class DataBackupScreen1 extends LightningElement {
 
   }
 
-  ExportData(event){
+  ExportData(event) {
     console.log(event);
     console.log('data export');
     console.log(event.target);
@@ -238,37 +243,40 @@ export default class DataBackupScreen1 extends LightningElement {
     console.log('current');
     const dataId = event.currentTarget.getAttribute('data-id');
     console.log(dataId);
-    let divId =event.currentTarget.getAttribute('data-id');
-     this.retrievalLoading =true;
-     if(divId=='LocalNow'){
-         this.isbackupToLocal = true;
-         this.isbackupToS3 = false;
-       this.exportNowScreen = true;
-       this.showScreen2 = false; 
-       this.showScreen1 = false;
-     }
-     console.log(divId);
-     if(divId=='AwsNow'){
-         this.isbackupToS3 = true;
-         this.isbackupToLocal = false;
-       this.AwsNowScreen = true;
-       this.showScreen2 = false;
-       this.showScreen1 = false;
-     }
-   
-     if(this.isbackupToS3 &&(this.awsAccessKey===null && this.awsSecretKey===null && this.awsRegion===null && this.awsBucket)){
-        this.showToast('Required','To Backup Data to S3 Kindly select Credentials','error');
-        this.retrievalLoading =false;
-        return;
-     }
-     console.log('dates');
-     console.log(this.fromDate);
-     console.log(this.toDate);
-     console.log(this.awsAccessKey);
-     console.log(this.awsSecretKey);
-      var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
-      createDataBackup({ObjectApiNames:this.selectedObjectNames,credentials:JSON.stringify(credential),fromDate:this.fromDate,toDate:this.toDate})
-      .then(data=>{
+    let divId = event.currentTarget.getAttribute('data-id');
+    this.retrievalLoading = true;
+
+    if (divId == 'LocalNow') {
+      this.isbackupToLocal = true;
+      this.isbackupToS3 = false;
+      this.exportNowScreen = true;
+      this.showScreen2 = false;
+      this.showScreen1 = false;
+    }
+    console.log(divId);
+    if (divId == 'AwsNow') {
+      this.isbackupToS3 = true;
+      this.isbackupToLocal = false;
+      this.AwsNowScreen = true;
+      this.showScreen2 = false;
+      this.showScreen1 = false;
+    }
+
+    if (this.isbackupToS3 && (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket)) {
+      this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
+      this.retrievalLoading = false;
+      return;
+    }
+
+    console.log('dates');
+    console.log(this.fromDate);
+    console.log(this.toDate);
+    console.log(this.awsAccessKey);
+    console.log(this.awsSecretKey);
+
+    var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
+    createDataBackup({ ObjectApiNames: this.selectedObjectNames, credentials: JSON.stringify(credential), fromDate: this.fromDate, toDate: this.toDate })
+      .then(data => {
         console.log('data>>>>>>>');
         console.log(data);
         this.retrievalLoading = false;
@@ -276,55 +284,55 @@ export default class DataBackupScreen1 extends LightningElement {
         this.showScreen1 = false;
         this.showScreen2 = false;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error);
         console.log('error');
-      })   
-    this.step=3;
+      })
+    this.step = 3;
     this.handleStepUp();
   }
-  
-  ScheduleBackup(event){
+
+  ScheduleBackup(event) {
 
     this.isscheduleSpinner = true;
     const currDate = new Date();
 
-    if(event.target.name=='ScheduleLocal'){
-      this.isbackupToLocal =true;
-      this.isbackupToS3 =false;
-  }
-  if(event.target.name=='ScheduleAws'){
-      this.isbackupToLocal =false;
-      this.isbackupToS3 =true;
-  }
-  if(this.isbackupToS3 ||(this.awsAccessKey===null && this.awsSecretKey===null && this.awsRegion===null && this.awsBucket)){
-      this.showToast('Required','To Backup Data to S3 Kindly select Credentials','error');
-      this.isscheduleSpinner =false;
+    if (event.target.name == 'ScheduleLocal') {
+      this.isbackupToLocal = true;
+      this.isbackupToS3 = false;
+    }
+    if (event.target.name == 'ScheduleAws') {
+      this.isbackupToLocal = false;
+      this.isbackupToS3 = true;
+    }
+    if (this.isbackupToS3 || (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket)) {
+      this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
+      this.isscheduleSpinner = false;
       return;
-   }
+    }
 
     let scheduleDates = this.template.querySelectorAll('lightning-input');
-    scheduleDates.forEach(function(date){
+    scheduleDates.forEach(function (date) {
       if (date.name === 'ScheduleDateLocal') {
         if (date.value) {
-          this.ScheduleDateLocal=date.value;
+          this.ScheduleDateLocal = date.value;
         }
-          
+
       }
       if (date.name === 'ScheduleDateAws') {
         if (date.value) {
-          this.ScheduleDateAws=date.value;
+          this.ScheduleDateAws = date.value;
         }
       }
-  },this);
-    let awsDate=null;
-    let localDate=null;
-    
-    if (this.ScheduleDateAws!=null) {
-     awsDate =  new Date(this.ScheduleDateAws);
+    }, this);
+    let awsDate = null;
+    let localDate = null;
+
+    if (this.ScheduleDateAws != null) {
+      awsDate = new Date(this.ScheduleDateAws);
     }
-    if (this.ScheduleDateLocal!=null) {
-     localDate = new Date(this.ScheduleDateLocal);
+    if (this.ScheduleDateLocal != null) {
+      localDate = new Date(this.ScheduleDateLocal);
     }
     console.log('dates');
     console.log(currDate);
@@ -333,7 +341,7 @@ export default class DataBackupScreen1 extends LightningElement {
     if (this.ScheduleDateLocal < currDate) {
       console.log('true');
     }
-    
+
     if (this.isbackupToLocal && this.ScheduleDateLocal === null) {
       this.showToast('Required', 'Please Select Date to schedule the Backup Process', 'error');
       this.isscheduleSpinner = false;
@@ -349,15 +357,15 @@ export default class DataBackupScreen1 extends LightningElement {
       this.isscheduleSpinner = false;
       return;
     }
-    else if (this.isbackupToS3 &&  awsDate < currDate) {
+    else if (this.isbackupToS3 && awsDate < currDate) {
       this.showToast('Validation', 'You can\'t select previous Date than today to schedule the Backup Process', 'error');
       this.isscheduleSpinner = false;
       return;
     }
-    else{
+    else {
       this.openModal = false;
-      let scheduleDate=null;
-     console.log(this.awsAccessKey);
+      let scheduleDate = null;
+      console.log(this.awsAccessKey);
       var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
       if (this.isbackupToLocal) {
         scheduleDate = this.ScheduleDateLocal;
@@ -365,29 +373,29 @@ export default class DataBackupScreen1 extends LightningElement {
       if (this.isbackupToS3) {
         scheduleDate = this.ScheduleDateAws;
       }
-    ScheduleDataBackup({ObjectApiNames:this.selectedObjectNames,credentials:JSON.stringify(credential),fromDate:this.fromDate,toDate:this.toDate,scheduleDate:scheduleDate})
-    .then(data=>{
-      this.isscheduleSpinner =false;
-      console.log('data');
-      console.log(data);
-      if (event.target.name == 'ScheduleLocal') {
-        this.exportScheduleScreen = true;
-      }
-      else if (event.target.name == 'ScheduleAws') {
-        this.AwsScheduleScreen = true;
-      }
+      ScheduleDataBackup({ ObjectApiNames: this.selectedObjectNames, credentials: JSON.stringify(credential), fromDate: this.fromDate, toDate: this.toDate, scheduleDate: scheduleDate })
+        .then(data => {
+          this.isscheduleSpinner = false;
+          console.log('data');
+          console.log(data);
+          if (event.target.name == 'ScheduleLocal') {
+            this.exportScheduleScreen = true;
+          }
+          else if (event.target.name == 'ScheduleAws') {
+            this.AwsScheduleScreen = true;
+          }
 
-      this.showScreen2 = false;
-      this.showScreen1 = false;
-    })
-    .catch(error=>{
-      this.openModal = false;
-      this.isscheduleSpinner =false;
-      console.log('error in schedule');
-      this.showToast('Error', 'some error occuring Please check or contact support', 'error');
-      console.log(error);
-    })
-  }   
+          this.showScreen2 = false;
+          this.showScreen1 = false;
+        })
+        .catch(error => {
+          this.openModal = false;
+          this.isscheduleSpinner = false;
+          console.log('error in schedule');
+          this.showToast('Error', 'some error occuring Please check or contact support', 'error');
+          console.log(error);
+        })
+    }
   }
 
   previousButton() {
@@ -400,15 +408,6 @@ export default class DataBackupScreen1 extends LightningElement {
     this.objectList = this.objectNames;
   }
 
-  handlecheckboxChange(event) {
-    this.changeObjectSelectionNumber(event);
-    for (let i = 0; i < this.objectList.length; i++) {
-      if (this.objectList[i].objectId == event.target.dataset.id) {
-        this.objectList[i].isSelected = event.detail.checked;
-        break;
-      }
-    }
-  }
   changeObjectSelectionNumber(event) {
     if (event.detail.checked) {
       this.numberOfObjectSelected++;
@@ -416,15 +415,7 @@ export default class DataBackupScreen1 extends LightningElement {
       this.numberOfObjectSelected--;
     }
   }
-  handleAllCheckboxChange(event) {
-    if (event.detail.checked) {
-      this.processObjectList(event);
-      this.numberOfObjectSelected = this.objectNames.length;
-    } else {
-      this.processObjectList(event);
-      this.numberOfObjectSelected = 0;
-    }
-  }
+
   processObjectList(event) {
     for (let i = 0; i < this.objectList.length; i++) {
       this.objectList[i].isSelected = event.detail.checked;
@@ -433,7 +424,7 @@ export default class DataBackupScreen1 extends LightningElement {
   isSpinnerLoading(isLoading) {
     window.setTimeout(() => {
       this.isLoading = isLoading;
-    }, 1000);
+    }, 2000);
   }
   showToast(title, message, variant) {
     this.dispatchEvent(
@@ -464,20 +455,20 @@ export default class DataBackupScreen1 extends LightningElement {
   handleClose() {
 
     let dates = this.template.querySelectorAll('lightning-input');
-      dates.forEach(function(date){
-        if(date.name=='fromDate'){
-          if(date.value){
-            this.fromDate=date.value
-          }
-           
+    dates.forEach(function (date) {
+      if (date.name == 'fromDate') {
+        if (date.value) {
+          this.fromDate = date.value
         }
-        else if(date.name=='toDate'){
-          if(date.value){
-            this.toDate=date.value;
-          }
-            
+
+      }
+      else if (date.name == 'toDate') {
+        if (date.value) {
+          this.toDate = date.value;
         }
-    },this);
+
+      }
+    }, this);
     console.log(this.fromDate);
     console.log(this.toDate);
     if (this.filterByDate === true) this.filterByDate = false;
@@ -498,14 +489,14 @@ export default class DataBackupScreen1 extends LightningElement {
   handleAwsModal() {
     console.log("inside credentals");
     this.awsModal = true;
-    
+
   }
 
-  awsScreen(){
-    this.isModal =true;
+  awsScreen() {
+    this.isModal = true;
     this.awsModal = true;
     this.template.querySelector('c-lightning-Modal').handleIsOpenModal();
-    
+
   }
 
   handleAWSCredentials(event) {
@@ -520,7 +511,7 @@ export default class DataBackupScreen1 extends LightningElement {
     this.awsRegion = parsedData.regionName;
     this.awsBucket = parsedData.bucketName;
     console.log(this.awsBucket);
-    console.log( this.accessKey);
+    console.log(this.accessKey);
     console.log(parsedData.accessKey);
   }
   handleDate(event) {
@@ -540,10 +531,10 @@ export default class DataBackupScreen1 extends LightningElement {
     const currDate = new Date();
     if (enteredDate > currDate) {
       this.showToast(
-          "Error",
+        "Error",
         "Entered Date cannot be more than today's date.",
-          "error"
-        );
+        "error"
+      );
     }
   }
   handleScheduleDate(event) {
@@ -555,8 +546,8 @@ export default class DataBackupScreen1 extends LightningElement {
     const currentDate = new Date();
     const enterDate = new Date(this.schDate);
     if (enterDate < currentDate) {
-       this.showToast("Warning", "Scheduled Date cannot be less than today's date", "error");
+      this.showToast("Warning", "Scheduled Date cannot be less than today's date", "error");
     }
   }
-  
+
 }
