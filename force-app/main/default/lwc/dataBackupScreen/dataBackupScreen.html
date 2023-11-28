@@ -306,6 +306,7 @@
                 </div>
             </div>
         </template>
+        
         <template if:true={AwsScheduleScreen}>
             <div class="final-screen">
                 <div style="width: 80%; padding-top: 4%">
@@ -389,7 +390,7 @@
                     <b>Select Dates-</b>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateAws"
+                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal"
                         onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">
@@ -409,7 +410,7 @@
                     <b>Select Dates-</b>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal"
+                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateAws"
                         onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">

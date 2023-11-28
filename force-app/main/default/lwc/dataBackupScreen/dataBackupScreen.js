@@ -91,9 +91,7 @@ export default class DataBackupScreen1 extends LightningElement {
     if (this.objectList && event.target.value.length >= 2) {
       this.filterObjectNames(event.target.value);
     } else {
-      
       this.objectList = this.objectNames;
-      
     }
   }
 
@@ -130,7 +128,6 @@ export default class DataBackupScreen1 extends LightningElement {
     }
     this.template.querySelector('[data-id="selectAll"]').checked = this.numberOfObjectSelected === this.objectNames.length;
   }
-
 
   nextButton() {
     let dates = this.template.querySelectorAll('lightning-input');
@@ -255,16 +252,17 @@ export default class DataBackupScreen1 extends LightningElement {
     if (divId == 'AwsNow') {
       this.isbackupToS3 = true;
       this.isbackupToLocal = false;
-      this.AwsNowScreen = true;
       this.showScreen2 = false;
       this.showScreen1 = false;
     }
 
-    if (this.isbackupToS3 && (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket)) {
+    if (this.isbackupToS3 && (this.awsAccessKey === null || this.awsSecretKey === null || this.awsRegion === null || this.awsBucket === null)) {
       this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
-      this.retrievalLoading = false;
+      this.isscheduleSpinner = false;
       return;
     }
+
+
 
     console.log('dates');
     console.log(this.fromDate);
@@ -281,11 +279,13 @@ export default class DataBackupScreen1 extends LightningElement {
         this.showScreen3 = true;
         this.showScreen1 = false;
         this.showScreen2 = false;
+
       })
       .catch(error => {
         console.log(error);
         console.log('error');
       })
+     
     this.step = 3;
     this.handleStepUp();
   }
@@ -303,39 +303,57 @@ export default class DataBackupScreen1 extends LightningElement {
       this.isbackupToLocal = false;
       this.isbackupToS3 = true;
     }
-    if (this.isbackupToS3 || (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket)) {
+
+    // console.log('Debug Logs:');
+    // console.log('isbackupToS3------->', this.isbackupToS3);
+    // console.log('  this.isbackupToLocal--->',   this.isbackupToLocal);
+    // console.log('awsAccessKey------->', this.awsAccessKey);
+    // console.log('awsSecretKey------->', this.awsSecretKey);
+    // console.log('awsRegion------->', this.awsRegion);
+    // console.log('awsBucket', this.awsBucket);
+
+
+    if (this.isbackupToS3 && (!this.awsAccessKey || !this.awsSecretKey || !this.awsRegion || !this.awsBucket)) {
       this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
       this.isscheduleSpinner = false;
       return;
     }
 
+
     let scheduleDates = this.template.querySelectorAll('lightning-input');
     scheduleDates.forEach(function (date) {
-      if (date.name === 'ScheduleDateLocal') {
+      console.log('date.name------>', date.name);
+      if (date.name == 'ScheduleDateLocal') {
         if (date.value) {
           this.ScheduleDateLocal = date.value;
         }
 
       }
-      if (date.name === 'ScheduleDateAws') {
+      if (date.name == 'ScheduleDateAws') {
+        console.log('inside if');
         if (date.value) {
+          console.log('date.value----->', date.value);
           this.ScheduleDateAws = date.value;
         }
       }
     }, this);
     let awsDate = null;
     let localDate = null;
+    console.log('this.ScheduleDateAws outside',this.ScheduleDateAws);
 
     if (this.ScheduleDateAws != null) {
+      
+
       awsDate = new Date(this.ScheduleDateAws);
+      console.log('this.ScheduleDateAws inside',this.ScheduleDateAws);
     }
     if (this.ScheduleDateLocal != null) {
       localDate = new Date(this.ScheduleDateLocal);
     }
-    console.log('dates');
-    console.log(currDate);
-    console.log(this.ScheduleDateLocal);
-    console.log(this.ScheduleDateAws);
+    // console.log('dates');
+    // console.log(currDate);
+    // console.log('this.ScheduleDateLocal',this.ScheduleDateLocal);
+    // console.log('this.ScheduleDateAws',this.ScheduleDateAws);
     if (this.ScheduleDateLocal < currDate) {
       console.log('true');
     }
@@ -350,7 +368,9 @@ export default class DataBackupScreen1 extends LightningElement {
       this.isscheduleSpinner = false;
       return;
     }
+
     else if (this.isbackupToS3 && this.ScheduleDateAws === null) {
+   
       this.showToast('Required', 'Please Select Date to schedule the Backup Process', 'error');
       this.isscheduleSpinner = false;
       return;
@@ -383,10 +403,16 @@ export default class DataBackupScreen1 extends LightningElement {
           }
           else if (event.target.name == 'ScheduleAws') {
             this.AwsScheduleScreen = true;
-          }
 
+            
+          }
+          this.AwsScheduleScreen = true;
+         console.log('this.AwsScheduleScreen----------->',this.AwsScheduleScreen);
           this.showScreen2 = false;
           this.showScreen1 = false;
+          this.openModal1 = false;
+          this.step=3;
+          this.handleStepUp();
         })
         .catch(error => {
           this.openModal = false;
@@ -514,6 +540,7 @@ export default class DataBackupScreen1 extends LightningElement {
     console.log(this.accessKey);
     console.log(parsedData.accessKey);
   }
+
   handleDate(event) {
     console.log('inside date func');
     console.log(event.target.name);
@@ -548,12 +575,12 @@ export default class DataBackupScreen1 extends LightningElement {
 
     const currentDateWithoutTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
     const enterDateWithoutTime = new Date(enterDate.getFullYear(), enterDate.getMonth(), enterDate.getDate());
-  
+
     if (enterDateWithoutTime < currentDateWithoutTime) {
       this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
+
     } else if (enterDateWithoutTime.getTime() === currentDateWithoutTime.getTime() && enterDate < currentDate) {
       this.showToast("Warning", "Scheduled time cannot be earlier than the current time", "error");
     }
   }
-
 }

@@ -174,7 +174,7 @@ export default class MetadataBackupScreen extends LightningElement {
       this.AwsNowScreen = true;
     }
     if (this.isbackupToS3 && (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket === null)) {
-      this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
+      this.showToast('Required', 'To Backup Metadata to S3 Kindly select Credentials', 'error');
       this.retrievalLoading = false;
       return;
     }
