@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-28-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
 <template>
     <div style="background:  linear-gradient(180deg, #0088cf 0%, rgba(0, 136, 207, 0) 100%); height: 80vh;">
         <!--Screen-1 -->
@@ -17,13 +24,43 @@
                     <lightning-spinner class="spins"></lightning-spinner>
                 </template>
                 <div style="display: flex; justify-content: center;">
+                    <!-- <div class="styled-table" if:false={isLoading}>
+                        <table border="1" width="80%" cellpadding="1" cellspacing="1">
+                            <thead>
+                                <tr>
+                                    <th style="background-color:darkgrey; width:10%;">
+                                        <lightning-input type="checkbox" data-id="selectAll"
+                                            onchange={handleAllCheckboxChange}></lightning-input>
+                                    </th>
+                                    <th style="background-color:darkgrey; width: 90%;">
+                                        Metadata Type
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={metadataList} for:item="Metadata">
+                                    <tr key={Metadata.objectId}>
+                                        <td style="width: 10%;">
+                                            <lightning-input type="checkbox" checked={Metadata.isSelected}
+                                                data-id={Metadata.objectId}
+                                                onchange={handlecheckboxChange}></lightning-input>
+                                        </td>
+                                        <td style="width: 90%;">
+                                            {Metadata.metadataType}
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div> -->
+
                     <!-- Objects Table-->
                     <div class="styled-table" if:false={isLoading}>
                         <table border="1" width="80%" cellpadding="1" cellspacing="1">
                             <thead>
                                 <tr>
                                     <th style="background-color:darkgrey; width:10%;">
-                                        <lightning-input type="checkbox"
+                                        <lightning-input type="checkbox" data-id="selectAll" checked={selectAll}
                                             onchange={handleAllCheckboxChange}></lightning-input>
                                     </th>
                                     <th style="background-color:darkgrey; width: 90%;">
@@ -47,7 +84,10 @@
                             </tbody>
                         </table>
                     </div>
+
+
                 </div>
+
             </div>
         </template>
 
@@ -278,7 +318,7 @@
 
 
 
-        <template if:true={openModal}>
+        <!-- <template if:true={openModal}>
             <div class="modal">
                 <lightning-modal-header>Select Dates To Schedule Backup Process</lightning-modal-header>
                 <lightning-modal-body>
@@ -293,10 +333,9 @@
                     </div>
                 </lightning-modal-footer>
             </div>
-        </template>
+        </template> -->
 
-
-        <template if:true={openModal1}>
+        <!-- <template if:true={openModal1}>
             <div class="modal1">
                 <lightning-modal-header>Select Dates-</lightning-modal-header>
                 <lightning-modal-body>
@@ -311,7 +350,7 @@
                     </div>
                 </lightning-modal-footer>
             </div>
-        </template>
+        </template> -->
         <template if:true={retrievalLoading}>
             <lightning-spinner class="backupSpins"></lightning-spinner>
         </template>
@@ -347,4 +386,47 @@
             </div>
         </div>
     </lightning-card>
+
+    <template if:true={openModal}>
+        <div class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <b>Select Dates To Schedule Backup Process</b>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input type="datetime" name="ScheduleDateLocal" value={schdate}
+                        onchange={handleScheduleDate} step=60></lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" label="Close" onclick={handleCloseModal}></lightning-button>
+                    <lightning-button variant="brand" label="Schedule" name="ScheduleLocal" onclick={ScheduleBackup}
+                        style="padding-left: 1%"></lightning-button>
+                </footer>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={openModal1}>
+        <div class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <b>Select Dates-</b>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input type="datetime" name="ScheduleDateLocal" value={schdate}
+                        onchange={handleScheduleDate} step=60></lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
+                    <lightning-button variant="brand" label="Schedule" name="ScheduleAws" onclick={ScheduleBackup}
+                        style="padding-left: 1%"></lightning-button>
+                </footer>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+
 </template>

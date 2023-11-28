@@ -31,7 +31,7 @@ export default class MetadataBackupScreen extends LightningElement {
   AwsScheduleScreen = false;
 
 
-  selectedMetadataTypes =[];
+  selectedMetadataTypes = [];
   showScreen1 = true;
   showScreen2 = false;
   showScreen3 = false;
@@ -49,7 +49,7 @@ export default class MetadataBackupScreen extends LightningElement {
   openModal = false;
   openModal1 = false;
   awsModal = false;
-  isModal =false;
+  isModal = false;
   isMetadataBackup = true;
   awsAccessKey = null;
   awsSecretKey = null;
@@ -58,12 +58,12 @@ export default class MetadataBackupScreen extends LightningElement {
   isbackupToS3 = false;
   isbackupToLocal = false;
   retrievalLoading = false;
-  ScheduleDateLocal =null;
+  ScheduleDateLocal = null;
   ScheduleDateAws = null;
 
   @wire(getRecord, {
     recordId: USER_ID,
-    fields: [NAME_FIELD,EMAIL_FIELD]
+    fields: [NAME_FIELD, EMAIL_FIELD]
   })
   wireUser({ error, data }) {
     if (data) {
@@ -127,28 +127,28 @@ export default class MetadataBackupScreen extends LightningElement {
         );
         return;
       }
-      if (selectedMetadataTypes.length>0) {
+      if (selectedMetadataTypes.length > 0) {
         this.showToast(
           "Kindly Review!",
-          "You have selected "+ selectedMetadataTypes.length +" Components to backup",
+          "You have selected " + selectedMetadataTypes.length + " Components to backup",
           "success"
         );
       }
       console.log('selected Objects');
-     // console.log(selectedMetadataTypes);
+      // console.log(selectedMetadataTypes);
       console.log(JSON.stringify(selectedMetadataTypes));
       //console.log(JSON.stringify(JSON.parse(selectedMetadataTypes)));
       console.log(selectedMetadataTypes.length);
-      
+
       let MetadataArray = selectedMetadataTypes;
       console.log('obj Array');
       console.log(JSON.stringify(MetadataArray));
-      for(var i=0;i<MetadataArray.length;i++){
-          console.log(MetadataArray[i]);
-          console.log('stringify');
-          console.log(JSON.stringify(MetadataArray[i]));
-          console.log(MetadataArray[i].metadataType);
-          this.selectedMetadataTypes.push(MetadataArray[i].metadataType);
+      for (var i = 0; i < MetadataArray.length; i++) {
+        console.log(MetadataArray[i]);
+        console.log('stringify');
+        console.log(JSON.stringify(MetadataArray[i]));
+        console.log(MetadataArray[i].metadataType);
+        this.selectedMetadataTypes.push(MetadataArray[i].metadataType);
       }
       console.log(JSON.stringify(this.selectedMetadataTypes));
     }
@@ -160,51 +160,51 @@ export default class MetadataBackupScreen extends LightningElement {
 
   }
 
-  ExportData(event){
+  ExportData(event) {
     console.log('export data');
     //console.log(event.target);
-    let divId =event.currentTarget.getAttribute('data-id');;
-   // console.log(dib.dataset.id);
-   // console.log(event.id);
-    this.retrievalLoading =true;
-    if(divId=='LocalNow'){
+    let divId = event.currentTarget.getAttribute('data-id');;
+    // console.log(dib.dataset.id);
+    // console.log(event.id);
+    this.retrievalLoading = true;
+    if (divId == 'LocalNow') {
       console.log('local');
       this.isbackupToLocal = true;
       this.isbackupToS3 = false;
       this.exportNowScreen = true;
     }
-    if(divId=='AwsNow'){
-        this.isbackupToS3 = true;
+    if (divId == 'AwsNow') {
+      this.isbackupToS3 = true;
       this.isbackupToLocal = false;
       this.AwsNowScreen = true;
     }
-    if(this.isbackupToS3 &&(this.awsAccessKey===null && this.awsSecretKey===null && this.awsRegion===null && this.awsBucket===null)){
-        this.showToast('Required','To Backup Data to S3 Kindly select Credentials','error');
-        this.retrievalLoading =false;
-        return;
+    if (this.isbackupToS3 && (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket === null)) {
+      this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
+      this.retrievalLoading = false;
+      return;
     }
-    
+
     console.log('data export');
     var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
     retrieveMetadata({ metadataTypes: this.selectedMetadataTypes, credentials: JSON.stringify(credential) })
-    .then(data=>{
+      .then(data => {
         this.showScreen3 = true;
         console.log('data>>>>>>>');
         console.log(data);
         //if(data=='Success'){
 
-            this.retrievalLoading =false
-            this.showScreen3 = true;
-            this.showScreen1 = false;
-            this.showScreen2 = false;
+        this.retrievalLoading = false
+        this.showScreen3 = true;
+        this.showScreen1 = false;
+        this.showScreen2 = false;
       })
-      .catch(error=>{
+      .catch(error => {
         this.showScreen3 = true;
         console.log(error);
         console.log('error');
       })
-      this.step = 3;
-      this.handleStepUp();
+    this.step = 3;
+    this.handleStepUp();
   }
 
 
@@ -220,13 +220,18 @@ export default class MetadataBackupScreen extends LightningElement {
 
   handlecheckboxChange(event) {
     this.changeObjectSelectionNumber(event);
+
     for (let i = 0; i < this.metadataList.length; i++) {
-      if (this.metadataList[i].objectId == event.target.dataset.id) {
-        this.metadataList[i].isSelected = event.detail.checked;
-        break;
-      }
+        if (this.metadataList[i].objectId == event.target.dataset.id) {
+            this.metadataList[i].isSelected = event.detail.checked;
+            break;
+        }
     }
-  }
+
+    // Check if any individual checkbox is unchecked, then uncheck the "Select All" checkbox
+    this.selectAll = this.metadataList.every(metadata => metadata.isSelected);
+}
+
   changeObjectSelectionNumber(event) {
     if (event.detail.checked) {
       this.numberOfMetadataSelected++;
@@ -234,16 +239,17 @@ export default class MetadataBackupScreen extends LightningElement {
       this.numberOfMetadataSelected--;
     }
   }
-  handleAllCheckboxChange(event) {
-    if (event.detail.checked) {
-      this.processObjectList(event);
-      this.numberOfMetadataSelected = this.metadataTypes.length;
-    } else {
-      this.processObjectList(event);
-      this.numberOfMetadataSelected = 0;
-    }
-  }
 
+  selectAll = false;
+
+  handleAllCheckboxChange(event) {
+    this.selectAll = event.target.checked;
+
+    this.metadataList = this.metadataList.map(metadata => {
+        metadata.isSelected = this.selectAll;
+        return metadata;
+    });
+}
   processObjectList(event) {
     for (let i = 0; i < this.metadataList.length; i++) {
       this.metadataList[i].isSelected = event.detail.checked;
@@ -301,48 +307,48 @@ export default class MetadataBackupScreen extends LightningElement {
     this.isscheduleSpinner = true;
     const currDate = new Date();
 
-    if(event.target.name=='ScheduleLocal'){
-      this.isbackupToLocal =true;
-      this.isbackupToS3 =false;
-  }
-  if(event.target.name=='ScheduleAws'){
-      this.isbackupToLocal =false;
-      this.isbackupToS3 =true;
-  }
-  if(this.isbackupToS3 ||(this.awsAccessKey===null && this.awsSecretKey===null && this.awsRegion===null && this.awsBucket)){
-      this.showToast('Required','To Backup Data to S3 Kindly select Credentials','error');
-      this.isscheduleSpinner =false;
+    if (event.target.name == 'ScheduleLocal') {
+      this.isbackupToLocal = true;
+      this.isbackupToS3 = false;
+    }
+    if (event.target.name == 'ScheduleAws') {
+      this.isbackupToLocal = false;
+      this.isbackupToS3 = true;
+    }
+    if (this.isbackupToS3 || (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket)) {
+      this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
+      this.isscheduleSpinner = false;
       return;
-   }
+    }
 
     let scheduleDates = this.template.querySelectorAll('lightning-input');
-    scheduleDates.forEach(function(date){
+    scheduleDates.forEach(function (date) {
       if (date.name === 'ScheduleDateLocal') {
         if (date.value) {
-          this.ScheduleDateLocal=date.value;
+          this.ScheduleDateLocal = date.value;
         }
-          
+
       }
       if (date.name === 'ScheduleDateAws') {
         if (date.value) {
-          this.ScheduleDateAws=date.value;
+          this.ScheduleDateAws = date.value;
         }
       }
-  },this);
-    let awsDate=null;
-    let localDate=null;
-    
-    if (this.ScheduleDateAws!=null) {
-     awsDate =  new Date(this.ScheduleDateAws);
+    }, this);
+    let awsDate = null;
+    let localDate = null;
+
+    if (this.ScheduleDateAws != null) {
+      awsDate = new Date(this.ScheduleDateAws);
     }
-    if (this.ScheduleDateLocal!=null) {
-     localDate = new Date(this.ScheduleDateLocal);
+    if (this.ScheduleDateLocal != null) {
+      localDate = new Date(this.ScheduleDateLocal);
     }
     console.log('dates');
     console.log(currDate);
     console.log(this.ScheduleDateLocal);
     console.log(this.ScheduleDateAws);
-    
+
     if (this.isbackupToLocal && this.ScheduleDateLocal === null) {
       this.showToast('Required', 'Please Select Date to schedule the Backup Process', 'error');
       this.isscheduleSpinner = false;
@@ -350,7 +356,7 @@ export default class MetadataBackupScreen extends LightningElement {
     }
     else if (this.isbackupToLocal && localDate < currDate) {
       this.showToast('Validation', 'You can\'t select previous Date than today to schedule the Backup Process', 'error');
-     this.isscheduleSpinner = false;
+      this.isscheduleSpinner = false;
       return;
     }
     else if (this.isbackupToS3 && this.ScheduleDateAws === null) {
@@ -358,7 +364,7 @@ export default class MetadataBackupScreen extends LightningElement {
       this.isscheduleSpinner = false;
       return;
     }
-    else if (this.isbackupToS3 &&  awsDate < currDate) {
+    else if (this.isbackupToS3 && awsDate < currDate) {
       this.showToast('Validation', 'You can\'t select previous Date than today to schedule the Backup Process', 'error');
       this.isscheduleSpinner = false;
       return;
@@ -366,55 +372,55 @@ export default class MetadataBackupScreen extends LightningElement {
     else {
       let scheduleDate = null;
       if (this.isbackupToLocal) {
-          scheduleDate = this.ScheduleDateLocal;
-        }
-        if (this.isbackupToS3) {
-          scheduleDate = this.ScheduleDateAws;
-        }
+        scheduleDate = this.ScheduleDateLocal;
+      }
+      if (this.isbackupToS3) {
+        scheduleDate = this.ScheduleDateAws;
+      }
       console.log('schedule date');
       console.log(scheduleDate);
-    var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
-    ScheduleMetaDataBackup({metadataTypes:this.selectedMetadataTypes,credentials:JSON.stringify(credential),scheduleDate:scheduleDate})
-    .then(data=>{
-      this.isscheduleSpinner =false;
-      console.log('data');
-      console.log(data);
-      if (buttonName === 'ScheduleLocal') {
-        console.log('yes');
-        this.exportScheduleScreen = true;
-      }
-      else if (buttonName === 'ScheduleAws') {
-        this.AwsScheduleScreen = true;
-       }
-      console.log('spins');
-      console.log(this.exportScheduleScreen);
-      console.log(this.isscheduleSpinner);
-      this.showScreen2 = false;
-      this.showScreen1 = false;
-      this.openModal = false;
-      this.openModal1 = false;
-    })
-    .catch(error=>{
-      this.openModal = false;
-      this.openModal1 = false;
-      this.isscheduleSpinner =false;
-      console.log('error in schedule');
-       this.showToast('Error', 'some error occuring Please check or contact support', 'error');
-      console.log(error);
-    })
+      var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
+      ScheduleMetaDataBackup({ metadataTypes: this.selectedMetadataTypes, credentials: JSON.stringify(credential), scheduleDate: scheduleDate })
+        .then(data => {
+          this.isscheduleSpinner = false;
+          console.log('data');
+          console.log(data);
+          if (buttonName === 'ScheduleLocal') {
+            console.log('yes');
+            this.exportScheduleScreen = true;
+          }
+          else if (buttonName === 'ScheduleAws') {
+            this.AwsScheduleScreen = true;
+          }
+          console.log('spins');
+          console.log(this.exportScheduleScreen);
+          console.log(this.isscheduleSpinner);
+          this.showScreen2 = false;
+          this.showScreen1 = false;
+          this.openModal = false;
+          this.openModal1 = false;
+        })
+        .catch(error => {
+          this.openModal = false;
+          this.openModal1 = false;
+          this.isscheduleSpinner = false;
+          console.log('error in schedule');
+          this.showToast('Error', 'some error occuring Please check or contact support', 'error');
+          console.log(error);
+        })
 
-    
-    this.step = 3;
-    this.handleStepUp();
-  }
-    
-    
-     
+
+      this.step = 3;
+      this.handleStepUp();
+    }
+
+
+
   }
 
-  
-  awsScreen(){
-    this.isModal =true;
+
+  awsScreen() {
+    this.isModal = true;
     this.awsModal = true;
     this.template.querySelector('c-lightning-Modal').handleIsOpenModal();
   }
@@ -431,7 +437,7 @@ export default class MetadataBackupScreen extends LightningElement {
     this.awsRegion = parsedData.regionName;
     this.awsBucket = parsedData.bucketName;
     console.log(this.awsBucket);
-    console.log( this.accessKey);
+    console.log(this.accessKey);
     console.log(parsedData.accessKey);
   }
   handleScheduleDate(event) {
@@ -443,7 +449,7 @@ export default class MetadataBackupScreen extends LightningElement {
     const currentDate = new Date();
     const enterDate = new Date(this.schDate);
     if (enterDate < currentDate) {
-       this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
+      this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
     }
   }
 }

@@ -292,23 +292,6 @@
                 </div>
             </div>
         </template>
-<!-- 
-        <template if:true={openModal1}>
-            <div class="modal1">
-                <lightning-modal-header>Select Dates-</lightning-modal-header>
-                <lightning-modal-body>
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateAws"
-                        onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
-                </lightning-modal-body>
-                <lightning-modal-footer>
-                    <div>
-                        <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
-                        <lightning-button variant="brand" label="Schedule Export" name="ScheduleAws"
-                            onclick={ScheduleBackup} style="padding-left: 1%"></lightning-button>
-                    </div>
-                </lightning-modal-footer>
-            </div>
-        </template> -->
 
         <template if:true={retrievalLoading}>
             <lightning-spinner class="backupSpins"></lightning-spinner>

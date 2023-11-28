@@ -373,6 +373,8 @@ export default class DataBackupScreen1 extends LightningElement {
       if (this.isbackupToS3) {
         scheduleDate = this.ScheduleDateAws;
       }
+
+      
       ScheduleDataBackup({ ObjectApiNames: this.selectedObjectNames, credentials: JSON.stringify(credential), fromDate: this.fromDate, toDate: this.toDate, scheduleDate: scheduleDate })
         .then(data => {
           this.isscheduleSpinner = false;

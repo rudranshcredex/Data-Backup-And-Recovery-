@@ -401,28 +401,6 @@ th {
   height: 70vh;
 }
 
-
-/* .modal,
-.modal1 {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: none; 
-  z-index: 10;
-  height: 100px;
-}
-
-.modal-body {
-  padding: 1rem;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100px;
-  visibility: opaque;
-} */
-
 .slds-modal__content{
   display: flex;
   align-items: center;
