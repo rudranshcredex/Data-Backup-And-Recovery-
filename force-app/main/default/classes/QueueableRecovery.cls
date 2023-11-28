@@ -9,13 +9,13 @@ public class QueueableRecovery implements Queueable,Database.AllowsCallouts {
     Public QueueableRecovery(List<DataRecovery.ObjectsExternalIdCSVWrapper> ObjectsJobIdCSVWrapper,String context){
         ObjectsExternalIdCSV = ObjectsJobIdCSVWrapper;
         contexts = context;
-        system.debug(contexts);
+        //system.debug(contexts);
     }
     
     Public QueueableRecovery(List<DataRecovery.ObjectsJobIdCSVWrapper> ObjectsJobIdCSVWrapper,String context){
         ObjectsJobIdCSV = ObjectsJobIdCSVWrapper;
         contexts = context;
-        system.debug(contexts);
+        //system.debug(contexts);
     }
     
     
@@ -24,11 +24,11 @@ public class QueueableRecovery implements Queueable,Database.AllowsCallouts {
         contexts = context;
     }
     Public QueueableRecovery(Map<String,String> ObjectsWithJobId,String context){
-        system.debug(ObjectsWithJobId);
-        system.debug('Map');
+        //system.debug(ObjectsWithJobId);
+        //system.debug('Map');
         ObjectsJobId = ObjectsWithJobId;
         contexts = context;
-        system.debug(contexts);
+        //system.debug(contexts);
     }
     
     Public  void execute(QueueableContext Qc)

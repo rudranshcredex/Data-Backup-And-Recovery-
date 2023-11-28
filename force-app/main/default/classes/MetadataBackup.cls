@@ -55,9 +55,9 @@ public With sharing class MetadataBackup {
                 AsyncResultId = fetchAsyncId(response.getBody());
                 
                 if(AsyncResultId!=null){
-                    system.debug(metadataTypes.size());
+                    //system.debug(metadataTypes.size());
                     Datetime sysTime;
-                    system.debug(AsyncResultId);
+                   // system.debug(AsyncResultId);
                      if(metadataTypes.size()<=50){
                         sysTime = System.now().addminutes( 1 );
                         }
@@ -69,12 +69,12 @@ public With sharing class MetadataBackup {
                 }
             }
             else{
-                system.debug(response);
-                system.debug(response.getBody());
+                //system.debug(response);
+                //system.debug(response.getBody());
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
             throw new AuraHandledException(ex.getMessage());
         }
     }
@@ -120,8 +120,8 @@ public With sharing class MetadataBackup {
             request.setBody(generateEnvelopeForCheckRetrieveStatus(asyncResultId));
             HttpResponse response = http.send(request);
             ZipContent = getZipFile(response.getBody());
-            system.debug('ZipContent');
-            system.debug(ZipContent);
+            //system.debug('ZipContent');
+            //system.debug(ZipContent);
             if(ZipContent!=null)
             {
                 sendZipData(ZipContent,Credentials);
@@ -129,7 +129,7 @@ public With sharing class MetadataBackup {
             
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+           // system.debug(ex.getMessage()+' at '+ex.getLineNumber());
             throw new AuraHandledException(ex.getMessage());
         }
     }
@@ -153,6 +153,8 @@ public With sharing class MetadataBackup {
            if(backupTos3){
                 if(accessKey!=null && SecretKey!=null && Bucket!=null && awsRegion!=null){
                     String AwsResponse = AwsS3Integration.filePUT('SalesforceMetaData_'+fetchCurrentFormattedDate(), accessKey, secretKey, awsRegion, Bucket, zipBlob);
+                   System.debug('fetchCurrentFormattedDate()-->'+fetchCurrentFormattedDate());
+                    System.debug('zipBlob()-->'+zipBlob);
                     if(AwsResponse =='success')
                     {
                         EmailAndNotification.sendCustomNotification('Metadata','Aws');
@@ -168,7 +170,7 @@ public With sharing class MetadataBackup {
             
         }
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
     }
     
@@ -195,11 +197,11 @@ public With sharing class MetadataBackup {
             
             // Extract the zipFile data
             zipFileData = xmlString.substring(startIndex + zipFileStartTag.length(), endIndex);
-            system.debug(zipFileData);
+            //system.debug(zipFileData);
             
         }
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
         return zipFileData;
     }

@@ -50,9 +50,9 @@ public With Sharing class DataBackupCallout {
                     jobIdsWithApiNames.put(objectApiname,(String)responseMap.get('id'));
                 }
                 else{
-                    system.debug(response.getStatus());
-                    system.debug(response.getStatusCode());
-                    system.debug('faulty Code');
+                    //system.debug(response.getStatus());
+                    //system.debug(response.getStatusCode());
+                    //system.debug('faulty Code');
                 }     
             }
             
@@ -64,7 +64,7 @@ public With Sharing class DataBackupCallout {
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
     
@@ -92,8 +92,8 @@ public With Sharing class DataBackupCallout {
                     sampleZip.addFile(objects+'.csv', fileData, null);
                 }
                 else{
-                    system.debug('error at 128 with code');
-                    system.debug(response);
+                    //system.debug('error at 128 with code');
+                    //system.debug(response);
                 }   
             }  
             Blob zipData = sampleZip.getZipArchive();
@@ -109,7 +109,7 @@ public With Sharing class DataBackupCallout {
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
     /*
@@ -176,7 +176,7 @@ public With Sharing class DataBackupCallout {
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+'at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+'at '+ex.getLineNumber());
         }
     }
     

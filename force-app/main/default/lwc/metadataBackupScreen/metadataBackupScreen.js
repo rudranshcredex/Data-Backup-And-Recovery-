@@ -60,6 +60,7 @@ export default class MetadataBackupScreen extends LightningElement {
   retrievalLoading = false;
   ScheduleDateLocal = null;
   ScheduleDateAws = null;
+  selectAll = false;
 
   @wire(getRecord, {
     recordId: USER_ID,
@@ -70,7 +71,6 @@ export default class MetadataBackupScreen extends LightningElement {
       this.username = data.fields.Name.value;
       this.userEmail = data.fields.Email.value;
     } else if (error) {
-      // Handle error
       console.error(error);
     }
   }
@@ -135,9 +135,7 @@ export default class MetadataBackupScreen extends LightningElement {
         );
       }
       console.log('selected Objects');
-      // console.log(selectedMetadataTypes);
       console.log(JSON.stringify(selectedMetadataTypes));
-      //console.log(JSON.stringify(JSON.parse(selectedMetadataTypes)));
       console.log(selectedMetadataTypes.length);
 
       let MetadataArray = selectedMetadataTypes;
@@ -162,10 +160,7 @@ export default class MetadataBackupScreen extends LightningElement {
 
   ExportData(event) {
     console.log('export data');
-    //console.log(event.target);
-    let divId = event.currentTarget.getAttribute('data-id');;
-    // console.log(dib.dataset.id);
-    // console.log(event.id);
+    let divId = event.currentTarget.getAttribute('data-id');
     this.retrievalLoading = true;
     if (divId == 'LocalNow') {
       console.log('local');
@@ -191,8 +186,6 @@ export default class MetadataBackupScreen extends LightningElement {
         this.showScreen3 = true;
         console.log('data>>>>>>>');
         console.log(data);
-        //if(data=='Success'){
-
         this.retrievalLoading = false
         this.showScreen3 = true;
         this.showScreen1 = false;
@@ -227,8 +220,6 @@ export default class MetadataBackupScreen extends LightningElement {
             break;
         }
     }
-
-    // Check if any individual checkbox is unchecked, then uncheck the "Select All" checkbox
     this.selectAll = this.metadataList.every(metadata => metadata.isSelected);
 }
 
@@ -240,7 +231,7 @@ export default class MetadataBackupScreen extends LightningElement {
     }
   }
 
-  selectAll = false;
+  
 
   handleAllCheckboxChange(event) {
     this.selectAll = event.target.checked;
@@ -448,8 +439,15 @@ export default class MetadataBackupScreen extends LightningElement {
   validateSchDate() {
     const currentDate = new Date();
     const enterDate = new Date(this.schDate);
-    if (enterDate < currentDate) {
+
+    const currentDateWithoutTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    const enterDateWithoutTime = new Date(enterDate.getFullYear(), enterDate.getMonth(), enterDate.getDate());
+  
+    if (enterDateWithoutTime < currentDateWithoutTime) {
       this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
+    } else if (enterDateWithoutTime.getTime() === currentDateWithoutTime.getTime() && enterDate < currentDate) {
+      this.showToast("Warning", "Scheduled time cannot be earlier than the current time", "error");
     }
   }
+  
 }

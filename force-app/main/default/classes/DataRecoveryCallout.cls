@@ -41,9 +41,9 @@ public With sharing class DataRecoveryCallout {
                     ObjectsJobIdCSVWrapperList.add(objWrapper);
                 }
                 else{
-                    system.debug('Fault response');
-                    system.debug(response);
-                    system.debug(response.getBody());
+                   // system.debug('Fault response');
+                   // system.debug(response);
+                  //  system.debug(response.getBody());
                 }
             }
             
@@ -53,7 +53,7 @@ public With sharing class DataRecoveryCallout {
             
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
     
@@ -92,9 +92,9 @@ public With sharing class DataRecoveryCallout {
                     
                 }
                 else{
-                    system.debug('Fault response');
-                    system.debug(response);
-                    system.debug(response.getBody());
+                    //system.debug('Fault response');
+                    //system.debug(response);
+                    //system.debug(response.getBody());
                 }
             }
             
@@ -104,7 +104,7 @@ public With sharing class DataRecoveryCallout {
             
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
     
@@ -141,8 +141,8 @@ public With sharing class DataRecoveryCallout {
                     objectsWithJobIdsList.add(JobIdWrapper);
                 }
                 else{
-                    system.debug('error');
-                    system.debug('unExpected');
+                    //system.debug('error');
+                   // system.debug('unExpected');
                 }
             }
             
@@ -151,7 +151,7 @@ public With sharing class DataRecoveryCallout {
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
     
@@ -164,7 +164,7 @@ public With sharing class DataRecoveryCallout {
         
         try{
             List<DataRecovery.objectsWithJobIdsDmlTypesWrapper> objectsWithJobIdsWithDml = (List<DataRecovery.objectsWithJobIdsDmlTypesWrapper>) JSON.deserialize(objectsWithJobIds, List<DataRecovery.objectsWithJobIdsDmlTypesWrapper>.class);
-            system.debug('inside close abort');
+            //system.debug('inside close abort');
             List<DataRecovery.objectsWithJobIdsDmlTypesWrapper> objectsWithDmlTypes = new List<DataRecovery.objectsWithJobIdsDmlTypesWrapper>();
             
             for(DataRecovery.objectsWithJobIdsDmlTypesWrapper objects:objectsWithJobIdsWithDml)
@@ -188,9 +188,9 @@ public With sharing class DataRecoveryCallout {
                     objectsWithDmlTypes.add(JobIdWrapper);
                 }
                 else{
-                    system.debug(response);
-                    system.debug('error');
-                    system.debug(response.getBody());
+                    //system.debug(response);
+                    //system.debug('error');
+                    //system.debug(response.getBody());
                 }
             }
             
@@ -199,7 +199,7 @@ public With sharing class DataRecoveryCallout {
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
     
@@ -208,8 +208,8 @@ public With sharing class DataRecoveryCallout {
 */
     @future(Callout=true)
     public static void checkBatchStatus(String objectsWithJobIds) {
-        system.debug('inside check status');
-        system.debug(objectsWithJobIds);
+        //system.debug('inside check status');
+        //system.debug(objectsWithJobIds);
         try 
         {   String csvContent = 'objectName,numberRecordsProcessed,numberRecordsFailed,DmlType\n';
          List<DataRecovery.objectsWithJobIdsDmlTypesWrapper> objectsWithJobIdsWithDml = (List<DataRecovery.objectsWithJobIdsDmlTypesWrapper>) JSON.deserialize(objectsWithJobIds, List<DataRecovery.objectsWithJobIdsDmlTypesWrapper>.class);
@@ -233,9 +233,9 @@ public With sharing class DataRecoveryCallout {
                  csvContent+= objects.objectName +','+responseResult.get('numberRecordsProcessed')+','+responseResult.get('numberRecordsFailed')+','+objects.DmlType+'\n'; 
              }
              else{
-                 system.debug('error');
-                 system.debug(response);
-                 system.debug(response.getBody());
+                 //system.debug('error');
+                 //system.debug(response);
+                 //system.debug(response.getBody());
              }
          }
          system.debug(csvContent);
@@ -249,7 +249,7 @@ public With sharing class DataRecoveryCallout {
         }
         catch(Exception ex)
         {
-            system.debug(ex.getmessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getmessage()+' at '+ex.getLineNumber());
         }
     }
     
@@ -282,8 +282,8 @@ public With sharing class DataRecoveryCallout {
                 'contentType' => 'CSV',
                 'lineEnding'=> 'LF'
                 };
-                    system.debug('jobRequest');
-        system.debug(jobRequest);
+                    //system.debug('jobRequest');
+        //system.debug(jobRequest);
         return jobRequest;
     }
 }

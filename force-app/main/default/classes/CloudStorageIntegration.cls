@@ -45,7 +45,7 @@ public class CloudStorageIntegration {
         req.setBody(messageBody);
         req.setHeader('Content-length', String.valueOf(messageBody.length()));
         req.setTimeout(60*1000);
-       	system.debug('messageBody:'+messageBody);
+       	//system.debug('messageBody:'+messageBody);
         
         Http callout = new Http();
         String responseText;

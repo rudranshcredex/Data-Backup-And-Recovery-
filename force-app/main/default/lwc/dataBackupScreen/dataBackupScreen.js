@@ -91,15 +91,14 @@ export default class DataBackupScreen1 extends LightningElement {
     if (this.objectList && event.target.value.length >= 2) {
       this.filterObjectNames(event.target.value);
     } else {
-      this.isSpinnerLoading(true);
+      
       this.objectList = this.objectNames;
-      this.isSpinnerLoading(false);
+      
     }
   }
 
   async filterObjectNames(searchKeyword) {
     let newObjectList = [];
-    this.isSpinnerLoading(true);
     for (let i = 0; i < this.objectList.length; i++) {
       if (
         this.objectList[i].objectName
@@ -111,7 +110,6 @@ export default class DataBackupScreen1 extends LightningElement {
       }
     }
     this.objectList = newObjectList;
-    this.isSpinnerLoading(false);
   }
 
   handleAllCheckboxChange(event) {
@@ -374,7 +372,7 @@ export default class DataBackupScreen1 extends LightningElement {
         scheduleDate = this.ScheduleDateAws;
       }
 
-      
+
       ScheduleDataBackup({ ObjectApiNames: this.selectedObjectNames, credentials: JSON.stringify(credential), fromDate: this.fromDate, toDate: this.toDate, scheduleDate: scheduleDate })
         .then(data => {
           this.isscheduleSpinner = false;
@@ -547,8 +545,14 @@ export default class DataBackupScreen1 extends LightningElement {
   validateSchDate() {
     const currentDate = new Date();
     const enterDate = new Date(this.schDate);
-    if (enterDate < currentDate) {
-      this.showToast("Warning", "Scheduled Date cannot be less than today's date", "error");
+
+    const currentDateWithoutTime = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    const enterDateWithoutTime = new Date(enterDate.getFullYear(), enterDate.getMonth(), enterDate.getDate());
+  
+    if (enterDateWithoutTime < currentDateWithoutTime) {
+      this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
+    } else if (enterDateWithoutTime.getTime() === currentDateWithoutTime.getTime() && enterDate < currentDate) {
+      this.showToast("Warning", "Scheduled time cannot be earlier than the current time", "error");
     }
   }
 

@@ -9,7 +9,7 @@ public With Sharing class ScheduleMetadataRecovery implements schedulable{
         AsyncId = AsyncResultId;
     }
     Public void execute(SchedulableContext sc){
-        system.debug(AsyncId);
+        //system.debug(AsyncId);
         MetadataRecovery.CheckDeployStatus(AsyncId);
     }
 }

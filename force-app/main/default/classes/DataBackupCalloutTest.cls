@@ -90,7 +90,7 @@ private class DataBackupCalloutTest {
             insert  contentVersion;
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
 }

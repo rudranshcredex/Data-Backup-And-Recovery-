@@ -105,8 +105,8 @@ public With Sharing class DataRecovery {
                     Map<String,object> objectdata = (Map<string,object>)objectsList[j];
                     objectsWithData.put((String)objectdata.get('objectName'),blob.valueOf((String)objectdata.get('CsvData')));
                 }
-                system.debug('objectWithData');
-                system.debug(objectsWithData);
+                //system.debug('objectWithData');
+                //system.debug(objectsWithData);
                 DataRecoveryCallout.createInsertJob(objectsWithData);
             }    
             

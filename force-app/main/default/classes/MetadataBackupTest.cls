@@ -27,15 +27,12 @@ public With Sharing class MetadataBackupTest {
     @isTest
     static void testCheckRetrieveStatus_For_Local(){
         integer futureInvocation;
-        test.startTest();
-        
-            Test.setMock(HttpCalloutMock.class, new MetadataBackupResponseGenerator('checkRetrieveStatus'));
-            MetadataBackup.CheckRetrieveStatus('AsyncResultId',getCredentials(true,false));
-        	futureInvocation = Limits.getFutureCalls();
-        
-        test.stopTest();
-       
-        system.assertEquals(1, futureInvocation,'Number of Future Invocation should be 1');
+test.startTest();
+    Test.setMock(HttpCalloutMock.class, new MetadataBackupResponseGenerator('checkRetrieveStatus'));
+    MetadataBackup.CheckRetrieveStatus('AsyncResultId', getCredentials(true, false));
+    futureInvocation = Limits.getFutureCalls();
+test.stopTest();
+system.assertEquals(1, futureInvocation,'Number of Future Invocation should be 1');
     }
     
     @isTest

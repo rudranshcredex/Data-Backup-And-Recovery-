@@ -26,9 +26,9 @@ public class ScheduleDataBackup implements schedulable {
     
      // This constructor is use to take inputs to pass to every calls based on context Type
     public ScheduleDataBackup(Map<String,String> objectsWithId,String batchName,String context){
-        system.debug('inside schedule');
-        system.debug(batchName);
-        system.debug(objectsWithId);
+        //system.debug('inside schedule');
+        //system.debug(batchName);
+        //system.debug(objectsWithId);
         objectWithJobIds = objectsWithId;
         batch = batchName;
         contexts = Context;

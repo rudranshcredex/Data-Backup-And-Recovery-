@@ -30,7 +30,7 @@ public With Sharing class AwsCredentials {
             CustomMetadata =  [SELECT Id,DeveloperName,AccessKey__c,SecretKey__c,Region_Name__c FROM AwsCredential__mdt Where DeveloperName=:name WITH SECURITY_ENFORCED Limit 1];
         }
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
         return CustomMetadata;
     }

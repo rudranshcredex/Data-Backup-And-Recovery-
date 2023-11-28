@@ -171,5 +171,4 @@ export default class MetadataRecoveryScreen extends LightningElement {
     this.showScreen1 = this.step == 1;
     this.currentStep = "" + this.step;
   }
-
 }

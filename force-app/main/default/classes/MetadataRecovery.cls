@@ -84,13 +84,13 @@ public class MetadataRecovery {
         {
             AsyncResultId = fetchAsyncId(response.getBody());
         }
-        system.debug(AsyncResultId);
+        //system.debug(AsyncResultId);
         Datetime sysTime = System.now().addminutes(1);
         String CRON_EXPRESSION = '' + sysTime.second() + ' ' + sysTime.minute() + ' ' + sysTime.hour() + ' ' + sysTime.day() + ' ' + sysTime.month() + ' ? ' + sysTime.year();
         System.schedule('Schedule Metadata Recovery'+system.now().addminutes(2), CRON_EXPRESSION, new ScheduleMetadataRecovery(AsyncResultId));
     }
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
     }
     
@@ -105,14 +105,14 @@ public class MetadataRecovery {
             HttpRequest request = createJobRequest();
             request.setBody(generateEnvelopeForCheckDeployStatus(asyncResultId));
             HttpResponse response = http.send(request);
-            system.debug(response.getBody());
+            //system.debug(response.getBody());
             
             if(response.getStatusCode()==200 || response.getStatusCode()==201){
                 responseOfRecovery = fetchDelpoyResult(response.getBody());
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
     }
     
@@ -140,7 +140,7 @@ public class MetadataRecovery {
                         for(Dom.XmlNode detailElement2:detailElement1.getChildElements())
                         {
                             if(detailElement2.getName()=='details'){
-                                system.debug(detailElement2.getChildElements());
+                                //system.debug(detailElement2.getChildElements());
                                 for(Dom.XmlNode detailElement3:detailElement2.getChildElements()){
                                     componentSuccesses.add(detailElement3);
                                 }                           
@@ -213,7 +213,7 @@ System.debug('Component Type: ' + type);
 System.debug('Full Name: ' + name);
 }*/
             
-    system.debug(recoveryData);
+    //system.debug(recoveryData);
             
             String result = EmailAndNotification.sendMetadataRecoveryResultEmail(JSON.serialize(recoveryData));
             if(result =='Success'){
@@ -221,7 +221,7 @@ System.debug('Full Name: ' + name);
             }
         }
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
         return recoveryData;
     }
@@ -253,7 +253,7 @@ System.debug('Full Name: ' + name);
         }  
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
         return AsyncResultId;
     }

@@ -8,8 +8,8 @@ public With sharing class EmailAndNotification {
     	@description => This method is use to send Email with attached data  to the Current user based on Attachment Type
     */
     Public static String sendEmailToCurrentUser(blob attachmentBody,String AttachmentType){
-        system.debug('in email');
-        system.debug(attachmentBody);
+        //system.debug('in email');
+        //system.debug(attachmentBody);
         String response;
         String currentDateTime = DateTime.now().format('yyyy/MM/dd hh:mm:ss');
         String Filename;
@@ -33,8 +33,8 @@ public With sharing class EmailAndNotification {
             emailAttachment.setBody(attachmentBody);
             
             attachments.add(emailAttachment);
-            system.debug('emailAttachment');
-            system.debug(emailAttachment);
+            //system.debug('emailAttachment');
+            //system.debug(emailAttachment);
             Messaging.SingleEmailMessage emailMessage =new Messaging.SingleEmailMessage();
             
             emailMessage.setToAddresses(new List<String>{userinfo.getUserEmail()});
@@ -50,34 +50,34 @@ public With sharing class EmailAndNotification {
             
             if(AttachmentType=='Data'){
                 EmailTemplate emailTemplate = [select id,name from EmailTemplate where name='data_backup' WITH SECURITY_ENFORCED LIMIT 1];
-                system.debug(emailTemplate);
-                system.debug('emailTemplate');
+                //system.debug(emailTemplate);
+                //system.debug('emailTemplate');
                 emailMessage.setTemplateId(emailTemplate.id);
             }
             
             emailMessage.setFileAttachments(attachments);
             emailMessage.targetobjectid = userinfo.getUserId();
             emailMessage.setSaveAsActivity(false);
-            system.debug('emailMessage');
-            system.debug(emailMessage);
+            //system.debug('emailMessage');
+            //system.debug(emailMessage);
             List<Messaging.sendEmailResult> emailResult = Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{emailMessage});
             for(Messaging.sendEmailResult result:emailResult){ 
                 if(result.isSuccess()){
-                    system.debug('Email sent Successfully');
+                    //system.debug('Email sent Successfully');
                     response = 'Success';
                 }
                 else{  
                     response = 'Error';
                     for(Messaging.sendEmailError error: result.getErrors()){
                         response = error.getMessage();
-                        system.debug(error.getMessage());
-                        system.debug(error.getStatusCode());
+                        //system.debug(error.getMessage());
+                        //system.debug(error.getStatusCode());
                     }
                 }
             }
         } 
         catch(Exception ex){
-            system.debug(ex.getMessage());
+            //system.debug(ex.getMessage());
         }
         
         return response;
@@ -90,8 +90,8 @@ public With sharing class EmailAndNotification {
     Public static String sendMetadataRecoveryResultEmail(String resultBody){
         String response;
         Map<String,object> recoveryResponse = (Map<String,object>)JSON.deserializeUntyped(resultBody);
-        system.debug('inside recovery response');
-        system.debug(recoveryResponse);
+        //system.debug('inside recovery response');
+        //system.debug(recoveryResponse);
         Messaging.SingleEmailMessage emailMessage =new Messaging.SingleEmailMessage();
         
         emailMessage.setToAddresses(new List<String>{userinfo.getUserEmail()});
@@ -110,7 +110,7 @@ public With sharing class EmailAndNotification {
         
         emailMessage.setPlainTextBody(Body);
         
-        system.debug(emailMessage);
+        //system.debug(emailMessage);
         List<Messaging.sendEmailResult> emailResult = Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{emailMessage});
         
         for(Messaging.sendEmailResult result:emailResult){
@@ -121,8 +121,8 @@ public With sharing class EmailAndNotification {
             else{  
                 response = 'Error';
                 for(Messaging.sendEmailError error: result.getErrors()){
-                    system.debug(error.getMessage());
-                    system.debug(error.getStatusCode());
+                    //system.debug(error.getMessage());
+                    //system.debug(error.getStatusCode());
                 }
             }
         }
@@ -164,7 +164,7 @@ public With sharing class EmailAndNotification {
             cstmNotifn.send(new Set<String>{userinfo.getUserId()});
         }
         catch(Exception ex){
-            system.debug(ex.getMessage()+' at '+ex.getLineNumber());
+            //system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
     }
 }

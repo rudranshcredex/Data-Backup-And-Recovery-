@@ -45,6 +45,7 @@ public WITH SHARING class AwsS3Integration {
         
         string signature=EncodingUtil.convertToHex(blobSignature );
         string headersInSignature='date;host;x-amz-content-sha256;x-amz-date';
+        system.debug('CreateAuthHeader return --->'+(algorithm + ' Credential=' + awsKey + '/' + dateStamp + '/' + regionName + '/' + service + '/aws4_request, SignedHeaders='+headersInSignature+', Signature=' + signature));
         return (algorithm + ' Credential=' + awsKey + '/' + dateStamp + '/' + regionName + '/' + service + '/aws4_request, SignedHeaders='+headersInSignature+', Signature=' + signature);
     }
     
@@ -62,8 +63,7 @@ public WITH SHARING class AwsS3Integration {
         
         String kSecret = 'AWS4' + awsSecret;
         Blob kDate = Crypto.generateMac('HmacSHA256', Blob.valueOf(dateStamp), Blob.valueOf(kSecret));
-        System.debug('kDate'+ kDate);
-        System.debug('Region'+ regionName);
+        
         Blob kRegion = Crypto.generateMac('HmacSHA256', Blob.valueOf(regionName), kDate);
         Blob kService = Crypto.generateMac('HmacSHA256', Blob.valueOf(service), kRegion);
         Blob kSigning = Crypto.generateMac('HmacSHA256', Blob.valueOf('aws4_request'), kService);
@@ -133,11 +133,10 @@ public WITH SHARING class AwsS3Integration {
             req.setHeader('x-amz-date', formattedDateString);
             req.setHeader('x-amz-content-sha256','UNSIGNED-PAYLOAD');
             req.setHeader('Authorization',CreateAuthHeader('Buckets',formattedDateString,longDate,dateStamp));
-            system.debug('Response' + JSON.serializePretty(req));
+            
             Http http = new Http();
             
             HTTPResponse response = http.send(req);
-            
             
             if (response.getStatusCode() == 200 || response.getStatusCode()==201) 
             {

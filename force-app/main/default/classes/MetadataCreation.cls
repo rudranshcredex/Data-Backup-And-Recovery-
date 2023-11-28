@@ -18,11 +18,11 @@ public with sharing class MetadataCreation {
             
             HttpResponse response = new Http().send(req);
             if (response.getStatusCode() == 200) {
-                system.debug('success');
+                //system.debug('success');
             } else {
                
-                System.debug('Error creating custom metadata record. Status code: ' + response.getStatusCode());
-                System.debug('Response body: ' + response.getBody());
+                //System.debug('Error creating custom metadata record. Status code: ' + response.getStatusCode());
+                //System.debug('Response body: ' + response.getBody());
             }
         }
         catch(Exception ex){
@@ -65,10 +65,10 @@ public with sharing class MetadataCreation {
             + '    </env:Header>'
             + '    <env:Body>'
             + '        <createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">'
-            + '            <metadata xsi:type="RemoteSiteSetting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-            + '                <fullName>'+fullName+'</fullName>' 
-            + '                <url>'+Url+'</url>' 
-            + '                <isActive>true</isActive>' 
+            + '            <metadata xsi:type="CTBR__RemoteSiteSetting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+            + '                <CTBR__fullName>'+fullName+'</CTBR__fullName>' 
+            + '                <CTBR__url>'+Url+'</CTBR__url>' 
+            + '                <CTBR__isActive>true</CTBR__isActive>' 
             + '            </metadata>'
             + '        </createMetadata>'
             + '    </env:Body>'
@@ -79,7 +79,7 @@ public with sharing class MetadataCreation {
 @description => This method is use to generate Soap Envelop to delete Remote Site setting
 */
     private static String generateEnvelopForDeleteRemoteSiteSetting(String fullName){
-        system.debug(fullName);
+        //system.debug(fullName);
         return '<?xml version="1.0" encoding="UTF-8"?>'
             + '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
             + '    <env:Header>'
@@ -110,19 +110,19 @@ public with sharing class MetadataCreation {
             + '    <env:Body>'
             + '        <createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">'
             + '            <metadata xsi:type="CustomMetadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-            + '                <fullName>' + 'AwsCredential__mdt.'+Name+'</fullName>' 
+            + '                <fullName>' + 'CTBR__AwsCredential__mdt.'+Name+'</fullName>' 
             + '                <label>' + Name+ '</label>' 
             + '                <protected>false</protected>' 
             + '                <values>'
-            + '                    <field>' + 'AccessKey' + '__c</field>' 
+            + '                    <field>' + 'CTBR__AccessKey' + '__c</field>' 
             + '                    <value>' + AccessKey + '</value>'
             + '                </values>'
             + '                <values>'
-            + '                    <field>' + 'Region_Name' + '__c</field>' 
+            + '                    <field>' + 'CTBR__Region_Name' + '__c</field>' 
             + '                    <value>' + RegionName + '</value>' 
             + '                </values>'
             + '                <values>'
-            + '                    <field>' + 'SecretKey' + '__c</field>' 
+            + '                    <field>' + 'CTBR__SecretKey' + '__c</field>' 
             + '                    <value>' + SecretKey + '</value>' 
             + '                </values>'
             + '            </metadata>'
