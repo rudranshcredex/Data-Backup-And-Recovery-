@@ -13,7 +13,7 @@
     content: 'Fetching Credentials Please Wait ......';
     width: 100%;
     text-align: center;
-    top: calc(50% + 3em);
+    top: calc(40% + 3em);
     font-weight: bold;
 
 }
@@ -70,7 +70,13 @@
     flex-direction: row;
     justify-content: space-between;
   }
-
+.buttons-color{
+    background: #0284C8;
+    color: white;
+    border: none;
+    padding: 7px;
+    border-radius: 8px;
+}
 @media (max-width: 460px) {
     .aws-logo {
         margin: 0 0 2% 0;

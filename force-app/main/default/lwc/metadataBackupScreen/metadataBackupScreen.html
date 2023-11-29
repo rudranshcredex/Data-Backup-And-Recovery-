@@ -7,6 +7,7 @@
 -->
 <template>
     <div style="background:  linear-gradient(180deg, #0088cf 0%, rgba(0, 136, 207, 0) 100%); height: 90vh;">
+
         <!--Screen-1 -->
         <template if:true={showScreen1}>
             <div style="height: 100%;">
@@ -25,7 +26,7 @@
                 </template>
                 <div style="display: flex; justify-content: center;">
 
-                    
+
                     <!-- Objects Table-->
                     <div class="styled-table" if:false={isLoading}>
                         <table border="1" width="80%" cellpadding="1" cellspacing="1">
@@ -56,10 +57,7 @@
                             </tbody>
                         </table>
                     </div>
-
-
                 </div>
-
             </div>
         </template>
 
@@ -287,53 +285,18 @@
                 </div>
             </div>
         </template>
-
-
-
-        <!-- <template if:true={openModal}>
-            <div class="modal">
-                <lightning-modal-header>Select Dates To Schedule Backup Process</lightning-modal-header>
-                <lightning-modal-body>
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal" value={schdate}
-                        onchange={handleScheduleDate} step=60></lightning-input>
-                </lightning-modal-body>
-                <lightning-modal-footer>
-                    <div>
-                        <lightning-button variant="brand" label="Close" onclick={handleCloseModal}></lightning-button>
-                        <lightning-button variant="brand" label="Schedule" name="ScheduleLocal" onclick={ScheduleBackup}
-                            style="padding-left: 1%"></lightning-button>
-                    </div>
-                </lightning-modal-footer>
-            </div>
-        </template> -->
-
-        <!-- <template if:true={openModal1}>
-            <div class="modal1">
-                <lightning-modal-header>Select Dates-</lightning-modal-header>
-                <lightning-modal-body>
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal" value={schdate}
-                        onchange={handleScheduleDate} step=60></lightning-input>
-                </lightning-modal-body>
-                <lightning-modal-footer>
-                    <div>
-                        <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
-                        <lightning-button variant="brand" label="Schedule" name="ScheduleAws" onclick={ScheduleBackup}
-                            style="padding-left: 1%"></lightning-button>
-                    </div>
-                </lightning-modal-footer>
-            </div>
-        </template> -->
         <template if:true={retrievalLoading}>
             <lightning-spinner class="backupSpins"></lightning-spinner>
         </template>
+        <div if:true={awsModal}>
+            <c-lightning-Modal></c-lightning-Modal>
+        </div>
+        <template if:true={isscheduleSpinner}>
+            <lightning-spinner class="backupSpins"></lightning-spinner>
+        </template>
     </div>
-    <div if:true={awsModal}>
-        <c-lightning-Modal></c-lightning-Modal>
-    </div>
-    <template if:true={isscheduleSpinner}>
-        <lightning-spinner class="backupSpins"></lightning-spinner>
-    </template>
-    <!--Footer-->
+
+
     <lightning-card>
         <div class="footer">
             <div style="width: 50%;">
@@ -398,7 +361,5 @@
         </div>
         <div class="slds-backdrop slds-backdrop_open"></div>
     </template>
-
-
 
 </template>

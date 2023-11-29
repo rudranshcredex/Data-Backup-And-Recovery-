@@ -2,7 +2,7 @@
   @description       : 
   @author            : Rudransh Shukla And Nikhil Garg
   @group             : 
-  @last modified on  : 11-24-2023
+  @last modified on  : 11-29-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -144,23 +144,22 @@
                 </div>
             </div>
         </template>
-
-        <lightning-card>
-            <div class="footer">
-                <div style="width: 50%">
-                    <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
-                        <lightning-progress-step label="Select Service" value="1">
-                        </lightning-progress-step>
-                        <lightning-progress-step label="Success" value="2">
-                        </lightning-progress-step>
-                    </lightning-progress-indicator>
-                </div>
-            </div>
-        </lightning-card>
-
-
-        <template if:true={retrievalLoading}>
-            <lightning-spinner class="backupSpins"></lightning-spinner>
-        </template>
+        
+        
     </div>
+    <lightning-card>
+        <div class="footer">
+            <div style="width: 50%">
+                <lightning-progress-indicator current-step={currentStep} type="base" variant="brand">
+                    <lightning-progress-step label="Select Service" value="1">
+                    </lightning-progress-step>
+                    <lightning-progress-step label="Success" value="2">
+                    </lightning-progress-step>
+                </lightning-progress-indicator>
+            </div>
+        </div>
+    </lightning-card>
+    <template if:true={retrievalLoading}>
+        <lightning-spinner class="backupSpins"></lightning-spinner>
+    </template>
 </template>

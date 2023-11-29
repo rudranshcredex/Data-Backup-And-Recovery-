@@ -17,10 +17,10 @@
                             <h2 class="slds-text-heading_medium">Filter Records by Date</h2>
                         </header>
                         <div class="slds-modal__content slds-p-around_medium">
-                            <lightning-input class="custom-date-picker" name="fromDate" type="date" label="From" onchange={handleDate}
-                                value={selectedDate} style="padding-right: 2%"></lightning-input>
-                            <lightning-input class="custom-date-picker" name="toDate" type="date" label="To" onchange={handleDate}
-                                value={selectedDate}></lightning-input>
+                            <lightning-input class="custom-date-picker" name="fromDate" type="date" label="From"
+                                onchange={handleDate} value={selectedDate} style="padding-right: 2%"></lightning-input>
+                            <lightning-input class="custom-date-picker" name="toDate" type="date" label="To"
+                                onchange={handleDate} value={selectedDate}></lightning-input>
                         </div>
                         <footer class="slds-modal__footer">
                             <lightning-button variant="brand" label="Ok" onclick={handleClose}
@@ -56,8 +56,10 @@
                             <thead>
                                 <tr>
                                     <th style="background-color:darkgrey; width:10%;">
-                                        <lightning-input type="checkbox" data-id="selectAll"
-                                            onchange={handleAllCheckboxChange}></lightning-input>
+                                        <div style="display:flex; align-items: center; justify-content: center;">
+                                            <lightning-input type="checkbox" data-id="selectAll"
+                                                onchange={handleAllCheckboxChange}></lightning-input>
+                                        </div>
                                     </th>
                                     <th style="background-color:darkgrey; width: 90%;">
                                         Object Names
@@ -68,9 +70,11 @@
                                 <template for:each={objectList} for:item="object">
                                     <tr key={object.objectId}>
                                         <td style="width: 10%;">
-                                            <lightning-input type="checkbox" checked={object.isSelected}
-                                                data-id={object.objectId}
-                                                onchange={handlecheckboxChange}></lightning-input>
+                                            <div style="display:flex; align-items: center; justify-content: center;">
+                                                <lightning-input type="checkbox" checked={object.isSelected}
+                                                    data-id={object.objectId}
+                                                    onchange={handlecheckboxChange}></lightning-input>
+                                            </div>
                                         </td>
                                         <td style="width: 90%;">
                                             {object.objectName}
@@ -255,7 +259,7 @@
                 </div>
             </div>
         </template>
-        
+
         <template if:true={AwsScheduleScreen}>
             <div class="final-screen">
                 <div style="width: 80%; padding-top: 4%">
@@ -343,9 +347,11 @@
                         onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">
-                    <lightning-button variant="brand" label="Close" onclick={handleCloseModal}></lightning-button>
                     <lightning-button variant="brand" name='ScheduleLocal' label="Schedule Export"
-                        onclick={ScheduleBackup} style="padding-left: 1%"></lightning-button>
+                        onclick={ScheduleBackup}></lightning-button>
+                    <lightning-button label="Close" variant="brand" onclick={handleCloseModal}
+                        style="padding-left: 1%"></lightning-button>
+
                 </footer>
             </div>
         </div>
@@ -363,9 +369,12 @@
                         onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">
-                    <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
                     <lightning-button variant="brand" name='ScheduleAws' label="Schedule Export"
                         onclick={ScheduleBackup} style="padding-left: 1%"></lightning-button>
+
+                    <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
+
+
                 </footer>
             </div>
         </div>

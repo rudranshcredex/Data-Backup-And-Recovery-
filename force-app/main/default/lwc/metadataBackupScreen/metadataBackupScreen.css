@@ -18,7 +18,7 @@
   
   .styled-table {
     width: 55%;
-    height: 66vh;
+    height: 69vh;
     overflow-y: auto;
     border-collapse: collapse;
     min-width: 400px;
@@ -64,8 +64,8 @@
     display: flex;
     justify-content: space-between;
     bottom: 0;
-    align-items: center;
-    align-content: center;
+    /* align-items: center; */
+    /* align-content: center; */
     margin-left: 2%;
     margin-right: 2%;
     height: 5vh;
@@ -282,7 +282,7 @@
     }
     .styled-table{
     width: 90%;
-    height: 60vh;
+    height: 69vh;
     overflow-y: auto;
     border-collapse: collapse;
     min-width: 0;

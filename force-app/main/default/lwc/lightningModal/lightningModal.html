@@ -155,14 +155,14 @@
           <div class="footer-button">
             <template if:true={forBucketsButton}>
               <div if:true={haveCreds}>
-                <button onclick={getBuckets}>Get Buckets</button>
+                <button class="buttons-color" onclick={getBuckets}>Get Buckets</button>
               </div>
             </template>
             <div>
-              <button onclick={AddCreds}>Add Credentials</button>
+              <button class="buttons-color" onclick={AddCreds}>Add Credentials</button>
             </div>
             <div>
-              <button onclick={closeModal}>Save & Close</button>
+              <button class="buttons-color" onclick={closeModal}>Save & Close</button>
             </div>
           </div>
         </footer>

@@ -34,14 +34,24 @@ export default class appHomeScreen extends LightningElement {
     this.backupScreen = true;
     this.HomePage = false;
     this.recoveryScreen = false;
-    this.template.querySelector('c-backup-screen').handleReturnBackup();
+    let backupScreenElement = this.template.querySelector('c-backup-screen');
+    if (backupScreenElement) {
+      backupScreenElement.handleReturnBackup();
+    } else {
+      console.error("c-backup-screen element not found");
+    }
   }
   handleRecovery() {
     console.log("Inside recovery");
     this.recoveryScreen = true;
     this.backupScreen = false;
     this.HomePage = false;
-    this.template.querySelector('c-recovery-screen').handleReturnRecovery();
+    let recoveryScreenElement = this.template.querySelector('c-recovery-screen');
+    if (recoveryScreenElement) {
+      recoveryScreenElement.handleReturnRecovery();
+    } else {
+      console.error("c-backup-screen element not found");
+    }
   }
-  
+
 }
