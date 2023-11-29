@@ -65,6 +65,11 @@
     text-align: center;
     font-size: 20px;
 }
+.footer-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
 @media (max-width: 460px) {
     .aws-logo {
@@ -72,4 +77,15 @@
         width: 9%;
         height: 16%;
     }
+    .footer-button {
+        flex-direction: column;
+        align-items: stretch;
+      }
+  
+      .footer-button button,
+      .footer-button lightning-button {
+        width: 100%;
+        margin: 5px 0;
+      }
+   
 }

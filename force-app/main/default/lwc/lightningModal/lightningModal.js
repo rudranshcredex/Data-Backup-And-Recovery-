@@ -184,12 +184,12 @@ export default class LightningModal extends LightningElement {
     }
     async getBuckets() {
         this.Buckets = null;
-        this.isBucketsLoading = true;
         if (this.credsName == null || this.credsName == 'Select') {
             this.showToast('Required', 'Kindly select name of credentials to get Buckets', 'error');
             return;
         }
 
+        this.isBucketsLoading = true;
         await getCredentailsOnName({ name: this.credsName })
         
             .then(data => {

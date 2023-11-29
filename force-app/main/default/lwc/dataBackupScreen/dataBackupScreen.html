@@ -2,7 +2,7 @@
   @description       : 
   @author            : Rudransh Shukla And  Nikhil Garg
   @group             : 
-  @last modified on  : 11-28-2023
+  @last modified on  : 11-29-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -10,49 +10,6 @@
 
         <!--Screen-1 -->
         <template if:true={showScreen1}>
-            <!-- <template if:true={filterByDate}>
-                <div class="slds-modal slds-fade-in-open">
-                    <div class="slds-modal__container slds-align_absolute-center">
-                        <lightning-modal-header label="Filter Records by Date"></lightning-modal-header>
-                        <lightning-modal-body>
-                            <lightning-input name="fromDate" type="date" label="From" onchange={handleDate}
-                                value={selectedDate}></lightning-input>
-                            <lightning-input name="toDate" type="date" label="To" onchange={handleDate}
-                                value={selectedDate}></lightning-input>
-                        </lightning-modal-body>
-                        <lightning-modal-footer>
-                            <div class="slds-text-align_center">
-                                <lightning-button variant="brand" label="Ok" onclick={handleClose}></lightning-button>
-                            </div>
-                        </lightning-modal-footer>
-                    </div>
-                </div>
-            </template> -->
-
-
-
-            <!-- <template if:true={filterByDate}>
-                <div class="slds-modal slds-fade-in-open">
-                    <div class="slds-modal__container">
-                        <header class="slds-modal__header">
-                            <h2 class="slds-text-heading_medium">Filter Records by Date</h2>
-                        </header>
-                        <div class="slds-modal__content slds-p-around_medium" style="max-height: 300px; overflow-y: auto;">
-                            <lightning-input name="fromDate" type="date" label="From" onchange={handleDate}
-                                value={selectedDate}></lightning-input>
-                            <lightning-input name="toDate" type="date" label="To" onchange={handleDate}
-                                value={selectedDate}></lightning-input>
-                        </div>
-                        <footer class="slds-modal__footer">
-                            <lightning-button variant="brand" label="Ok" onclick={handleClose}
-                                style="padding-left: 10px;"></lightning-button>
-                        </footer>
-                    </div>
-                </div>
-                <div class="slds-backdrop slds-backdrop_open"></div>
-            </template>
-             -->
-
             <template if:true={filterByDate}>
                 <div class="slds-modal slds-fade-in-open">
                     <div class="slds-modal__container">
@@ -61,7 +18,7 @@
                         </header>
                         <div class="slds-modal__content slds-p-around_medium">
                             <lightning-input class="custom-date-picker" name="fromDate" type="date" label="From" onchange={handleDate}
-                                value={selectedDate}></lightning-input>
+                                value={selectedDate} style="padding-right: 2%"></lightning-input>
                             <lightning-input class="custom-date-picker" name="toDate" type="date" label="To" onchange={handleDate}
                                 value={selectedDate}></lightning-input>
                         </div>
@@ -73,12 +30,6 @@
                 </div>
                 <div class="slds-backdrop slds-backdrop_open"></div>
             </template>
-            
-
-
-
-
-
             <div style="height: 100%;">
                 <div class="currentUser">
                     <span>Current User - {username}</span>
@@ -294,8 +245,6 @@
                                             <span><b>Export Details-</b></span><br>
                                             <span> <b>Exported By-</b> {username}</span><br>
                                             <span> <b>Current user Email-</b> {userEmail}</span><br>
-                                            <!-- <span> <b>Scheduled Date-</b> {date}</span><br> -->
-
                                             <span>{lowerText}</span>
                                         </div>
                                     </div>

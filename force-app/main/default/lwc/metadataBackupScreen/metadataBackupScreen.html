@@ -2,11 +2,11 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 11-28-2023
+  @last modified on  : 11-29-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
-    <div style="background:  linear-gradient(180deg, #0088cf 0%, rgba(0, 136, 207, 0) 100%); height: 80vh;">
+    <div style="background:  linear-gradient(180deg, #0088cf 0%, rgba(0, 136, 207, 0) 100%); height: 90vh;">
         <!--Screen-1 -->
         <template if:true={showScreen1}>
             <div style="height: 100%;">
@@ -24,36 +24,8 @@
                     <lightning-spinner class="spins"></lightning-spinner>
                 </template>
                 <div style="display: flex; justify-content: center;">
-                    <!-- <div class="styled-table" if:false={isLoading}>
-                        <table border="1" width="80%" cellpadding="1" cellspacing="1">
-                            <thead>
-                                <tr>
-                                    <th style="background-color:darkgrey; width:10%;">
-                                        <lightning-input type="checkbox" data-id="selectAll"
-                                            onchange={handleAllCheckboxChange}></lightning-input>
-                                    </th>
-                                    <th style="background-color:darkgrey; width: 90%;">
-                                        Metadata Type
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template for:each={metadataList} for:item="Metadata">
-                                    <tr key={Metadata.objectId}>
-                                        <td style="width: 10%;">
-                                            <lightning-input type="checkbox" checked={Metadata.isSelected}
-                                                data-id={Metadata.objectId}
-                                                onchange={handlecheckboxChange}></lightning-input>
-                                        </td>
-                                        <td style="width: 90%;">
-                                            {Metadata.metadataType}
-                                        </td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                    </div> -->
 
+                    
                     <!-- Objects Table-->
                     <div class="styled-table" if:false={isLoading}>
                         <table border="1" width="80%" cellpadding="1" cellspacing="1">

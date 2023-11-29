@@ -2,7 +2,7 @@
   @description       : 
   @author            : Nikhil Garg
   @group             : 
-  @last modified on  : 11-27-2023
+  @last modified on  : 11-29-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -152,17 +152,17 @@
         </template>
         <!--Footer-->
         <footer class="slds-modal__footer" if:false={isOpenCredsModal}>
-          <div class="footer-button" style="display: flex; justify-content: space-between;">
+          <div class="footer-button">
             <template if:true={forBucketsButton}>
               <div if:true={haveCreds}>
-                <lightning-button variant="brand" label="Get Buckets" onclick={getBuckets}></lightning-button>
+                <button onclick={getBuckets}>Get Buckets</button>
               </div>
             </template>
-            <div style="padding-right: 60%">
-              <lightning-button variant="brand" label="Add Credentials" onclick={AddCreds}></lightning-button>
+            <div>
+              <button onclick={AddCreds}>Add Credentials</button>
             </div>
             <div>
-              <lightning-button variant="brand" label="Save & Close" onclick={closeModal}></lightning-button>
+              <button onclick={closeModal}>Save & Close</button>
             </div>
           </div>
         </footer>

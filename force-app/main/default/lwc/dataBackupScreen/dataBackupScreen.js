@@ -237,7 +237,7 @@ export default class DataBackupScreen1 extends LightningElement {
     console.log(event.target.dataset.id);
     console.log('current');
     const dataId = event.currentTarget.getAttribute('data-id');
-    console.log(dataId);
+    console.log('dataid-------->',dataId);
     let divId = event.currentTarget.getAttribute('data-id');
     this.retrievalLoading = true;
 
@@ -254,6 +254,12 @@ export default class DataBackupScreen1 extends LightningElement {
       this.isbackupToLocal = false;
       this.showScreen2 = false;
       this.showScreen1 = false;
+      this.AwsNowScreen=true;
+
+      console.log('this.isbackupToS3---->',this.isbackupToS3);
+      console.log('this.isbackupToLocal------->',this.isbackupToLocal);
+      console.log('this.AwsNowScreen------->',this.AwsNowScreen);
+
     }
 
     if (this.isbackupToS3 && (this.awsAccessKey === null || this.awsSecretKey === null || this.awsRegion === null || this.awsBucket === null)) {
