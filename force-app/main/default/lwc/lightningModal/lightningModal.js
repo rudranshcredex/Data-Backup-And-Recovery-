@@ -19,28 +19,28 @@ export default class LightningModal extends LightningElement {
     @track selectedCredentials = 'Select';
     @track BucketSelected = 'Select';
     @track selectedFile = 'Select';
-    
-    
+
+
     accessKey = null;
     secretKey = null;
     region = null;
     Buckets = null;
     files = null;
     fileData = null;
-    
+
     isBucketsLoading = false;
     isFilesLoading = false;
     haveCreds = false;
     isOpenCredsModal = false;
-   
+
     credsName = null;
     credAlias;
     addcreds = false;
     isLoading = true;
     forBucketsButton = true;
-    awsS3Logo=awsS3Logo;
+    awsS3Logo = awsS3Logo;
     showCredsSpinner = true;
-    
+
 
 
 
@@ -53,19 +53,20 @@ export default class LightningModal extends LightningElement {
         console.log('recovery');
         console.log(this.isrecovery);
         console.log(this.ismodalopen);
-       
+
         await getCredentails()
             .then(data => {
                 console.log(data);
                 this.awsCredentials = data;
+                console.log(' this.awsCredentials=-------->', this.awsCredentials);
                 this.showCredsSpinner = false;
 
-                if (this.awsCredentials.length ==0) {
-                   this.showToast('No Credentials','No Credentials found Please Enter Credentials','error');
+                if (this.awsCredentials.length == 0) {
+                    this.showToast('No Credentials', 'No Credentials found Please Enter Credentials', 'error');
                 }
 
                 if (this.awsCredentials.length > 0) {
-                    this.haveCreds = true; 
+                    this.haveCreds = true;
                 }
                 console.log(this.awsCredentials);
                 console.log(data.length);
@@ -84,7 +85,7 @@ export default class LightningModal extends LightningElement {
 
     }
 
-    
+
 
     async closeModal() {
         if (this.accessKey === null || this.secretKey === null || this.region === null) {
@@ -99,7 +100,7 @@ export default class LightningModal extends LightningElement {
             else {
                 this.showToast('Success', 'credentials saved successfully go for Backup', 'success');
             }
-        }else if (this.isrecovery) {
+        } else if (this.isrecovery) {
             if (this.BucketSelected === null || this.accessKey === null || this.secretKey === null || this.region === null && this.selectedFile === null) {
                 this.showToast('Kindly Review', 'Select creds/Files for recovery', 'error');
             }
@@ -188,7 +189,11 @@ export default class LightningModal extends LightningElement {
         this.forBucketsButton = true;
 
         this.selectedCredentials = event.target.value;
-        
+        if (this.selectedCredentials !== 'Select') {
+            this.awsCredentials = this.awsCredentials.filter(creds => creds.DeveloperName !== this.selectedCredentials);
+            console.log('this.awsCredentials-------->', JSON.stringify(this.awsCredentials));
+        }
+
         console.log('this.selectedCredentials------>', this.selectedCredentials);
     }
     async getBuckets() {
@@ -200,9 +205,9 @@ export default class LightningModal extends LightningElement {
 
         this.isBucketsLoading = true;
         await getCredentailsOnName({ name: this.credsName })
-        
+
             .then(data => {
-                console.log('data---->',data);
+                console.log('data---->', data);
                 this.accessKey = data.CTBR__AccessKey__c;
                 this.secretKey = data.CTBR__SecretKey__c;
                 this.region = data.CTBR__Region_Name__c;
@@ -251,9 +256,10 @@ export default class LightningModal extends LightningElement {
                 }
             })
     }
-    
+
     handleSelectedBuckets(event) {
         this.selectedCredBuckets = event.target.value;
+        
         console.log(' this.selectedCredBuckets------>', this.selectedCredBuckets);
     }
 
@@ -301,7 +307,7 @@ export default class LightningModal extends LightningElement {
                 }
             });
 
-                this.showCredsSpinner = false;
+            this.showCredsSpinner = false;
         }
         if (this.haveCreds) {
 
@@ -380,8 +386,8 @@ export default class LightningModal extends LightningElement {
                 console.log('error');
                 console.log(error);
             })
-                
-         
+
+
         getCredentails()
             .then(data => {
                 console.log('get creds');
@@ -395,13 +401,13 @@ export default class LightningModal extends LightningElement {
                 console.log(error);
                 console.log(JSON.stringify(error));
             })
-            console.log('loading');
-            console.log(this.isLoading);
-            //this.isLoading = false;
-            console.log('after');
-            console.log(this.isLoading);
-        
-            this.isOpenCredsModal = false;
+        console.log('loading');
+        console.log(this.isLoading);
+        //this.isLoading = false;
+        console.log('after');
+        console.log(this.isLoading);
+
+        this.isOpenCredsModal = false;
     }
     AddCreds() {
         this.isOpenCredsModal = true;
@@ -418,16 +424,20 @@ export default class LightningModal extends LightningElement {
         });
         this.dispatchEvent(toastEvent);
     }
-
     handlBucketSelect(event) {
-
         console.log(event);
         console.log(event.target.value);
         this.BucketSelected = event.target.value;
-        console.log('BucketSelected------->',this.BucketSelected);
+        console.log('BucketSelected------->', this.BucketSelected);
+
+        if (this.BucketSelected !== 'Select') {
+                    this.Buckets = this.Buckets.filter(bucket => bucket !== this.BucketSelected);
+                    console.log('this.Buckets after filter---->', this.Buckets);
+                }
         //this.isrecovery = true;
         if (this.isrecovery && this.BucketSelected != null) {
             this.isFilesLoading = true;
+
             getFiles({ accessKey: this.accessKey, secretKey: this.secretKey, awsRegion: this.region, bucket: this.BucketSelected })
                 .then(data => {
                     this.isFilesLoading = false;
@@ -446,11 +456,15 @@ export default class LightningModal extends LightningElement {
 
 
     }
-
     getFile(event) {
         console.log('inside get file');
         console.log(event.target.value);
         this.selectedFile = event.target.value;
+
+        if (this.selectedFile !== 'Select') {
+            this.files = this.files.filter(data => data !== this.selectedFile);
+            console.log('this.files---->', this.files);
+        }
 
 
     }

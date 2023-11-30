@@ -2,7 +2,7 @@
   @description       : 
   @author            : Rudransh Shukla And  Nikhil Garg
   @group             : 
-  @last modified on  : 11-29-2023
+  @last modified on  : 11-30-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -340,10 +340,10 @@
         <div class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <b>Select Dates-</b>
+                    <b>Schedule Backup</b>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateLocal"
+                    <lightning-input type="datetime"  name="ScheduleDateLocal"
                         onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">
@@ -362,15 +362,15 @@
         <div class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <b>Select Dates-</b>
+                    <b>Schedule Backup</b>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-input type="datetime" label="Select Date" name="ScheduleDateAws"
+                    <lightning-input type="datetime" name="ScheduleDateAws"
                         onchange={handleScheduleDate} value={schDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">
-                    <lightning-button variant="brand" name='ScheduleAws' label="Schedule Export"
-                        onclick={ScheduleBackup} style="padding-left: 1%"></lightning-button>
+                    <lightning-button variant="brand" name='ScheduleAws' 
+                        onclick={ScheduleBackup} label="Schedule" style="padding-right: 1%"></lightning-button>
 
                     <lightning-button variant="brand" label="Close" onclick={handleCloseModal1}></lightning-button>
 

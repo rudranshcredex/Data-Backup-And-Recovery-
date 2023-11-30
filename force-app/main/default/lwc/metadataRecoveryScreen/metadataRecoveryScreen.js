@@ -155,13 +155,12 @@ export default class MetadataRecoveryScreen extends LightningElement {
     deployMetadata({ zipContent: this.fileData })
       .then(data => {
         console.log('data inside');
-        //this.retrievalLoading = false;
-        //this.RecoveryLocalScreen=true;
+      
         console.log('data');
         console.log(data);
       })
       .catch(error => {
-        //this.retrievalLoading = false;
+       
         console.log('error');
         console.log(error);
       })

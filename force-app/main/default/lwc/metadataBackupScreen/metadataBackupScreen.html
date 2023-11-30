@@ -1,8 +1,8 @@
 <!--
   @description       : 
-  @author            : Rudransh Shukla
+  @author            : Rudransh Shukla and Nikhil Garg
   @group             : 
-  @last modified on  : 11-29-2023
+  @last modified on  : 11-30-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -325,7 +325,7 @@
         <div class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <b>Select Dates To Schedule Backup Process</b>
+                    <b>Schedule Backup</b>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium">
                     <lightning-input type="datetime" name="ScheduleDateLocal" value={schdate}
@@ -345,10 +345,10 @@
         <div class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <b>Select Dates-</b>
+                    <b>Schedule Backup</b>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-input type="datetime" name="ScheduleDateLocal" value={schdate}
+                    <lightning-input type="datetime" name="ScheduleDateAws" value={schdate}
                         onchange={handleScheduleDate} step=60></lightning-input>
                 </div>
                 <footer class="slds-modal__footer">

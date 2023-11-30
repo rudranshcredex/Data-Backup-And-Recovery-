@@ -38,7 +38,7 @@
                   <select class="custom-select" title="Credentials" onchange={handleCreds}>
                     <option>{selectedCredentials}</option>
                     <template for:each={awsCredentials} for:item="creds">
-                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName} onselect={handleSelectedBuckets}>
+                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName} onchange={handleSelectedBuckets}>
                         {creds.DeveloperName}
                       </option>
                     </template>
@@ -128,7 +128,7 @@
                 <h1>Select Files to Backup</h1>
                 <div class="custom-container" title="Select Files of Your S3 Account">
                   <select class="custom-select" title="Files" onchange={getFile}>
-                    <option value="Select">{selectedFile}</option>
+                    <option>{selectedFile}</option>
                     <template for:each={files} for:item="file">
                       <option class="custom-option" key={file} value={file}>{file}</option>
                     </template>
