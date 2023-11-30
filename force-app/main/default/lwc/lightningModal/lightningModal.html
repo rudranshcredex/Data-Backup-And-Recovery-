@@ -2,7 +2,7 @@
   @description       : 
   @author            : Nikhil Garg
   @group             : 
-  @last modified on  : 11-29-2023
+  @last modified on  : 11-30-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -36,12 +36,13 @@
                 <div class="dropdown-container">
                   <h1>Select credentials of Your S3 Account</h1>
                   <select class="custom-select" title="Credentials" onchange={handleCreds}>
-                    <option value="Select">Select</option>
+                    <option>{selectedCredentials}</option>
                     <template for:each={awsCredentials} for:item="creds">
-                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName}>
+                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName} onselect={handleSelectedBuckets}>
                         {creds.DeveloperName}
                       </option>
                     </template>
+
                   </select>
                 </div>
               </template>
@@ -113,7 +114,7 @@
                 <div class="container">
                   <h1>Select Buckets of Your S3 Account</h1>
                   <select class="custom-select" title="Buckets" required onchange={handlBucketSelect}>
-                    <option value={bucket}>Select</option>
+                    <option value={BucketSelected}>{BucketSelected}</option>
                     <template for:each={Buckets} for:item="bucket">
                       <option class="custom-option" key={bucket} value={bucket}>{bucket}</option>
                     </template>
@@ -127,7 +128,7 @@
                 <h1>Select Files to Backup</h1>
                 <div class="custom-container" title="Select Files of Your S3 Account">
                   <select class="custom-select" title="Files" onchange={getFile}>
-                    <option value="Select">Select</option>
+                    <option value="Select">{selectedFile}</option>
                     <template for:each={files} for:item="file">
                       <option class="custom-option" key={file} value={file}>{file}</option>
                     </template>
@@ -150,6 +151,7 @@
             <lightning-spinner class="filesspins"></lightning-spinner>
           </div>
         </template>
+
         <!--Footer-->
         <footer class="slds-modal__footer" if:false={isOpenCredsModal}>
           <div class="footer-button">

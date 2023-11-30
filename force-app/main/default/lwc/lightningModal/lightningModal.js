@@ -14,21 +14,25 @@ export default class LightningModal extends LightningElement {
     @api isbackup = false;
     @api ismetadatabackup = false;
     @api isrecovery = false;
-    @track awsCredentials = [];
+    @track awsCredentials = ['Select'];
     @track credentialAlias = [];
+    @track selectedCredentials = 'Select';
+    @track BucketSelected = 'Select';
+    @track selectedFile = 'Select';
+    
+    
     accessKey = null;
     secretKey = null;
     region = null;
     Buckets = null;
     files = null;
     fileData = null;
-    selectedFile = null;
-    BucketSelected = null;
+    
     isBucketsLoading = false;
     isFilesLoading = false;
     haveCreds = false;
     isOpenCredsModal = false;
-    selectedCredentials;
+   
     credsName = null;
     credAlias;
     addcreds = false;
@@ -36,6 +40,7 @@ export default class LightningModal extends LightningElement {
     forBucketsButton = true;
     awsS3Logo=awsS3Logo;
     showCredsSpinner = true;
+    
 
 
 
@@ -48,6 +53,7 @@ export default class LightningModal extends LightningElement {
         console.log('recovery');
         console.log(this.isrecovery);
         console.log(this.ismodalopen);
+       
         await getCredentails()
             .then(data => {
                 console.log(data);
@@ -78,24 +84,23 @@ export default class LightningModal extends LightningElement {
 
     }
 
+    
 
     async closeModal() {
-        if (this.accessKey === null && this.secretKey === null && this.region === null) {
+        if (this.accessKey === null || this.secretKey === null || this.region === null) {
             this.ismodalopen = false;
             return;
         }
 
         if (this.isbackup || this.ismetadatabackup) {
-            if (this.BucketSelected === null && this.accessKey === null && this.secretKey === null && this.region === null) {
+            if (this.BucketSelected === null || this.accessKey === null || this.secretKey === null || this.region === null) {
                 this.showToast('Required', ' Please Select Atleast 1 Bucket to Backup', 'error');
             }
             else {
                 this.showToast('Success', 'credentials saved successfully go for Backup', 'success');
             }
-        }
-
-        if (this.isrecovery) {
-            if (this.BucketSelected === null && this.accessKey === null && this.secretKey === null && this.region === null && this.selectedFile === null) {
+        }else if (this.isrecovery) {
+            if (this.BucketSelected === null || this.accessKey === null || this.secretKey === null || this.region === null && this.selectedFile === null) {
                 this.showToast('Kindly Review', 'Select creds/Files for recovery', 'error');
             }
             else {
@@ -106,7 +111,7 @@ export default class LightningModal extends LightningElement {
         console.log('close modal');
 
         console.log(this.BucketSelected);
-        if (this.BucketSelected === null) {
+        if (this.BucketSelected == null) {
             this.dispatchEvent(new CustomEvent('awscredentials', {
                 bubbles: true,
                 composed: true,
@@ -181,6 +186,10 @@ export default class LightningModal extends LightningElement {
         console.log(event.target.value)
         this.credsName = event.target.value;
         this.forBucketsButton = true;
+
+        this.selectedCredentials = event.target.value;
+        
+        console.log('this.selectedCredentials------>', this.selectedCredentials);
     }
     async getBuckets() {
         this.Buckets = null;
@@ -242,7 +251,11 @@ export default class LightningModal extends LightningElement {
                 }
             })
     }
-
+    
+    handleSelectedBuckets(event) {
+        this.selectedCredBuckets = event.target.value;
+        console.log(' this.selectedCredBuckets------>', this.selectedCredBuckets);
+    }
 
     async saveCreds() {
         if (!this.haveCreds) {
@@ -411,6 +424,7 @@ export default class LightningModal extends LightningElement {
         console.log(event);
         console.log(event.target.value);
         this.BucketSelected = event.target.value;
+        console.log('BucketSelected------->',this.BucketSelected);
         //this.isrecovery = true;
         if (this.isrecovery && this.BucketSelected != null) {
             this.isFilesLoading = true;

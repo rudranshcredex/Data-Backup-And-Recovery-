@@ -22,28 +22,6 @@
   margin-bottom: 2%;
 }
 
- /* .slds-modal__container-1 {
-  position: fixed;
-  transform: translate(-58%, -100%);
-  width: 300px;
-  height: 200px;
-  z-index: 3;
-}   */
-
-
-/* .slds-modal__container {
-  max-width: 40rem; 
-  margin: auto;
-}
-
-.slds-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-} */
-
 .custom-date-picker {
   max-height: 200px;
   overflow-y: auto;
@@ -558,4 +536,6 @@ th {
     padding-bottom: 3%;
     font-size: 18px;
   }
+
+
 }

@@ -55,7 +55,13 @@ export default class MetadataRecoveryScreen extends LightningElement {
   awsScreen() {
     this.isModal = true;
     this.awsModal = true;
-    this.template.querySelector('c-lightning-Modal').handleIsOpenModal();
+    //this.template.querySelector('c-lightning-Modal').handleIsOpenModal();
+    let recoveryScreenElement = this.template.querySelector('c-lightning-modal');
+    if (recoveryScreenElement) {
+      recoveryScreenElement.handleIsOpenModal();
+    } else {
+      console.error("c-lightning-modal element not found");
+    }
   }
 
   handleUpload(event) {
@@ -135,7 +141,7 @@ export default class MetadataRecoveryScreen extends LightningElement {
     console.log('inside recover file');
     console.log('test');
     console.log(this.awsAccessKey);
-    this.retrievalLoading = true;
+    //this.retrievalLoading = true;
 
 
     
@@ -149,13 +155,13 @@ export default class MetadataRecoveryScreen extends LightningElement {
     deployMetadata({ zipContent: this.fileData })
       .then(data => {
         console.log('data inside');
-        this.retrievalLoading = false;
+        //this.retrievalLoading = false;
         //this.RecoveryLocalScreen=true;
         console.log('data');
         console.log(data);
       })
       .catch(error => {
-        this.retrievalLoading = false;
+        //this.retrievalLoading = false;
         console.log('error');
         console.log(error);
       })

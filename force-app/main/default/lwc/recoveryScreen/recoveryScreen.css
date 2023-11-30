@@ -76,6 +76,7 @@
   width: 100px;
   height: 40px;
   background-color: #0088cf;
+  align-items: center;
   text-align: center;
   color: white;
   display: flex;

@@ -76,6 +76,7 @@ export default class MetadataBackupScreen extends LightningElement {
   }
 
   connectedCallback() {
+    this.isSpinnerLoading(true);
     getMetaDataTypes({})
       .then((result) => {
         console.log('result');
@@ -93,15 +94,15 @@ export default class MetadataBackupScreen extends LightningElement {
     if (this.metadataList && event.target.value.length >= 2) {
       this.filterObjectNames(event.target.value);
     } else {
-      this.isSpinnerLoading(true);
+      // this.isSpinnerLoading(true);
       this.metadataList = this.metadataTypes;
-      this.isSpinnerLoading(false);
+      // this.isSpinnerLoading(false);
     }
   }
 
   async filterObjectNames(searchKeyword) {
     let newMetadataList = [];
-    this.isSpinnerLoading(true);
+    // this.isSpinnerLoading(true);
     for (let i = 0; i < this.metadataList.length; i++) {
       if (
         this.metadataList[i].metadataType
@@ -113,7 +114,7 @@ export default class MetadataBackupScreen extends LightningElement {
       }
     }
     this.metadataList = newMetadataList;
-    this.isSpinnerLoading(false);
+    // this.isSpinnerLoading(false);
   }
 
   nextButton() {

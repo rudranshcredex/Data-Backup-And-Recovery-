@@ -246,20 +246,21 @@ public With sharing class MetadataBackup {
         doc.load(responseBody);
         
         Dom.XmlNode rootNode = doc.getRootElement();
-        
+        System.debug('rootNode-->'+rootNode);
         for(Dom.XmlNode detailElement:rootNode.getChildElements())
         {
-            
+            System.debug('detailElement-->'+detailElement);
             for(Dom.XmlNode detailElement1:detailElement.getChildElements())
             {
-              
+              System.debug('detailElement1-->'+detailElement1);
                 for(Dom.XmlNode detailElement2:detailElement1.getChildElements())
                 {
-                  
+                  System.debug('detailElement2-->'+detailElement2);
                     for(Dom.XmlNode detailElement3:detailElement2.getChildElements())
                     {
-                        
+                        System.debug('detailElement3-->'+detailElement3);
                         for(Dom.XmlNode metadataObjectNode:detailElement3.getChildren()){
+                            System.debug('metadataObjectNode-->'+metadataObjectNode);
                             if(metadataObjectNode.getName()=='xmlName'){
                                 xmlNames.add(metadataObjectNode.getText());
                             }

@@ -237,45 +237,33 @@ export default class DataBackupScreen1 extends LightningElement {
     console.log(event.target.dataset.id);
     console.log('current');
     const dataId = event.currentTarget.getAttribute('data-id');
-    console.log('dataid-------->',dataId);
+    console.log('dataid-------->', dataId);
     let divId = event.currentTarget.getAttribute('data-id');
-    this.retrievalLoading = true;
 
-    if (divId == 'LocalNow') {
-      this.isbackupToLocal = true;
-      this.isbackupToS3 = false;
-      this.exportNowScreen = true;
-      this.showScreen2 = false;
-      this.showScreen1 = false;
-    }
     console.log(divId);
-    if (divId == 'AwsNow') {
-      this.isbackupToS3 = true;
-      this.isbackupToLocal = false;
-      this.showScreen2 = false;
-      this.showScreen1 = false;
-      this.AwsNowScreen=true;
-
-      console.log('this.isbackupToS3---->',this.isbackupToS3);
-      console.log('this.isbackupToLocal------->',this.isbackupToLocal);
-      console.log('this.AwsNowScreen------->',this.AwsNowScreen);
-
-    }
-
     if (this.isbackupToS3 && (this.awsAccessKey === null || this.awsSecretKey === null || this.awsRegion === null || this.awsBucket === null)) {
       this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
       this.isscheduleSpinner = false;
       return;
+    } else {
+      if (divId == 'LocalNow') {
+        this.isbackupToLocal = true;
+        this.isbackupToS3 = false;
+        this.exportNowScreen = true;
+        this.showScreen2 = false;
+        this.showScreen1 = false;
+      } else if (divId == 'AwsNow' && !(this.awsAccessKey === null || this.awsSecretKey === null || this.awsRegion === null || this.awsBucket === null)) {
+        this.isbackupToS3 = true;
+        this.isbackupToLocal = false;
+        this.showScreen2 = false;
+        this.showScreen1 = false;
+        this.AwsNowScreen = true;
+      } else {
+        this.showToast('Required', 'To Backup Data to S3 Kindly select Credentials', 'error');
+        return;
+      }
     }
-
-
-
-    console.log('dates');
-    console.log(this.fromDate);
-    console.log(this.toDate);
-    console.log(this.awsAccessKey);
-    console.log(this.awsSecretKey);
-
+    this.retrievalLoading = true;
     var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
     createDataBackup({ ObjectApiNames: this.selectedObjectNames, credentials: JSON.stringify(credential), fromDate: this.fromDate, toDate: this.toDate })
       .then(data => {
@@ -291,7 +279,7 @@ export default class DataBackupScreen1 extends LightningElement {
         console.log(error);
         console.log('error');
       })
-     
+
     this.step = 3;
     this.handleStepUp();
   }
@@ -345,13 +333,13 @@ export default class DataBackupScreen1 extends LightningElement {
     }, this);
     let awsDate = null;
     let localDate = null;
-    console.log('this.ScheduleDateAws outside',this.ScheduleDateAws);
+    console.log('this.ScheduleDateAws outside', this.ScheduleDateAws);
 
     if (this.ScheduleDateAws != null) {
-      
+
 
       awsDate = new Date(this.ScheduleDateAws);
-      console.log('this.ScheduleDateAws inside',this.ScheduleDateAws);
+      console.log('this.ScheduleDateAws inside', this.ScheduleDateAws);
     }
     if (this.ScheduleDateLocal != null) {
       localDate = new Date(this.ScheduleDateLocal);
@@ -376,7 +364,7 @@ export default class DataBackupScreen1 extends LightningElement {
     }
 
     else if (this.isbackupToS3 && this.ScheduleDateAws === null) {
-   
+
       this.showToast('Required', 'Please Select Date to schedule the Backup Process', 'error');
       this.isscheduleSpinner = false;
       return;
@@ -410,14 +398,14 @@ export default class DataBackupScreen1 extends LightningElement {
           else if (event.target.name == 'ScheduleAws') {
             this.AwsScheduleScreen = true;
 
-            
+
           }
           this.AwsScheduleScreen = true;
-         console.log('this.AwsScheduleScreen----------->',this.AwsScheduleScreen);
+          console.log('this.AwsScheduleScreen----------->', this.AwsScheduleScreen);
           this.showScreen2 = false;
           this.showScreen1 = false;
           this.openModal1 = false;
-          this.step=3;
+          this.step = 3;
           this.handleStepUp();
         })
         .catch(error => {
@@ -534,17 +522,15 @@ export default class DataBackupScreen1 extends LightningElement {
   handleAWSCredentials(event) {
     console.log('handle aws creds');
     console.log(event);
-    console.log(event.detail.value);
     console.log(JSON.stringify(event.detail));
-    console.log('yes');
-    const parsedData = JSON.parse(JSON.stringify(event.detail));
-    this.awsAccessKey = parsedData.accessKey;
-    this.awsSecretKey = parsedData.secretKey;
-    this.awsRegion = parsedData.regionName;
-    this.awsBucket = parsedData.bucketName;
-    console.log(this.awsBucket);
-    console.log(this.accessKey);
-    console.log(parsedData.accessKey);
+    let detailInfo = JSON.stringify(event.detail);
+    if (detailInfo != 'null') {
+      const parsedData = JSON.parse(detailInfo);
+      this.awsAccessKey = parsedData.accessKey;
+      this.awsSecretKey = parsedData.secretKey;
+      this.awsRegion = parsedData.regionName;
+      this.awsBucket = parsedData.bucketName;
+    }
   }
 
   handleDate(event) {

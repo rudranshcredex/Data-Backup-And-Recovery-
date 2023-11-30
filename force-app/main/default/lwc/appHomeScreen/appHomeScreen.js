@@ -50,7 +50,7 @@ export default class appHomeScreen extends LightningElement {
     if (recoveryScreenElement) {
       recoveryScreenElement.handleReturnRecovery();
     } else {
-      console.error("c-backup-screen element not found");
+      console.error("c-recovery-screen element not found");
     }
   }
 

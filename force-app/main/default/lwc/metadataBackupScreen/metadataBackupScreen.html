@@ -1,6 +1,6 @@
 <!--
   @description       : 
-  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @author            : Rudransh Shukla
   @group             : 
   @last modified on  : 11-29-2023
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
@@ -15,7 +15,7 @@
                     <span>Current User - {username}</span>
 
                 </div>
-                <div style="display: flex; justify-content: center; height:20%;">
+                <div class="searchBg">
                     <div class="searchbar">
                         <lightning-input type="search" placeholder="Search" style="width: 80%; padding-bottom: 20px;"
                             onchange={handleSearchChange}></lightning-input>
@@ -25,8 +25,7 @@
                     <lightning-spinner class="spins"></lightning-spinner>
                 </template>
                 <div style="display: flex; justify-content: center;">
-
-
+                    
                     <!-- Objects Table-->
                     <div class="styled-table" if:false={isLoading}>
                         <table border="1" width="80%" cellpadding="1" cellspacing="1">
