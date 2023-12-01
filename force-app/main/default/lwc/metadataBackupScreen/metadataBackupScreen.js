@@ -167,13 +167,14 @@ export default class MetadataBackupScreen extends LightningElement {
       console.log('local');
       this.isbackupToLocal = true;
       this.isbackupToS3 = false;
+      this.exportNowScreen = true;
       
     }
     
     if (divId == 'AwsNow') {
       this.isbackupToS3 = true;
       this.isbackupToLocal = false;
-      
+      this.AwsNowScreen = true;
     }
     if (this.isbackupToS3 && (this.awsAccessKey === null && this.awsSecretKey === null && this.awsRegion === null && this.awsBucket === null)) {
       this.showToast('Required', 'To Backup Metadata to S3 Kindly select Credentials', 'error');
@@ -190,10 +191,9 @@ export default class MetadataBackupScreen extends LightningElement {
         console.log('data>>>>>>>');
         console.log(data);
         this.retrievalLoading = false
-        //this.showScreen3 = true;
         this.showScreen1 = false;
         this.showScreen2 = false;
-        this.exportNowScreen = true;
+        //this.exportNowScreen = true;
       })
       .catch(error => {
         this.showScreen3 = true;
@@ -201,7 +201,7 @@ export default class MetadataBackupScreen extends LightningElement {
         console.log('error');
       })
     
-    this.AwsNowScreen = true;
+    //this.AwsNowScreen = true;
     this.step = 3;
     this.handleStepUp();
     
@@ -462,7 +462,8 @@ export default class MetadataBackupScreen extends LightningElement {
     const enterDateWithoutTime = new Date(enterDate.getFullYear(), enterDate.getMonth(), enterDate.getDate());
 
     if (enterDateWithoutTime < currentDateWithoutTime) {
-      this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
+      this.showToast("Warning", "Scheduled Date cannot be less than today's date", "error");
+
     } else if (enterDateWithoutTime.getTime() === currentDateWithoutTime.getTime() && enterDate < currentDate) {
       this.showToast("Warning", "Scheduled time cannot be earlier than the current time", "error");
     }

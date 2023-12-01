@@ -19,6 +19,7 @@ export default class LightningModal extends LightningElement {
     @track selectedCredentials = 'Select';
     @track BucketSelected = 'Select';
     @track selectedFile = 'Select';
+    @track tempAwsCredentails = [];
 
 
     accessKey = null;
@@ -190,7 +191,8 @@ export default class LightningModal extends LightningElement {
 
         this.selectedCredentials = event.target.value;
         if (this.selectedCredentials !== 'Select') {
-            this.awsCredentials = this.awsCredentials.filter(creds => creds.DeveloperName !== this.selectedCredentials);
+        
+            this.awsCredentials= this.awsCredentials.filter(creds => creds.DeveloperName !== this.selectedCredentials);
             console.log('this.awsCredentials-------->', JSON.stringify(this.awsCredentials));
         }
 

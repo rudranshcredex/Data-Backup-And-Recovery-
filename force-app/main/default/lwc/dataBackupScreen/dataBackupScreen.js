@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from "lwc";
+import { LightningElement, api, wire, track } from "lwc";
 import getObjectApiNames from '@salesforce/apex/DataBackup.getObjectApiNames';
 import local from "@salesforce/resourceUrl/LocalBackup";
 import cloud from "@salesforce/resourceUrl/cloud";
@@ -12,6 +12,10 @@ import ScheduleDataBackup from '@salesforce/apex/DataBackup.ScheduleDataBackup';
 
 export default class DataBackupScreen1 extends LightningElement {
   @track objectList;
+  @api ismodalopen = false;
+  @api isbackup = false;
+  @api ismetadatabackup = false;
+  @api isrecovery = false;
   @track objectNames = [];
   @track numberOfObjectSelected = 0;
 
@@ -397,10 +401,8 @@ export default class DataBackupScreen1 extends LightningElement {
           }
           else if (event.target.name == 'ScheduleAws') {
             this.AwsScheduleScreen = true;
-
-
           }
-          this.AwsScheduleScreen = true;
+         
           console.log('this.AwsScheduleScreen----------->', this.AwsScheduleScreen);
           this.showScreen2 = false;
           this.showScreen1 = false;
@@ -569,7 +571,7 @@ export default class DataBackupScreen1 extends LightningElement {
     const enterDateWithoutTime = new Date(enterDate.getFullYear(), enterDate.getMonth(), enterDate.getDate());
 
     if (enterDateWithoutTime < currentDateWithoutTime) {
-      this.showToast("Warning", "Scheduled Date cannot be greater than today's date", "error");
+      this.showToast("Warning", "Scheduled Date cannot be less than today's date", "error");
 
     } else if (enterDateWithoutTime.getTime() === currentDateWithoutTime.getTime() && enterDate < currentDate) {
       this.showToast("Warning", "Scheduled time cannot be earlier than the current time", "error");

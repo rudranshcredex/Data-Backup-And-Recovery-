@@ -292,6 +292,26 @@ th {
   align-items: center;
   justify-content: center;
 }
+@media (max-width: 900px){
+  .boxes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .box1,
+  .box2 {
+    width: 301px;
+    height: 390px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border: #000 solid 0.5px;
+    box-shadow: 15px 15px 8px rgba(0, 0, 0, 25%);
+    margin-top: 2%;
+    margin-bottom: 5%;
+  }
+}
 
 @media (max-width: 460px) {
   .searchbar {
