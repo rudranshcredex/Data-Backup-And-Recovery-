@@ -15,18 +15,21 @@ export default class LightningModal extends LightningElement {
     @api ismetadatabackup = false;
     @api isrecovery = false;
     @track awsCredentials = ['Select'];
+    @track awsAllCredentials = [];
     @track credentialAlias = [];
     @track selectedCredentials = 'Select';
     @track BucketSelected = 'Select';
     @track selectedFile = 'Select';
     @track tempAwsCredentails = [];
-
+    @track isOpenFileModal = false;
 
     accessKey = null;
     secretKey = null;
     region = null;
     Buckets = null;
+    allBuckets = [];
     files = null;
+    allFile = [];
     fileData = null;
 
     isBucketsLoading = false;
@@ -72,6 +75,7 @@ export default class LightningModal extends LightningElement {
                 console.log(this.awsCredentials);
                 console.log(data.length);
                 console.log('cred length', this.awsCredentials.length);
+                this.awsAllCredentials = this.awsCredentials;
             })
             .catch(error => {
                 console.log('error');
@@ -192,7 +196,7 @@ export default class LightningModal extends LightningElement {
         this.selectedCredentials = event.target.value;
         if (this.selectedCredentials !== 'Select') {
         
-            this.awsCredentials= this.awsCredentials.filter(creds => creds.DeveloperName !== this.selectedCredentials);
+            this.awsAllCredentials= this.awsCredentials.filter(creds => creds.DeveloperName !== this.selectedCredentials);
             console.log('this.awsCredentials-------->', JSON.stringify(this.awsCredentials));
         }
 
@@ -235,6 +239,7 @@ export default class LightningModal extends LightningElement {
             .then(data => {
                 console.log(data);
                 this.Buckets = data;
+                this.allBuckets = this.Buckets;
                 this.isBucketsLoading = false;
                 this.forBucketsButton = false;
             })
@@ -257,12 +262,6 @@ export default class LightningModal extends LightningElement {
                     this.showToast('Invalid Region', 'Please Provide valid Aws Region to fetch Buckets', 'error');
                 }
             })
-    }
-
-    handleSelectedBuckets(event) {
-        this.selectedCredBuckets = event.target.value;
-        
-        console.log(' this.selectedCredBuckets------>', this.selectedCredBuckets);
     }
 
     async saveCreds() {
@@ -413,6 +412,7 @@ export default class LightningModal extends LightningElement {
     }
     AddCreds() {
         this.isOpenCredsModal = true;
+        this.isOpenFileModal = false;
         addcreds = true;
     }
     closeCredsModal() {
@@ -433,7 +433,7 @@ export default class LightningModal extends LightningElement {
         console.log('BucketSelected------->', this.BucketSelected);
 
         if (this.BucketSelected !== 'Select') {
-                    this.Buckets = this.Buckets.filter(bucket => bucket !== this.BucketSelected);
+                    this.allBuckets = this.Buckets.filter(bucket => bucket !== this.BucketSelected);
                     console.log('this.Buckets after filter---->', this.Buckets);
                 }
         //this.isrecovery = true;
@@ -444,8 +444,8 @@ export default class LightningModal extends LightningElement {
                 .then(data => {
                     this.isFilesLoading = false;
                     this.files = data;
-                    console.log('data');
-                    console.log(data);
+                    this.allFile = this.files;
+                    this.isOpenFileModal = true;
 
                 })
                 .catch(error => {
@@ -464,7 +464,7 @@ export default class LightningModal extends LightningElement {
         this.selectedFile = event.target.value;
 
         if (this.selectedFile !== 'Select') {
-            this.files = this.files.filter(data => data !== this.selectedFile);
+            this.allFile = this.files.filter(data => data !== this.selectedFile);
             console.log('this.files---->', this.files);
         }
 

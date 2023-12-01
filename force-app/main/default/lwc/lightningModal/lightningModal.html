@@ -37,8 +37,8 @@
                   <h1>Select credentials of Your S3 Account</h1>
                   <select class="custom-select" title="Credentials" onchange={handleCreds}>
                     <option>{selectedCredentials}</option>
-                    <template for:each={awsCredentials} for:item="creds">
-                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName} onchange={handleSelectedBuckets}>
+                    <template for:each={awsAllCredentials} for:item="creds">
+                      <option class="custom-option" key={creds.DeveloperName} value={creds.DeveloperName}>
                         {creds.DeveloperName}
                       </option>
                     </template>
@@ -114,29 +114,33 @@
                 <div class="container">
                   <h1>Select Buckets of Your S3 Account</h1>
                   <select class="custom-select" title="Buckets" required onchange={handlBucketSelect}>
-                    <option value={BucketSelected}>{BucketSelected}</option>
-                    <template for:each={Buckets} for:item="bucket">
-                      <option class="custom-option" key={bucket} value={bucket}>{bucket}</option>
+                    <option>{BucketSelected}</option>
+                    <template for:each={allBuckets} for:item="bucket">
+                      <option class="custom-option" key={bucket} value={bucket}>
+                        {bucket}
+                      </option>
                     </template>
                   </select>
                 </div>
               </template>
             </div>
-
+            <div if:true={isOpenFileModal}>
             <template if:true={files}>
               <lightning-card>
                 <h1>Select Files to Backup</h1>
                 <div class="custom-container" title="Select Files of Your S3 Account">
                   <select class="custom-select" title="Files" onchange={getFile}>
                     <option>{selectedFile}</option>
-                    <template for:each={files} for:item="file">
-                      <option class="custom-option" key={file} value={file}>{file}</option>
+                    <template for:each={allFile} for:item="file">
+                      <option class="custom-option" key={file} value={file}>
+                        {file}
+                      </option>
                     </template>
                   </select>
                 </div>
               </lightning-card>
             </template>
-
+          </div>
           </lightning-card>
         </div>
 

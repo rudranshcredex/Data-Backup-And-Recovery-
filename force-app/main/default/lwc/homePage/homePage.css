@@ -1,256 +1,375 @@
 @font-face {
-  font-family: "inter";
-  src: url("https://fonts.googleapis.com/css?family=Inter");
-}
+   font-family: "inter";
+   src: url("https://fonts.googleapis.com/css?family=Inter");
+ }
 
-/* Default styles */
-.main-1 {
-  background: #0088cf;
-  height: 80vh;
-  width: 100%;
-}
+ .main-1 {
+   background: #0088cf;
+   height: 80vh;
+   width: 100%;
+ }
 
-.welcome-text {
-  color: white;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
+ .welcome-text {
+   color: white;
+   font-size: 24px;
+   font-style: normal;
+   font-weight: 700;
+   line-height: normal;
+ }
 
-.salesforce-logo {
-  width: 120px;
-  height: 85px;
-  flex-shrink: 0;
-  margin-left: 85%;
-}
+ .salesforce-logo {
+   width: 120px;
+   height: 85px;
+   flex-shrink: 0;
+   margin-left: 85%;
+ }
 
-.child {
-  display: flex;
-  justify-content: center;
-}
+ .child {
+   display: flex;
+   justify-content: center;
+ }
 
-.tagline-1 h1 {
-  color: #fff;
-  font-family: "inter";
-  font-size: 35px;
-  font-weight: 800;
-  margin-left: 106px;
-  margin-top: 48px;
-}
+ .tagline-1 h1 {
+   color: #fff;
+   font-family: "inter";
+   font-size: 35px;
+   font-weight: 800;
+   margin-left: 106px;
+   margin-top: 48px;
+ }
 
-.tagline-1 ul {
-  color: white;
-  font-size: 20px;
-  margin-left: 150px;
-  font-family: "inter";
-  line-height: 50px;
-  font-weight: 400;
-}
+ .tagline-1 ul {
+   color: white;
+   font-size: 20px;
+   margin-left: 150px;
+   font-family: "inter";
+   line-height: 50px;
+   font-weight: 400;
+ }
 
-.main-2 {
-  background-color: white;
-  height: 60vh;
-  width: 100%;
-}
+ .main-2 {
+   background-color: white;
+   height: 60vh;
+   width: 100%;
+ }
 
-.data-icon {
-  width: 300px;
-  height: 300px;
-  margin: 230px;
-  flex-shrink: 0;
-}
+ .data-icon {
+   width: 300px;
+   height: 300px;
+   margin: 230px;
+   flex-shrink: 0;
+ }
 
-.tagline-2 h1 {
-  color: #42abe2;
-  font-family: "inter";
-  font-size: 35px;
-  font-weight: 800;
-  margin-left: 714px;
-  margin-top: -495px;
-}
+ .tagline-2 h1 {
+   color: #42abe2;
+   font-family: "inter";
+   font-size: 35px;
+   font-weight: 800;
+   margin-left: 714px;
+   margin-top: -495px;
+ }
 
-.tagline-2 ul {
-  color: black;
-  font-size: 20px;
-  font-family: "inter";
-  line-height: 50px;
-  font-weight: 400;
-  margin-left: 800px;
-}
+ .tagline-2 ul {
+   color: black;
+   font-size: 20px;
+   font-family: "inter";
+   line-height: 50px;
+   font-weight: 400;
+   margin-left: 800px;
+ }
 
-.main-3 {
-  background-color: #182247;
-  height: 80vh;
-  width: 100%;
-}
+ .main-3 {
+   background-color: #182247;
+   height: 80vh;
+   width: 100%;
+ }
 
-.tagline-3 h1 {
-  color: #ffffff;
-  font-size: 35px;
-  margin-left: 150px;
-  font-family: "inter";
-  font-weight: 800;
-  margin-top: -60px;
-}
+ .tagline-3 h1 {
+   color: #ffffff;
+   font-size: 35px;
+   margin-left: 150px;
+   font-family: "inter";
+   font-weight: 800;
+   margin-top: -60px;
+ }
 
-.tagline-3 ul {
-  color: white;
-  font-size: 20px;
-  margin-left: 200px;
-  font-family: "inter";
-  line-height: 50px;
-  font-weight: 400;
-}
+ .tagline-3 ul {
+   color: white;
+   font-size: 20px;
+   margin-left: 200px;
+   font-family: "inter";
+   line-height: 50px;
+   font-weight: 400;
+ }
 
-.recovery-icon {
-  width: 356px;
-  height: 200px;
-  flex-shrink: 0;
-  margin-left: 60%;
-  padding-top: 110px;
-}
+ .recovery-icon {
+   width: 356px;
+   height: 200px;
+   flex-shrink: 0;
+   margin-left: 60%;
+   padding-top: 110px;
+ }
 
-/* Media queries for responsiveness */
-@media screen and (max-width: 480px) {
-  .main-1 {
-    display: flex;
-    justify-content: center;
-    direction: column;
-  }
 
-  .tagline-1 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin: 0;
-    padding: 0;
-    text-align: center;
-  }
+ @media screen and (max-width: 480px) {
+   .main-1 {
+     display: flex;
+     justify-content: center;
+     direction: column;
+   }
 
-  .tagline-1 h1 {
-    color: #fff;
-    font-family: "inter";
-    font-size: 20px;
-    font-weight: 800;
-    margin-left: 0px;
-    margin-top: 0px;
-    text-align: center;
-  }
+   .tagline-1 {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+     margin: 0;
+     padding: 0;
+     text-align: center;
+   }
 
-  .tagline-1 ul {
-    color: white;
-    font-size: 10px;
-    font-family: "inter";
-    line-height: 20px;
-    font-weight: 400;
-    margin-left: 0px;
-    text-align: center;
-  }
-
-  .welcome {
-    opacity: 0;
-  }
-
-  .child {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    padding: 0;
-    margin-left: -40px;
-  }
-
-  .img-div {
-    width: 300px;
-    height: 200px;
-    padding: 0;
-    margin: 0;
-  }
-
-  .salesforce-logo {
-    width: 120px;
-    height: 85px;
-    flex-shrink: 0;
-    margin-left: 0%;
-    opacity: 0%;
-  }
-
-  .main-2 {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  .tagline-2 ul {
-    color: black;
-    font-size: 11px;
-    font-family: "inter";
-    line-height: 20px;
-    font-weight: 400;
+   .tagline-1 h1 {
+     color: #fff;
+     font-family: "inter";
+     font-size: 20px;
+     font-weight: 800;
      margin-left: 0px;
-  }
+     margin-top: 0px;
+     text-align: center;
+   }
 
-  .tagline-2 h1 {
-    color: #42abe2;
-    font-family: "inter";
-    font-size: 20px;
-    font-weight: 800;
-    text-align: center;
-    margin-left: 0px;
-    margin-top: 155px;
-  }
-  .data-icon{
-    width: 150px;
-    padding-top: 5%;
-    height: 0px; 
-    margin:0px; 
-    flex-shrink: 0;
-  }
-  .tagline-2{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+   .tagline-1 ul {
+     color: white;
+     font-size: 10px;
+     font-family: "inter";
+     line-height: 20px;
+     font-weight: 400;
+     margin-left: 0px;
+     text-align: center;
+   }
 
-  }
-  .main-3{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  }
-  .tagline-3 ul {
-    color: white;
-    font-size: 11px;
-    font-family: "inter";
-    line-height: 20px;
-    font-weight: 400;
-    margin-left: 0px;
-      word-wrap: break-word;
+   .welcome {
+     opacity: 0;
+   }
 
-  }
+   .child {
+     display: flex;
+     justify-content: center;
+     flex-direction: column;
+     align-items: center;
+     padding: 0;
+     margin-left: -40px;
+   }
 
-  .tagline-3 h1 {
-    color:white;
-    font-family: "inter";
-    font-size: 20px;
-    font-weight: 800;
-    text-align: center;
-    margin-left: 0px;
-    margin-top: 155px;
-  }
-  .recovery-icon{
-    width: 150px;
-    padding-top: 5%;
-    height: 0px; 
-    margin:0px; 
-    flex-shrink: 0;
-  }
-  .tagline-3{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+   .img-div {
+     width: 300px;
+     height: 200px;
+     padding: 0;
+     margin: 0;
+   }
 
-  }
-}
+   .salesforce-logo {
+     width: 120px;
+     height: 85px;
+     flex-shrink: 0;
+     margin-left: 0%;
+     opacity: 0%;
+   }
+
+   .main-2 {
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+   }
+
+   .tagline-2 ul {
+     color: black;
+     font-size: 11px;
+     font-family: "inter";
+     line-height: 20px;
+     font-weight: 400;
+     margin-left: 0px;
+   }
+
+   .tagline-2 h1 {
+     color: #42abe2;
+     font-family: "inter";
+     font-size: 20px;
+     font-weight: 800;
+     text-align: center;
+     margin-left: 0px;
+     margin-top: 155px;
+   }
+
+   .data-icon {
+     width: 150px;
+     padding-top: 5%;
+     height: 0px;
+     margin: 0px;
+     flex-shrink: 0;
+   }
+
+   .tagline-2 {
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+
+   }
+
+   .main-3 {
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+   }
+
+   .tagline-3 ul {
+     color: white;
+     font-size: 11px;
+     font-family: "inter";
+     line-height: 20px;
+     font-weight: 400;
+     margin-left: 0px;
+     word-wrap: break-word;
+
+   }
+
+   .tagline-3 h1 {
+     color: white;
+     font-family: "inter";
+     font-size: 20px;
+     font-weight: 800;
+     text-align: center;
+     margin-left: 0px;
+     margin-top: 155px;
+   }
+
+   .recovery-icon {
+     width: 150px;
+     padding-top: 5%;
+     height: 0px;
+     margin: 0px;
+     flex-shrink: 0;
+   }
+
+   .tagline-3 {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     flex-direction: column;
+
+   }
+ }
+
+
+ /* .main-1 {
+   background: #0088cf;
+   height: 80vh;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+ }
+
+ .welcome-text {
+   color: white;
+   font-size: 24px;
+   font-style: normal;
+   font-weight: 700;
+   line-height: normal;
+ }
+
+ .salesforce-logo {
+   width: 120px;
+   height: 85px;
+   margin-left: auto;
+ }
+
+ .child {
+   display: flex;
+   justify-content: center;
+ }
+
+ .tagline-1 h1 {
+   color: #fff;
+   font-family: "inter";
+   font-size: 35px;
+   font-weight: 800;
+   text-align: center;
+   margin: 20px 0;
+ }
+
+ .tagline-1 ul {
+   color: white;
+   font-size: 20px;
+   font-family: "inter";
+   line-height: 30px;
+   font-weight: 400;
+   padding: 0;
+   margin: 0;
+ }
+
+ .main-2 {
+   background-color: white;
+   height: 60vh;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+
+ .data-icon {
+   width: 150px;
+   height: 150px;
+ }
+
+ .tagline-2 h1 {
+   color: #42abe2;
+   font-family: "inter";
+   font-size: 35px;
+   font-weight: 800;
+   margin: 20px 0;
+ }
+
+ .tagline-2 ul {
+   color: black;
+   font-size: 20px;
+   font-family: "inter";
+   line-height: 30px;
+   font-weight: 400;
+   padding: 0;
+   margin: 0;
+ }
+
+ .main-3 {
+   background-color: #182247;
+   height: 80vh;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+
+ .recovery-icon {
+   width: 150px;
+   height: 150px;
+   padding-top: 20px;
+ }
+
+ .tagline-3 h1 {
+   color: #ffffff;
+   font-size: 35px;
+   font-family: "inter";
+   font-weight: 800;
+   margin: 20px 0;
+ }
+
+ .tagline-3 ul {
+   color: white;
+   font-size: 20px;
+   font-family: "inter";
+   line-height: 30px;
+   font-weight: 400;
+
+   padding: 0;
+   margin: 0;
+   word-wrap: break-word;
+ } */

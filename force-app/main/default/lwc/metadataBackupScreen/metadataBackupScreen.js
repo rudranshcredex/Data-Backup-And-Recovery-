@@ -1,5 +1,3 @@
-/* eslint-disable @lwc/lwc/no-async-operation */
-/* eslint-disable eqeqeq */
 import { LightningElement, wire, track } from "lwc";
 import local from "@salesforce/resourceUrl/LocalBackup";
 import cloud from "@salesforce/resourceUrl/cloud";
@@ -94,15 +92,12 @@ export default class MetadataBackupScreen extends LightningElement {
     if (this.metadataList && event.target.value.length >= 2) {
       this.filterObjectNames(event.target.value);
     } else {
-      // this.isSpinnerLoading(true);
       this.metadataList = this.metadataTypes;
-      // this.isSpinnerLoading(false);
     }
   }
 
   async filterObjectNames(searchKeyword) {
     let newMetadataList = [];
-    // this.isSpinnerLoading(true);
     for (let i = 0; i < this.metadataList.length; i++) {
       if (
         this.metadataList[i].metadataType
@@ -114,7 +109,6 @@ export default class MetadataBackupScreen extends LightningElement {
       }
     }
     this.metadataList = newMetadataList;
-    // this.isSpinnerLoading(false);
   }
 
   nextButton() {
@@ -151,12 +145,10 @@ export default class MetadataBackupScreen extends LightningElement {
       }
       console.log(JSON.stringify(this.selectedMetadataTypes));
     }
-
     if (this.step !== 3) {
       this.step++;
     }
     this.handleStepUp();
-
   }
 
   ExportData(event) {
@@ -168,9 +160,8 @@ export default class MetadataBackupScreen extends LightningElement {
       this.isbackupToLocal = true;
       this.isbackupToS3 = false;
       this.exportNowScreen = true;
-      
     }
-    
+
     if (divId == 'AwsNow') {
       this.isbackupToS3 = true;
       this.isbackupToLocal = false;
@@ -181,7 +172,6 @@ export default class MetadataBackupScreen extends LightningElement {
       this.retrievalLoading = false;
       return;
     }
-    
 
     console.log('data export');
     var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
@@ -193,20 +183,16 @@ export default class MetadataBackupScreen extends LightningElement {
         this.retrievalLoading = false
         this.showScreen1 = false;
         this.showScreen2 = false;
-        //this.exportNowScreen = true;
       })
       .catch(error => {
         this.showScreen3 = true;
         console.log(error);
         console.log('error');
       })
-    
-    //this.AwsNowScreen = true;
+
     this.step = 3;
     this.handleStepUp();
-    
   }
-
 
   previousButton() {
     this.showScreen2 = false;
@@ -386,9 +372,9 @@ export default class MetadataBackupScreen extends LightningElement {
       console.log('schedule date');
       console.log(scheduleDate);
       var credential = { "accessKey": this.awsAccessKey, "SecretKey": this.awsSecretKey, "Bucket": this.awsBucket, "awsRegion": this.awsRegion, "backupTos3": this.isbackupToS3, "backupToLocal": this.isbackupToLocal };
-      
-      
-      
+
+
+
       ScheduleMetaDataBackup({ metadataTypes: this.selectedMetadataTypes, credentials: JSON.stringify(credential), scheduleDate: scheduleDate })
         .then(data => {
           this.isscheduleSpinner = false;
@@ -422,11 +408,7 @@ export default class MetadataBackupScreen extends LightningElement {
       this.step = 3;
       this.handleStepUp();
     }
-
-
-
   }
-
 
   awsScreen() {
     this.isModal = true;
@@ -449,6 +431,7 @@ export default class MetadataBackupScreen extends LightningElement {
     console.log(this.accessKey);
     console.log(parsedData.accessKey);
   }
+
   handleScheduleDate(event) {
     this.schDate = event.target.value;
     this.validateSchDate();
