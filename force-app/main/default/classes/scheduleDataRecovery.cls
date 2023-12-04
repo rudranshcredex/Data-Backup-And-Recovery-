@@ -13,6 +13,7 @@ public With Sharing class scheduleDataRecovery implements Schedulable{
         ContentVersion versionDatas = [select id,Title,ContentDocumentId,versionData from ContentVersion where title='Data recovery' WITH SECURITY_ENFORCED Limit 1];
         String response =  EmailAndNotification.sendEmailToCurrentUser(versionDatas.versionData, 'Data Recovery');
         if(response =='Success'){
+            EmailAndNotification.sendCustomNotification('DataRecovery', 'test');
             if(Schema.sObjectType.ContentDocument.isAccessible() && Schema.sObjectType.ContentDocument.isDeletable()){
             	delete (new ContentDocument(Id=versionDatas.ContentDocumentId));
             }

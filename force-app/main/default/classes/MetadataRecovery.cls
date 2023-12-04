@@ -6,7 +6,7 @@ public class MetadataRecovery {
     
     //constants
     private static final String API_VERSION = '58.0';
-    private static final String SESSION_ID = userinfo.getSessionId();
+    //private static final String SESSION_ID = userinfo.getSessionId();
     Private static final String ENDPOINT_URL = URL.getOrgDomainUrl().toExternalForm();
     
     	
@@ -14,13 +14,20 @@ public class MetadataRecovery {
 @description => This method is use to generate Soap Envelop for Deploy call of Metadta Api
 */
     Private static String generateEnvelopeForDeployCall(String base64ZipContent){
+        string SessionId;
+        if(Test.isRunningTest()){
+            SessionId = userinfo.getSessionId();
+        }
+        else{
+            SessionId = getSessionId();
+        }
         return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://soap.sforce.com/2006/04/metadata">'+
             '<soapenv:Header>'+
             '<met:CallOptions>'+
             /*'<met:client>'+CLIENT+'</met:client>'+*/
             '</met:CallOptions>'+
             '<met:SessionHeader>'+
-            '<met:sessionId>'+SESSION_ID+'</met:sessionId>'+
+            '<met:sessionId>'+SessionId+'</met:sessionId>'+
             '</met:SessionHeader>'+
             '</soapenv:Header>'+
             '<soapenv:Body>'+
@@ -41,13 +48,20 @@ public class MetadataRecovery {
 @description => This method is use to generate Soap Envelop for CheckDeployStatus call of Metadta Api
 */
     Private static String generateEnvelopeForCheckDeployStatus(String asyncResultId){
+        string SessionId;
+        if(Test.isRunningTest()){
+            SessionId = userinfo.getSessionId();
+        }
+        else{
+            SessionId = getSessionId();
+        }
         return '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://soap.sforce.com/2006/04/metadata">'
             + '<soapenv:Header>'
             + '<met:CallOptions>'
             /*+ '<met:client>' + CLIENT + '</met:client>'*/
             + '</met:CallOptions>'
             + '<met:SessionHeader>'
-            + '<met:sessionId>' +SESSION_ID+ '</met:sessionId>'
+            + '<met:sessionId>' +SessionId+ '</met:sessionId>'
             + '</met:SessionHeader>'
             + '</soapenv:Header>'
             + '<soapenv:Body>'
@@ -268,6 +282,14 @@ System.debug('Full Name: ' + name);
         request.setHeader('Content-Type', 'text/xml');
         request.setHeader('SOAPAction', '""');
         return request;
+    }
+    
+    Private static String getSessionId(){
+        String vfContent =Page.getSessionId.getContent().toString(); 
+        Integer startPosition = vfContent.indexOf('Start') + 'Start'.length();
+        Integer endPosition = vfContent.indexOf('End');
+        String SessionId = vfContent.substring(startPosition, endPosition);
+        return SessionId;
     }
     
     Public class RecoveryResponse{

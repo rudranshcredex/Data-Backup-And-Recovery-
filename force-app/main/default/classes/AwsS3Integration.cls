@@ -16,7 +16,7 @@ public WITH SHARING class AwsS3Integration {
     Private static List<String> buckets=new List<String>();
     Private static List<String> Files=new List<String>();
     
-   
+    
     /*
 @description => This method is use to create Auth header to fetch the Buckets and files
 */
@@ -120,7 +120,7 @@ public WITH SHARING class AwsS3Integration {
             String dateStamp = Datetime.now().formatGMT('yyyyMMdd');
             
             string fileUrl='https://'+'s3.'+regionName+'.amazonaws.com/';
-       		
+            
             MetadataCreation.createRemoteSiteSetting(remoteSiteSettingName,fileUrl);
             HttpRequest req = new HttpRequest();
             req.setMethod(methodName);
@@ -165,7 +165,7 @@ public WITH SHARING class AwsS3Integration {
                         exceptionMessage =childElement.getText();
                         throw new AuraHandledException(childElement.getText());
                     }
-                  
+                    
                 }
             }
         }
@@ -174,14 +174,12 @@ public WITH SHARING class AwsS3Integration {
             system.debug(ex.getMessage()+' at '+ex.getLineNumber());
             throw new AuraHandledException(exceptionMessage);
         }
+        MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
         
-       
-       MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
-     
         return Buckets;
     }
     
-      /*
+    /*
 @description => This method is use to fetch files for a given Bucket of Aws s3
 */
     @auraEnabled
@@ -193,7 +191,7 @@ public WITH SHARING class AwsS3Integration {
         bucketName = bucket;
         methodName = 'GET';
         
-        String remoteSiteSettingName = 'Aws Files';
+        String remoteSiteSettingName = 'AwsFiles';
         
         try
         {
@@ -203,7 +201,7 @@ public WITH SHARING class AwsS3Integration {
             String dateStamp = Datetime.now().formatGMT('yyyyMMdd');
             
             string fileUrl='https://' + bucketName + '.' +hostName;
-             MetadataCreation.createRemoteSiteSetting(remoteSiteSettingName,fileUrl);
+            MetadataCreation.createRemoteSiteSetting(remoteSiteSettingName,fileUrl);
             HttpRequest req = new HttpRequest();
             req.setMethod(methodName);
             req.setEndpoint(fileurl);
@@ -247,10 +245,10 @@ public WITH SHARING class AwsS3Integration {
             system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
         
-         MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
+        MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
         return Files;
     }
-   
+    
     /*
 @description => This method is use to fetch file data based on file key
 */
@@ -261,7 +259,7 @@ public WITH SHARING class AwsS3Integration {
         regionName = awsRegion;
         bucketName = bucket;
         methodName = 'GET';
-        String remoteSiteSettingName = 'Aws File';
+        String remoteSiteSettingName = 'AwsFile';
         String FileData;
         
         try
@@ -272,7 +270,7 @@ public WITH SHARING class AwsS3Integration {
             String dateStamp = Datetime.now().formatGMT('yyyyMMdd');
             
             string fileUrl='https://' + bucketName + '.' + hostName + '/' +FileKey;
-             MetadataCreation.createRemoteSiteSetting(remoteSiteSettingName,fileUrl);
+            MetadataCreation.createRemoteSiteSetting(remoteSiteSettingName,fileUrl);
             
             HttpRequest req = new HttpRequest();
             req.setMethod(methodName);
@@ -293,16 +291,16 @@ public WITH SHARING class AwsS3Integration {
             
             if (res.getStatusCode() == 200 || res.getStatusCode()==201) 
             {
-               blob blobData = res.getBodyAsBlob();
-               FileData = EncodingUtil.base64Encode(blobData);
+                blob blobData = res.getBodyAsBlob();
+                FileData = EncodingUtil.base64Encode(blobData);
             }
         }
         catch(Exception ex)
         {
             system.debug(ex.getMessage()+' at '+ex.getLineNumber());
         }
-         MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
-       																		
+        MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName);
+        
         return FileData;
     }    
     
@@ -311,8 +309,8 @@ public WITH SHARING class AwsS3Integration {
 @description => This method is use to upload files to s3 account
 */
     public static String filePUT(String fileName, string accessKey, String secretKey,String awsRegion, String bucket,blob zipData) {
-      
-        String remoteSiteSettingName = 'upload File';
+        
+        String remoteSiteSettingName = 'uploadFile';
         awsKey = accessKey;
         awsSecret = secretKey;
         regionName = awsRegion;
@@ -330,7 +328,7 @@ public WITH SHARING class AwsS3Integration {
             
             string fileUrl='https://' + bucketName + '.' + hostName + '/' + filename.toLowerCase()+ '.'+'zip';
             MetadataCreation.createRemoteSiteSetting(remoteSiteSettingName,fileUrl);
-         
+            
             HttpRequest req = new HttpRequest();
             req.setMethod(methodName);
             req.setEndpoint(fileurl);
@@ -350,10 +348,10 @@ public WITH SHARING class AwsS3Integration {
             String contentHash = EncodingUtil.convertToHex(Crypto.generateDigest('SHA-256', pdfBlob));
             req.setHeader('x-amz-content-sha256',contentHash);
             req.setHeader('Authorization',CreateAuthHeaderForPUT('application/zip', filename, formattedDateString,longDate,'zip',pdfBlob,dateStamp));
-         
+            
             Http http = new Http();
             HTTPResponse res = http.send(req);
-           
+            
             if (res.getStatusCode() == 200 || res.getStatusCode()==201) 
             {
                 messageToReturn = 'success';
@@ -367,8 +365,8 @@ public WITH SHARING class AwsS3Integration {
             system.debug(ex.getMessage()+' at '+ex.getLineNumber());
             messageToReturn = 'Exception in Code : '+ex.getMessage()+' at '+ex.getLineNumber();
         }
-  
-         MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
+        
+        MetadataCreation.deleteRemoteSiteSetting(remoteSiteSettingName); 
         return messageToReturn;
     }
- 	}
+}

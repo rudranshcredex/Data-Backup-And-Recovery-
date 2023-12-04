@@ -7,7 +7,7 @@ public With sharing class MetadataBackup {
     //constants
     private static final String API_VERSION = '58.0';
     Private static final String ENDPOINT_URL = url.getOrgDomainUrl().toExternalForm();
-    private static final String SESSION_ID = userinfo.getSessionId();
+    //private static final String SESSION_ID = userinfo.getSessionId();
     
     
     
@@ -270,26 +270,6 @@ public With sharing class MetadataBackup {
                 }
             }
         }
-        /*Dom.XmlNode rootNode = doc.getRootElement().getChildElement('Body', 'http://schemas.xmlsoap.org/soap/envelope/');
-system.debug(rootNode);
-Dom.XmlNode describeMetadataResponseNode = rootNode.getChildElement('describeMetadataResponse', 'http://soap.sforce.com/2006/04/metadata');
-system.debug(describeMetadataResponseNode);
-Dom.XmlNode resultNode = describeMetadataResponseNode.getChildElement('result', 'http://soap.sforce.com/2006/04/metadata');
-system.debug(resultNode);
-Dom.XmlNode metadataObjectsNode = resultNode.getChildElement('metadataObjects', 'http://soap.sforce.com/2006/04/metadata');
-system.debug(metadataObjectsNode);
-
-for (Dom.XmlNode metadataObjectNode : metadataObjectsNode.getChildren()) {
-Dom.XmlNode xmlNameNode = metadataObjectNode.getChildElement('xmlName', 'http://soap.sforce.com/2006/04/metadata');
-if (xmlNameNode != null) {
-xmlNames.add(xmlNameNode.getText());
-}
-}*/
-        /*system.debug('xmlNames');
-system.debug(xmlNames);**/
-        /* for(String st:xmlNames){
-system.debug(st);
-}*/
         xmlNames.sort();
         return xmlNames;
     }
@@ -323,12 +303,19 @@ system.debug(st);
 @description => This method is use to generate Soap Envelop for retrieve call of Metadta Api
 */
     Private static String generateEnvelopeForRetrieve(List<String> metadatatypes){
+        string SessionId;
+        if(Test.isRunningTest()){
+            SessionId = userinfo.getSessionId();
+        }
+        else{
+            SessionId = getSessionId();
+        }
         String soapEnvelope = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://soap.sforce.com/2006/04/metadata">'
             + '<soapenv:Header>'
             + '<met:CallOptions>'
             + '</met:CallOptions>'
             + '<met:SessionHeader>'
-            + '<met:sessionId>' +SESSION_ID+ '</met:sessionId>'
+            + '<met:sessionId>' +SessionId+ '</met:sessionId>'
             + '</met:SessionHeader>'
             + '</soapenv:Header>'
             + '<soapenv:Body>'
@@ -367,12 +354,19 @@ system.debug(st);
 @description => This method is use to generate Soap Envelop for CheckRetrieveStatus call of Metadta Api
 */
     Private static String generateEnvelopeForCheckRetrieveStatus(String asyncResultId){
+        string SessionId;
+        if(Test.isRunningTest()){
+            SessionId = userinfo.getSessionId();
+        }
+        else{
+            SessionId = getSessionId();
+        }
         String soapEnvelope = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:met="http://soap.sforce.com/2006/04/metadata">'
             + '<soapenv:Header>'
             + '<met:CallOptions>'
             + '</met:CallOptions>'
             + '<met:SessionHeader>'
-            + '<met:sessionId>' +SESSION_ID+ '</met:sessionId>'
+            + '<met:sessionId>' +SessionId+ '</met:sessionId>'
             + '</met:SessionHeader>'
             + '</soapenv:Header>'
             + '<soapenv:Body>'

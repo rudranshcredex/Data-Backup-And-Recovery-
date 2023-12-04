@@ -6,7 +6,6 @@
 public with sharing class MetadataCreation {
     
     Private static final string endpointUrl = URL.getOrgDomainUrl().toExternalForm();
-    
       /*
 @description => This method is use to create Custom Metadata to store Aws S3 creds
 */
@@ -17,13 +16,6 @@ public with sharing class MetadataCreation {
             req.setBody(generateEnvelopForCustomMetadata( Name,  AccessKey, SecretKey, RegionName));
             
             HttpResponse response = new Http().send(req);
-            if (response.getStatusCode() == 200) {
-                //system.debug('success');
-            } else {
-               
-                //System.debug('Error creating custom metadata record. Status code: ' + response.getStatusCode());
-                //System.debug('Response body: ' + response.getBody());
-            }
         }
         catch(Exception ex){
             throw new AurahandledException(ex.getMessage());
@@ -34,11 +26,14 @@ public with sharing class MetadataCreation {
 @description => This method is use to create remote site setting for White Listing the url
 */
     public static void createRemoteSiteSetting(String fullName, String url) {
-        
+        system.debug('endpointUrl'+ endpointUrl);
+        system.debug('fullName'+ fullName);
+        system.debug('url'+ url);
         HttpRequest req = createRequest('create'); 
         req.setBody(generateEnvelopForCreateRemoteSiteSetting(fullName,url));
         
         HttpResponse res = new Http().send(req);
+        System.debug('response: '+res.getBody());
     }
     
      /*
@@ -50,25 +45,41 @@ public with sharing class MetadataCreation {
         req.setBody(generateEnvelopForDeleteRemoteSiteSetting(fullName));
         
         HttpResponse res = new Http().send(req);
+        System.debug('res------>'+res);
+    }
+    
+    Private static String getSession(){
+        String vfContent =Page.getSessionId.getContent().toString(); 
+        Integer startPosition = vfContent.indexOf('Start') + 'Start'.length();
+        Integer endPosition = vfContent.indexOf('End');
+        String SessionId = vfContent.substring(startPosition, endPosition);
+        return SessionId;
     }
     
      /*
 @description => This method is use to generate Soap Envelop to create Remote Site setting
 */
     private static String generateEnvelopForCreateRemoteSiteSetting(String fullName, String Url){
+        string SessionId;
+        if(Test.isRunningTest()){
+            SessionId = userinfo.getSessionId();
+        }
+        else{
+            SessionId = getSession();
+        }
         return '<?xml version="1.0" encoding="UTF-8"?>'
             + '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
             + '    <env:Header>'
             + '        <urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">'
-            + '            <urn:sessionId>' + UserInfo.getSessionId() + '</urn:sessionId>'
+            + '            <urn:sessionId>' + SessionId  + '</urn:sessionId>'
             + '        </urn:SessionHeader>'
             + '    </env:Header>'
             + '    <env:Body>'
             + '        <createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">'
-            + '            <metadata xsi:type="CTBR__RemoteSiteSetting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-            + '                <CTBR__fullName>'+fullName+'</CTBR__fullName>' 
-            + '                <CTBR__url>'+Url+'</CTBR__url>' 
-            + '                <CTBR__isActive>true</CTBR__isActive>' 
+            + '            <metadata xsi:type="RemoteSiteSetting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+            + '                <fullName>'+fullName+'</fullName>' 
+            + '                <url>'+Url+'</url>' 
+            + '                <isActive>true</isActive>' 
             + '            </metadata>'
             + '        </createMetadata>'
             + '    </env:Body>'
@@ -79,12 +90,18 @@ public with sharing class MetadataCreation {
 @description => This method is use to generate Soap Envelop to delete Remote Site setting
 */
     private static String generateEnvelopForDeleteRemoteSiteSetting(String fullName){
-        //system.debug(fullName);
+        string SessionId;
+        if(Test.isRunningTest()){
+            SessionId = userinfo.getSessionId();
+        }
+        else{
+            SessionId = getSession();
+        }
         return '<?xml version="1.0" encoding="UTF-8"?>'
             + '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
             + '    <env:Header>'
             + '        <urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">'
-            + '            <urn:sessionId>' + UserInfo.getSessionId() + '</urn:sessionId>'
+            + '            <urn:sessionId>' + SessionId + '</urn:sessionId>'
             + '        </urn:SessionHeader>'
             + '    </env:Header>'
             + '    <env:Body>'
@@ -100,6 +117,7 @@ public with sharing class MetadataCreation {
 @description => This method is use to generate Soap Envelop to create Custom Metadata 
 */
     private static String generateEnvelopForCustomMetadata(String Name, String AccessKey,String SecretKey,String RegionName){
+        
         return '<?xml version="1.0" encoding="UTF-8"?>'
             + '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
             + '    <env:Header>'
@@ -131,11 +149,11 @@ public with sharing class MetadataCreation {
             + '</env:Envelope>';
     }
     
-      /*
+/*
 @description => This method is use to create Metadata request
 */
     private static HttpRequest createRequest(string ActionType){
-        
+		System.debug('endpointUrl: '+endpointUrl);        
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
         request.setEndpoint(endpointUrl + '/services/Soap/m/' + '58.0');

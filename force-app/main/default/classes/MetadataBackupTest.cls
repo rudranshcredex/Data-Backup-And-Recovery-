@@ -16,7 +16,7 @@ public With Sharing class MetadataBackupTest {
     static void testRetrieveMetadata(){
         test.startTest();
             Test.setMock(HttpCalloutMock.class, new MetadataBackupResponseGenerator('retrieve'));
-            MetadataBackup.retrieveMetadata(new List<String>{'CustomLabel'},'credentials');
+            MetadataBackup.retrieveMetadata(new List<String>{'CustomObject'},'credentials');
         system.debug(Limits.getCallouts());
         test.stopTest();
         string name ='MetadataRetreiveCheckStatus '+System.now();

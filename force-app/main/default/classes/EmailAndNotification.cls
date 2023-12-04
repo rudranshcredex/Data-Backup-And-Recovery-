@@ -156,6 +156,9 @@ public With sharing class EmailAndNotification {
         if(NotificationType == 'MetadataRecovery'){
             cstmNotifn.setTitle('Your MetaData is Recovered Successfully and results are successfully sent over Email');
         }
+        if(NotificationType == 'DataRecovery'){
+            cstmNotifn.setTitle('Your Data is Recovered Successfully and results are successfully sent over Email');
+        }
         
         cstmNotifn.setNotificationTypeId(customNotification.id);
         cstmNotifn.setBody('Backup Successfull');
