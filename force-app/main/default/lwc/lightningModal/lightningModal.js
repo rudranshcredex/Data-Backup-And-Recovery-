@@ -7,7 +7,6 @@ import saveCred from '@salesforce/apex/AwsCredentials.saveCred';
 import getCredentails from '@salesforce/apex/AwsCredentials.getCredentails';
 import getCredentailsOnName from '@salesforce/apex/AwsCredentials.getCredentailsOnName';
 import awsS3Logo from '@salesforce/resourceUrl/awsS3Logo';
-import { RefreshEvent } from 'lightning/refresh';
 
 export default class LightningModal extends LightningElement {
     @api ismodalopen = false;
@@ -76,13 +75,11 @@ export default class LightningModal extends LightningElement {
                 console.log(data.length);
                 console.log('cred length', this.awsCredentials.length);
                 this.awsAllCredentials = this.awsCredentials;
-                
             })
             .catch(error => {
                 console.log('error');
                 console.log(error);
                 console.log(JSON.stringify(error));
-               
             })
         for (const element of this.awsCredentials) {
             this.credentialAlias.push(element.DeveloperName);
@@ -91,6 +88,9 @@ export default class LightningModal extends LightningElement {
         console.log(this.credentialAlias);
 
     }
+
+
+
     async closeModal() {
         if (this.accessKey === null || this.secretKey === null || this.region === null) {
             this.ismodalopen = false;
@@ -213,9 +213,9 @@ export default class LightningModal extends LightningElement {
 
             .then(data => {
                 console.log('data---->', data);
-                this.accessKey = data.CTBR__AccessKey__c;
-                this.secretKey = data.CTBR__SecretKey__c;
-                this.region = data.CTBR__Region_Name__c;
+                this.accessKey = data.AccessKey__c;
+                this.secretKey = data.SecretKey__c;
+                this.region = data.Region_Name__c;
             })
             .catch(error => {
                 console.log('error');
@@ -390,12 +390,22 @@ export default class LightningModal extends LightningElement {
 
         getCredentails()
             .then(data => {
+                console.log('get creds');
+                console.log(data);
                 this.awsCredentials = data;
-                this.dispatchEvent(new RefreshEvent());
+                console.log(this.awsCredentials);
+                console.log(data.length);
             })
             .catch(error => {
+                console.log('error');
+                console.log(error);
                 console.log(JSON.stringify(error));
             })
+        console.log('loading');
+        console.log(this.isLoading);
+        //this.isLoading = false;
+        console.log('after');
+        console.log(this.isLoading);
 
         this.isOpenCredsModal = false;
     }

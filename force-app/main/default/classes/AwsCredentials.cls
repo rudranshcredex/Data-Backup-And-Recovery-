@@ -16,7 +16,7 @@ public With Sharing class AwsCredentials {
 */
     @AuraEnabled
     Public static List<AwsCredential__mdt> getCredentails(){
-        return  [SELECT Id,DeveloperName,label,AccessKey__c,SecretKey__c,Region_Name__c FROM AwsCredential__mdt WITH SECURITY_ENFORCED Limit 1000];
+        return  [SELECT Id,DeveloperName,label,AccessKey__c,SecretKey__c,Region_Name__c FROM AwsCredential__mdt WHERE Active__c = true WITH SECURITY_ENFORCED Limit 1000];
     }
     
     /*
@@ -27,7 +27,7 @@ public With Sharing class AwsCredentials {
         AwsCredential__mdt CustomMetadata ;
         try{
             
-            CustomMetadata =  [SELECT Id,DeveloperName,AccessKey__c,SecretKey__c,Region_Name__c FROM AwsCredential__mdt Where DeveloperName=:name WITH SECURITY_ENFORCED Limit 1];
+            CustomMetadata =  [SELECT Id,DeveloperName,AccessKey__c,SecretKey__c,Region_Name__c FROM AwsCredential__mdt Where DeveloperName=:name AND Active__c = true WITH SECURITY_ENFORCED Limit 1];
         }
         catch(Exception ex){
             //system.debug(ex.getMessage());

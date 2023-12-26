@@ -243,7 +243,7 @@ public With sharing class DataRecoveryCallout {
          newContentVersion.Title = 'Data recovery'; // Set the file title
          newContentVersion.PathOnClient = 'Datarecovery.csv'; // Set the file name
          newContentVersion.VersionData = Blob.valueOf(csvContent);
-         if(Schema.sObjectType.ContentDocument.isAccessible() && Schema.sObjectType.ContentDocument.isDeletable()){
+         if(Schema.sObjectType.ContentDocument.isAccessible() && Schema.sObjectType.ContentDocument.isDeletable() && Schema.sObjectType.ContentDocument.isCreateable()){
              Database.SaveResult  result = Database.insert(newContentVersion);
          }
         }

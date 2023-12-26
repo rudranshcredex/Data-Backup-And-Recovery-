@@ -20,6 +20,7 @@ public With Sharing class DataBackupCallout {
         { 
             for(String objectApiname: ObjectApiNames)
             {            
+                objectApiname = String.escapeSingleQuotes(objectApiname); 
                 List<String> queryableFieldNames = new List<String>();
                 Map<String, Schema.SObjectField> fieldMap = schemaMap.get(objectApiname).getDescribe().fields.getMap();
                 
@@ -32,6 +33,8 @@ public With Sharing class DataBackupCallout {
                 }
                 if(fromDate!=null && toDate!=null){ 
                     query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname+' WHERE (DAY_ONLY(CreatedDate)>=\''+fromDate+'\''+' OR DAY_ONLY(CreatedDate) <=\''+ToDate+'\')' ; 
+                   	system.debug('From data'+fromDate);
+                    
                 }
                 else{
                     query = 'SELECT ' + String.join(queryableFieldNames, ',') + ' FROM '+objectApiname;
