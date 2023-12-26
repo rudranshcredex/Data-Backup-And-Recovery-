@@ -138,6 +138,9 @@ public WITH SHARING class AwsS3Integration {
             
             HTTPResponse response = http.send(req);
             
+            system.debug('after response body------>'+response.getbody());
+            
+            
             if (response.getStatusCode() == 200 || response.getStatusCode()==201) 
             {
                 Dom.Document doc = new Dom.Document();

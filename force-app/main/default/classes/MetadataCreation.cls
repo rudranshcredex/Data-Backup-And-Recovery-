@@ -5,7 +5,7 @@
 
 public with sharing class MetadataCreation {
     
-    Private static final string endpointUrl = URL.getOrgDomainUrl().toExternalForm();
+    Public static final string endpointUrl = URL.getOrgDomainUrl().toExternalForm();
       /*
 @description => This method is use to create Custom Metadata to store Aws S3 creds
 */
@@ -48,7 +48,7 @@ public with sharing class MetadataCreation {
         System.debug('res------>'+res);
     }
     
-    Private static String getSession(){
+    Public static String getSession(){
         String vfContent =Page.getSessionId.getContent().toString(); 
         Integer startPosition = vfContent.indexOf('Start') + 'Start'.length();
         Integer endPosition = vfContent.indexOf('End');
@@ -59,7 +59,7 @@ public with sharing class MetadataCreation {
      /*
 @description => This method is use to generate Soap Envelop to create Remote Site setting
 */
-    private static String generateEnvelopForCreateRemoteSiteSetting(String fullName, String Url){
+private static String generateEnvelopForCreateRemoteSiteSetting(String fullName, String Url){
         string SessionId;
         if(Test.isRunningTest()){
             SessionId = userinfo.getSessionId();
@@ -128,19 +128,19 @@ public with sharing class MetadataCreation {
             + '    <env:Body>'
             + '        <createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">'
             + '            <metadata xsi:type="CustomMetadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-            + '                <fullName>' + 'CTBR__AwsCredential__mdt.'+Name+'</fullName>' 
+            + '                <fullName>' + 'CBAR__AwsCredential__mdt.'+Name+'</fullName>' 
             + '                <label>' + Name+ '</label>' 
             + '                <protected>false</protected>' 
             + '                <values>'
-            + '                    <field>' + 'CTBR__AccessKey' + '__c</field>' 
+            + '                    <field>' + 'CBAR__AccessKey' + '__c</field>' 
             + '                    <value>' + AccessKey + '</value>'
             + '                </values>'
             + '                <values>'
-            + '                    <field>' + 'CTBR__Region_Name' + '__c</field>' 
+            + '                    <field>' + 'CBAR__Region_Name' + '__c</field>' 
             + '                    <value>' + RegionName + '</value>' 
             + '                </values>'
             + '                <values>'
-            + '                    <field>' + 'CTBR__SecretKey' + '__c</field>' 
+            + '                    <field>' + 'CBAR__SecretKey' + '__c</field>' 
             + '                    <value>' + SecretKey + '</value>' 
             + '                </values>'
             + '            </metadata>'

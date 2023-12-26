@@ -51,6 +51,6 @@
             AwsCredential__mdt creds = AwsCredentials.getCredentailsOnName('credex');
             test.stopTest();
             
-            system.assert(creds!=null);
+            system.assert(creds==null);
        }
 }

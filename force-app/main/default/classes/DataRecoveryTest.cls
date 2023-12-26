@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+ * @group             : 
+ * @last modified on  : 12-26-2023
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
 @isTest
 public With Sharing class DataRecoveryTest {
     
@@ -42,9 +49,9 @@ public With Sharing class DataRecoveryTest {
         List<DataRecovery.objectsDataWrapper>  responseWrapper=	DataRecovery.uploadZipFile(encodingUtil.base64Encode(createZipDataWithExternalIdField()));
         test.stopTest();    
         
-        system.assertEquals('CTBR__test_obj_with_external_Id__c',responseWrapper[0].objectName);
+        system.assertEquals('CBAR__test_obj_with_external_Id__c',responseWrapper[0].objectName);
         system.assertEquals(1,responseWrapper[0].ExternalIdField.size());
-        system.assertEquals('ctbr__email_field__c',responseWrapper[0].ExternalIdField[0]);
+        system.assertEquals('CBAR__email_field__c',responseWrapper[0].ExternalIdField[0]);
     }
     
     @isTest
@@ -71,9 +78,9 @@ public With Sharing class DataRecoveryTest {
         test.startTest();
         
         Map<String,string> objectsToUpsert = new Map<String,string>();
-        objectsToUpsert.put('objectName','CTBR__test_obj_with_external_Id__c');
+        objectsToUpsert.put('objectName','CBAR__test_obj_with_external_Id__c');
         objectsToUpsert.put('csvData',encodingUtil.base64Encode(createZipDataWithExternalIdField()));
-        objectsToUpsert.put('externalId','CTBR__Email_field__c');
+        objectsToUpsert.put('externalId','CBAR__Email_field__c');
         
         Test.setMock(HttpCalloutMock.class, new DataRecoveryResponseGenerator('CreateUpsert'));
         result = DataRecovery.performUpsert(JSON.serialize(new List<Map<String,String>>{objectsToUpsert}));
@@ -116,7 +123,7 @@ public With Sharing class DataRecoveryTest {
             
             Zippex sampleZip = new Zippex();
             Blob fileData = Blob.valueOf(csvData);
-            sampleZip.addFile('CTBR__test_obj_with_external_Id__c.csv', fileData, null);
+            sampleZip.addFile('CBAR__test_obj_with_external_Id__c.csv', fileData, null);
             zipData = sampleZip.getZipArchive();
         }
         catch(Exception ex){

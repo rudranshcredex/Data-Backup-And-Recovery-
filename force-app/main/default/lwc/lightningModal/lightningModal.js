@@ -213,9 +213,9 @@ export default class LightningModal extends LightningElement {
 
             .then(data => {
                 console.log('data---->', data);
-                this.accessKey = data.AccessKey__c;
-                this.secretKey = data.SecretKey__c;
-                this.region = data.Region_Name__c;
+                this.accessKey = data.CBAR__AccessKey__c;
+                this.secretKey = data.CBAR__SecretKey__c;
+                this.region = data.CBAR__Region_Name__c;
             })
             .catch(error => {
                 console.log('error');
