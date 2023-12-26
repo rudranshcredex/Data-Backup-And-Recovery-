@@ -51,7 +51,7 @@ public With Sharing class DataRecoveryTest {
         
         system.assertEquals('CBAR__test_obj_with_external_Id__c',responseWrapper[0].objectName);
         system.assertEquals(1,responseWrapper[0].ExternalIdField.size());
-        system.assertEquals('CBAR__email_field__c',responseWrapper[0].ExternalIdField[0]);
+        system.assertEquals('cbar__email_field__c',responseWrapper[0].ExternalIdField[0]);
     }
     
     @isTest
